@@ -17,7 +17,7 @@ public:
     {
     }
 
-    virtual bool generate(int line, const interface::AttributeVariantData& value, std::string& generated,
+    virtual bool generate(int line, const interface::AttributeVariantData& value, std::vector<std::string>& generated,
                           std::string& message, bool single_line_msg) = 0;
 };
 

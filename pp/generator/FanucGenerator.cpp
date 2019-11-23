@@ -9,20 +9,20 @@
 namespace pp {
 namespace fanuc {
 
-bool FanucGenerator::generate(int line, const interface::AttributeVariantData& value, std::string& generated,
-                              std::string& message, bool single_line_msg)
+bool FanucGenerator::generate(int line, const interface::AttributeVariantData& value,
+                              std::vector<std::string>& generated, std::string& message, bool single_line_msg)
 {
     return generate(line, static_cast<const interface::CLDAtaAttributeData&>(value).value, generated, message,
                     single_line_msg);
 }
 
-bool FanucGenerator::generate(int line, const std::vector<interface::AttributeVariant>& value, std::string& generated,
-                              std::string& message, bool single_line_msg)
+bool FanucGenerator::generate(int line, const std::vector<interface::AttributeVariant>& value,
+                              std::vector<std::string>& generated, std::string& message, bool single_line_msg)
 {
     try
     {
         for (size_t x = 0; x < value.size(); ++x)
-            generated += boost::apply_visitor(CLDataVisitor(3), value[x]);
+            generated.emplace_back(boost::apply_visitor(CLDataVisitor(3), value[x]));
     }
     /*catch (const float_value_exception& e)
     {

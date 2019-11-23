@@ -26,11 +26,11 @@ public:
     FanucGenerator& operator=(const FanucGenerator&) = delete;
     FanucGenerator& operator=(FanucGenerator&&) = default;
 
-    virtual bool generate(int line, const interface::AttributeVariantData& value, std::string& generated,
+    virtual bool generate(int line, const interface::AttributeVariantData& value, std::vector<std::string>& generated,
                           std::string& message, bool single_line_msg) override;
 
 private:
-    bool generate(int line, const std::vector<interface::AttributeVariant>& value, std::string& generated,
+    bool generate(int line, const std::vector<interface::AttributeVariant>& value, std::vector<std::string>& generated,
                   std::string& message, bool single_line_msg);
 
 private:
