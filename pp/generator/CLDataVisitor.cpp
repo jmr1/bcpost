@@ -4,19 +4,14 @@
 
 #include <boost/variant.hpp>
 
-#include "FanucGeneratorGrammar.h"
+#include "GotoGenerator.h"
 
 namespace pp {
 namespace fanuc {
 
 std::string CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    std::string                            generated;
-    std::back_insert_iterator<std::string> sink(generated);
-
-    generate_goto(sink, value, precision);
-
-    return generated;
+    return generate_goto(value, precision);
 }
 
 } // namespace fanuc

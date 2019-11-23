@@ -1,4 +1,9 @@
-﻿#pragma once
+﻿//#include "stdafx.h"
+#ifdef _MSC_VER
+#pragma warning(disable : 4348)
+#endif
+
+#include "GotoGenerator.h"
 
 #include <iomanip>
 #include <string>
@@ -183,7 +188,15 @@ bool generate_goto(Iterator& sink, const interface::Goto& v, uint32_t precision)
     return karma::generate(sink, goto_g, v);
 }
 
-extern template class goto_grammar<std::back_insert_iterator<std::string>>;
+std::string generate_goto(const interface::Goto& value, uint32_t precision)
+{
+    std::string                            generated;
+    std::back_insert_iterator<std::string> sink(generated);
+
+    generate_goto(sink, value, precision);
+
+    return generated;
+}
 
 } // namespace fanuc
 } // namespace pp
