@@ -90,4 +90,14 @@ void CLDataParserTest::gotoTest()
     verify("GOTO/-24.5855,-1 15.0000,100", {}, false);
 }
 
+void CLDataParserTest::ignoredValueTest()
+{
+    using namespace pp::interface;
+
+    verify("$$ centerline data", {Goto{}}, true);
+
+    verify("PAINT/PATH", {Goto{}}, true);
+    verify("PAINT/SPEED,10", {Goto{}}, true);
+}
+
 } // namespace cldata_test

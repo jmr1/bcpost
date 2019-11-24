@@ -88,6 +88,22 @@ private:
 };*/
 
 template <typename Iterator>
+class ignored_value_grammar : public qi::grammar<Iterator, void()>
+{
+public:
+    ignored_value_grammar()
+        : ignored_value_grammar::base_type(attribute)
+    {
+        attribute = qi::omit[ignored] > qi::omit[*(qi::char_ - qi::eol)];
+        BOOST_SPIRIT_DEBUG_NODES((attribute));
+    }
+
+private:
+    ignored_operations         ignored;
+    qi::rule<Iterator, void()> attribute;
+};
+
+template <typename Iterator>
 class float_value_grammar : public qi::grammar<Iterator, interface::FloatValue()>
 {
 public:
@@ -132,13 +148,14 @@ public:
     all_attributes_grammar(const word_symbols& sym, std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (goto_rule /* | general_attribute_rule*/);
+        line_attribute     = (ignored_rule | goto_rule /* | general_attribute_rule*/);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
 
 private:
     goto_grammar<Iterator>                                                         goto_rule;
+    ignored_value_grammar<Iterator>                                                ignored_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
 };
