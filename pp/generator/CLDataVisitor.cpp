@@ -6,6 +6,7 @@
 
 #include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
+#include "ToolPathGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -22,8 +23,7 @@ std::string CLDataVisitor::operator()(const interface::EndOfPath& value) const
 
 std::string CLDataVisitor::operator()(const interface::ToolPath& value) const
 {
-    abort();
-    return "";
+    return generate_toolPath(value);
 }
 
 std::string CLDataVisitor::operator()(const interface::TldataDrill& value) const

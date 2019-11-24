@@ -13,6 +13,7 @@ public:
     CPPUNIT_TEST_SUITE(FanucGeneratorTest);
     CPPUNIT_TEST(gotoTest);
     CPPUNIT_TEST(endOfPathTest);
+    CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -22,6 +23,7 @@ public:
 protected:
     void gotoTest();
     void endOfPathTest();
+    void toolPathTest();
 };
 
 } // namespace fanuc_test

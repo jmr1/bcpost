@@ -101,4 +101,16 @@ void FanucGeneratorTest::endOfPathTest()
            true);
 }
 
+void FanucGeneratorTest::toolPathTest()
+{
+    using namespace pp::interface;
+
+    verify({ToolPath{"DRILLING_1", "STD_DRILL_D10"}},
+           {"%\n"
+            "O0001\n"
+            "G40 G17 G90 G49 G21\n"
+            "(DRILLING_1)"},
+           true);
+}
+
 } // namespace fanuc_test
