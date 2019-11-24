@@ -8,8 +8,6 @@
 #include <iomanip>
 #include <string>
 
-//#define BOOST_SPIRIT_USE_PHOENIX_V3
-
 #ifndef NDEBUG
 #define BOOST_SPIRIT_DEBUG
 #endif
@@ -23,8 +21,6 @@
 #include <boost/spirit/include/phoenix_core.hpp>
 #include <boost/spirit/include/phoenix_object.hpp> // construct
 #include <boost/spirit/include/phoenix_operator.hpp>
-//#include <boost/spirit/include/qi_symbols.hpp>
-//#include <boost/spirit/include/support_multi_pass.hpp>
 //#include <boost/phoenix/object/dynamic_cast.hpp>
 //#include <boost/phoenix/operator/self.hpp>
 
@@ -37,8 +33,6 @@ namespace ascii   = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
-
-// using word_symbols = qi::symbols<char, std::string>;
 
 // clang-format off
 

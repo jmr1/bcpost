@@ -24,11 +24,13 @@ bool FanucGenerator::generate(int line, const std::vector<interface::AttributeVa
         for (size_t x = 0; x < value.size(); ++x)
             generated.emplace_back(boost::apply_visitor(CLDataVisitor(3), value[x]));
     }
-    /*catch (const float_value_exception& e)
+#ifdef THROW_WHEN_ERROR
+    catch (const float_value_exception& e)
     {
         message = e.what();
         return false;
-    }*/
+    }
+#endif
     catch (const std::runtime_error& e)
     {
         message = e.what();
