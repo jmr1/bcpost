@@ -77,6 +77,41 @@ bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
 
 bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) const
 {
+    auto value_expected = boost::get<interface::EndOfPath>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    return true;
+}
+
+bool CLDataAttributesVisitor::operator()(const interface::ToolPath& value) const
+{
+    auto value_expected = boost::get<interface::ToolPath>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->operation_name, value.operation_name);
+    CPPUNIT_ASSERT_EQUAL(value_expected->tool_name, value.tool_name);
+
+    return true;
+}
+
+bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) const
+{
+    auto value_expected = boost::get<interface::TldataDrill>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->corner_radius, value.corner_radius);
+    CPPUNIT_ASSERT_EQUAL(value_expected->diameter, value.diameter);
+    CPPUNIT_ASSERT_EQUAL(value_expected->flute_length, value.flute_length);
+    CPPUNIT_ASSERT_EQUAL(value_expected->length, value.length);
+    CPPUNIT_ASSERT_EQUAL(value_expected->module_type, value.module_type);
+    CPPUNIT_ASSERT_EQUAL(value_expected->point_angle, value.point_angle);
+
     return true;
 }
 

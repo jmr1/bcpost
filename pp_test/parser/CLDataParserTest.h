@@ -14,6 +14,7 @@ public:
     CPPUNIT_TEST(gotoTest);
     CPPUNIT_TEST(ignoredValueTest);
     CPPUNIT_TEST(endOfPathTest);
+    CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -24,6 +25,7 @@ protected:
     void gotoTest();
     void ignoredValueTest();
     void endOfPathTest();
+    void toolPathTest();
 };
 
 } // namespace cldata_test

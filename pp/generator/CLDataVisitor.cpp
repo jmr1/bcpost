@@ -20,5 +20,17 @@ std::string CLDataVisitor::operator()(const interface::EndOfPath& value) const
     return generate_endOfPath();
 }
 
+std::string CLDataVisitor::operator()(const interface::ToolPath& value) const
+{
+    abort();
+    return "";
+}
+
+std::string CLDataVisitor::operator()(const interface::TldataDrill& value) const
+{
+    abort();
+    return "";
+}
+
 } // namespace fanuc
 } // namespace pp

@@ -17,6 +17,8 @@ public:
 
     std::string operator()(const interface::Goto& value) const;
     std::string operator()(const interface::EndOfPath& value) const;
+    std::string operator()(const interface::ToolPath& value) const;
+    std::string operator()(const interface::TldataDrill& value) const;
 
 private:
     const uint32_t precision;

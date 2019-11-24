@@ -35,7 +35,23 @@ struct EndOfPath
 {
 };
 
-using AttributeVariant = boost::variant<Goto, EndOfPath>;
+struct ToolPath
+{
+    std::string operation_name;
+    std::string tool_name;
+};
+
+struct TldataDrill
+{
+    std::string module_type;
+    double      diameter;
+    double      corner_radius;
+    double      length;
+    double      point_angle;
+    double      flute_length;
+};
+
+using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill>;
 
 struct CLDAtaAttributeData : public AttributeVariantData
 {

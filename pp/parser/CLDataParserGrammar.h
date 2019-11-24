@@ -51,10 +51,25 @@ BOOST_FUSION_ADAPT_STRUCT(
     (boost::optional<pp::interface::FloatValue>, k)
 )
 
-/*BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::EndOfPath,
-    ()
-)*/
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::EndOfPath
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::ToolPath,
+    (std::string, operation_name)
+    (std::string, tool_name)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::TldataDrill,
+    (std::string, module_type)
+    (double, diameter)
+    (double, corner_radius)
+    (double, length)
+    (double, point_angle)
+    (double, flute_length)
+)
 
 // clang-format on
 
@@ -66,14 +81,32 @@ class end_of_path_grammar : public qi::grammar<Iterator, interface::EndOfPath()>
 {
 public:
     end_of_path_grammar()
-        : end_of_path_grammar::base_type(attribute)
+        : end_of_path_grammar::base_type(end_of_path_attribute)
     {
-        attribute = qi::lit("END-OF-PATH")[phx::construct<interface::EndOfPath>()];
-        BOOST_SPIRIT_DEBUG_NODES((attribute));
+        end_of_path_attribute = qi::lit("END-OF-PATH")[phx::construct<interface::EndOfPath>()];
+        BOOST_SPIRIT_DEBUG_NODES((end_of_path_attribute));
     }
 
 private:
-    qi::rule<Iterator, interface::EndOfPath()> attribute;
+    qi::rule<Iterator, interface::EndOfPath()> end_of_path_attribute;
+};
+
+template <typename Iterator>
+class tool_path_grammar : public qi::grammar<Iterator, interface::ToolPath(), qi::blank_type>
+{
+public:
+    tool_path_grammar()
+        : tool_path_grammar::base_type(tool_path_attribute)
+    {
+        // TOOL PATH/DRILLING_1,TOOL,STD_DRILL_D10
+        tool_path_attribute = qi::lexeme[qi::lit("TOOL") > qi::omit[+qi::space]] > qi::lit("PATH") > qi::lit("/") >
+                              qi::lexeme[+qi::char_("a-zA-Z0-9_")] > qi::lit(",") > qi::lit("TOOL") > qi::lit(",") >
+                              qi::lexeme[+qi::char_("a-zA-Z0-9_")] > qi::eoi;
+        BOOST_SPIRIT_DEBUG_NODES((tool_path_attribute));
+    }
+
+private:
+    qi::rule<Iterator, interface::ToolPath(), qi::blank_type> tool_path_attribute;
 };
 
 struct ignored_operations : qi::symbols<char, std::string>
@@ -89,15 +122,15 @@ class ignored_value_grammar : public qi::grammar<Iterator, void()>
 {
 public:
     ignored_value_grammar()
-        : ignored_value_grammar::base_type(attribute)
+        : ignored_value_grammar::base_type(ignored_value_attribute)
     {
-        attribute = qi::omit[ignored] > qi::omit[*(qi::char_ - qi::eol)];
-        BOOST_SPIRIT_DEBUG_NODES((attribute));
+        ignored_value_attribute = qi::omit[ignored] > qi::omit[*(qi::char_ - qi::eol)];
+        BOOST_SPIRIT_DEBUG_NODES((ignored_value_attribute));
     }
 
 private:
     ignored_operations         ignored;
-    qi::rule<Iterator, void()> attribute;
+    qi::rule<Iterator, void()> ignored_value_attribute;
 };
 
 template <typename Iterator>
@@ -145,7 +178,7 @@ public:
     all_attributes_grammar(std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (ignored_rule | goto_rule | end_of_path_rule);
+        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
@@ -154,6 +187,7 @@ private:
     goto_grammar<Iterator>                                                         goto_rule;
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
+    tool_path_grammar<Iterator>                                                    tool_path_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
 };

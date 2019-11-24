@@ -94,10 +94,10 @@ void CLDataParserTest::ignoredValueTest()
 {
     using namespace pp::interface;
 
-    verify("$$ centerline data", {Goto{}}, true);
+    verify("$$ centerline data", {AttributeVariant{}}, true);
 
-    verify("PAINT/PATH", {Goto{}}, true);
-    verify("PAINT/SPEED,10", {Goto{}}, true);
+    verify("PAINT/PATH", {AttributeVariant{}}, true);
+    verify("PAINT/SPEED,10", {AttributeVariant{}}, true);
     verify("PANT/PATH", {}, false);
 }
 
@@ -105,8 +105,21 @@ void CLDataParserTest::endOfPathTest()
 {
     using namespace pp::interface;
 
-    verify("END-OF-PATH", {Goto{{}}}, true);
+    verify("END-OF-PATH", {EndOfPath{}}, true);
     verify("END-OFPATH", {}, false);
+}
+
+void CLDataParserTest::toolPathTest()
+{
+    using namespace pp::interface;
+
+    verify("TOOL PATH/DRILLING_1,TOOL,STD_DRILL_D10", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
+    verify("TOOL PATH/DRILLING_1,TOOL,STD DRILL_D10", {}, false);
+    verify("TOOL PATH/DRILLING 1,TOOL,STD_DRILL_D10", {}, false);
+    verify("TOOL PATH/DRILLING_1,TOOL,STD_DRILL_D10,", {}, false);
+    verify("TOOL PATH/DRILLING_1, TOOL, STD_DRILL_D10", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
+    verify("TOOL  PATH / DRILLING_1, TOOL, STD_DRILL_D10 ", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
+    verify("TOOL\tPATH/DRILLING_1, TOOL, STD_DRILL_D10", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
 }
 
 } // namespace cldata_test
