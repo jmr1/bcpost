@@ -31,7 +31,11 @@ struct Goto
     boost::optional<FloatValue> k;
 };
 
-using AttributeVariant = boost::variant<Goto>;
+struct EndOfPath
+{
+};
+
+using AttributeVariant = boost::variant<Goto, EndOfPath>;
 
 struct CLDAtaAttributeData : public AttributeVariantData
 {

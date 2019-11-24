@@ -13,6 +13,7 @@ public:
     CPPUNIT_TEST_SUITE(CLDataParserTest);
     CPPUNIT_TEST(gotoTest);
     CPPUNIT_TEST(ignoredValueTest);
+    CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -22,6 +23,7 @@ public:
 protected:
     void gotoTest();
     void ignoredValueTest();
+    void endOfPathTest();
 };
 
 } // namespace cldata_test

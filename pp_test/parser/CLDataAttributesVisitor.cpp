@@ -75,4 +75,9 @@ bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) const
+{
+    return true;
+}
+
 } // namespace cldata_test

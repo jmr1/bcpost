@@ -98,6 +98,15 @@ void CLDataParserTest::ignoredValueTest()
 
     verify("PAINT/PATH", {Goto{}}, true);
     verify("PAINT/SPEED,10", {Goto{}}, true);
+    verify("PANT/PATH", {}, false);
+}
+
+void CLDataParserTest::endOfPathTest()
+{
+    using namespace pp::interface;
+
+    verify("END-OF-PATH", {Goto{{}}}, true);
+    verify("END-OFPATH", {}, false);
 }
 
 } // namespace cldata_test

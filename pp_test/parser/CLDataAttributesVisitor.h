@@ -18,6 +18,7 @@ public:
     }
 
     bool operator()(const interface::Goto& value) const;
+    bool operator()(const interface::EndOfPath& value) const;
 
 private:
     const interface::AttributeVariant& v_expected;

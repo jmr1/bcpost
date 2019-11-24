@@ -51,10 +51,30 @@ BOOST_FUSION_ADAPT_STRUCT(
     (boost::optional<pp::interface::FloatValue>, k)
 )
 
+/*BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::EndOfPath,
+    ()
+)*/
+
 // clang-format on
 
 namespace pp {
 namespace cldata {
+
+template <typename Iterator>
+class end_of_path_grammar : public qi::grammar<Iterator, interface::EndOfPath()>
+{
+public:
+    end_of_path_grammar()
+        : end_of_path_grammar::base_type(attribute)
+    {
+        attribute = qi::lit("END-OF-PATH")[phx::construct<interface::EndOfPath>()];
+        BOOST_SPIRIT_DEBUG_NODES((attribute));
+    }
+
+private:
+    qi::rule<Iterator, interface::EndOfPath()> attribute;
+};
 
 struct ignored_operations : qi::symbols<char, std::string>
 {
@@ -63,29 +83,6 @@ struct ignored_operations : qi::symbols<char, std::string>
         add("$$", "$$")("PAINT", "PAINT");
     }
 };
-
-/*template <typename Iterator>
-class start_program_grammar : public qi::grammar<Iterator, ProgramBeginEndData()>
-{
-public:
-    start_program_grammar()
-        : start_program_grammar::base_type(start_program)
-    {
-        begin_end.add("BEGIN", EBeginEnd::begin)("END", EBeginEnd::end);
-
-        unit.add("MM", EUnit::mm)("INCH", EUnit::inch);
-
-        start_program = begin_end > qi::omit[+qi::blank] > qi::lit("PGM") > qi::omit[+qi::blank] >
-                        *(qi::char_("a-zA-Z0-9_")) > qi::omit[+qi::blank] > unit > qi::omit[+qi::space | qi::eoi] >
-                        !qi::char_("a-zA-Z0-9_");
-        BOOST_SPIRIT_DEBUG_NODE((start_program));
-    }
-
-private:
-    qi::symbols<char, cldata::EBeginEnd>  begin_end;
-    qi::symbols<char, cldata::EUnit>      unit;
-    qi::rule<Iterator, ProgramBeginEndData()> start_program;
-};*/
 
 template <typename Iterator>
 class ignored_value_grammar : public qi::grammar<Iterator, void()>
@@ -148,13 +145,14 @@ public:
     all_attributes_grammar(const word_symbols& sym, std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (ignored_rule | goto_rule /* | general_attribute_rule*/);
+        line_attribute     = (ignored_rule | goto_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
 
 private:
     goto_grammar<Iterator>                                                         goto_rule;
+    end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
