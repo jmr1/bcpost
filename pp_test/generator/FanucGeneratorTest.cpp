@@ -113,4 +113,18 @@ void FanucGeneratorTest::toolPathTest()
            true);
 }
 
+void FanucGeneratorTest::tldataDrillTest()
+{
+    using namespace pp::interface;
+    verify({TldataDrill{"MILL", FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           {"G91 G28 Z0.0\n"
+            "G91 G28 X0.0 Y0.0\n"
+            "G90 G53 G00 A0.0 C0.0"},
+           true);
+}
+
 } // namespace fanuc_test

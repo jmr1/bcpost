@@ -13,6 +13,7 @@
 #endif
 
 #include <boost/config/warning_disable.hpp>
+#include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/phoenix/bind.hpp>
 //#include <boost/bind.hpp>
@@ -38,8 +39,8 @@ namespace fusion  = boost::fusion;
 
 // must be in global namespace
 
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::FloatValue,
+BOOST_FUSION_ADAPT_STRUCT_NAMED(
+    const pp::interface::FloatValue, fvGoto,
     (boost::optional<char>, sign)
     (boost::optional<std::string>, value)
     (boost::optional<char>, dot)
@@ -85,7 +86,7 @@ private:
 };
 
 template <typename Iterator>
-class float_value_grammar : public karma::grammar<Iterator, interface::FloatValue()>
+class float_value_grammar : public karma::grammar<Iterator, boost::fusion::adapted::fvGoto()>
 {
 public:
     float_value_grammar(uint32_t precision)
@@ -98,8 +99,8 @@ public:
     }
 
 private:
-    float_rounder                                  fr;
-    karma::rule<Iterator, interface::FloatValue()> float_value_attribute;
+    float_rounder                                           fr;
+    karma::rule<Iterator, boost::fusion::adapted::fvGoto()> float_value_attribute;
 };
 
 #ifdef THROW_WHEN_ERROR
@@ -142,11 +143,11 @@ private:
 
 #else
 
-inline bool verify(const interface::FloatValue& value)
+inline bool verify(const boost::fusion::adapted::fvGoto& value)
 {
-    if (!value.sign && !value.value && !value.dot && !value.value2)
+    if (!value.obj.sign && !value.obj.value && !value.obj.dot && !value.obj.value2)
         return false;
-    if (!value.dot && value.value2)
+    if (!value.obj.dot && value.obj.value2)
         return false;
     return true;
 }
@@ -168,9 +169,9 @@ public:
     }
 
 private:
-    float_value_grammar<Iterator>                  attr_value_float_check;
-    karma::rule<Iterator, interface::FloatValue()> attr_value_float;
-    karma::rule<Iterator, interface::Goto()>       goto_attribute;
+    float_value_grammar<Iterator>                           attr_value_float_check;
+    karma::rule<Iterator, boost::fusion::adapted::fvGoto()> attr_value_float;
+    karma::rule<Iterator, interface::Goto()>                goto_attribute;
 };
 
 #endif
