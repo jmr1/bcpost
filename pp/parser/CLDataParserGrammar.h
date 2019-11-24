@@ -142,7 +142,7 @@ template <typename Iterator>
 class all_attributes_grammar : public qi::grammar<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type>
 {
 public:
-    all_attributes_grammar(const word_symbols& sym, std::string& message)
+    all_attributes_grammar(std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
         line_attribute     = (ignored_rule | goto_rule | end_of_path_rule);

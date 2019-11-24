@@ -2,11 +2,9 @@
 
 #include "FanucGeneratorTest.h"
 
-//#include <boost/type_index.hpp>
 #include <iostream>
 #include <string>
 
-//#include "CLDataAttributesVisitor.h"
 #include "generator/FanucGenerator.h"
 
 namespace fanuc_test {
@@ -85,6 +83,22 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, boost::none, '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', boost::none}}},
            {"G94 G90 X-.585 Y. Z100."}, true);
+}
+
+void FanucGeneratorTest::endOfPathTest()
+{
+    using namespace pp::interface;
+
+    verify({EndOfPath{}},
+           {"G69\n"
+            "G91 G28 Z0.0\n"
+            "G91 G28 X0.0 Y0.0\n"
+            "G90 G53 G00 A0.0 C0.0\n"
+            "M05\n"
+            "M09\n"
+            "M30\n"
+            "%"},
+           true);
 }
 
 } // namespace fanuc_test

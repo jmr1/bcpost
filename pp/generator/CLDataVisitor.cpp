@@ -4,6 +4,7 @@
 
 #include <boost/variant.hpp>
 
+#include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
 
 namespace pp {
@@ -16,8 +17,7 @@ std::string CLDataVisitor::operator()(const interface::Goto& value) const
 
 std::string CLDataVisitor::operator()(const interface::EndOfPath& value) const
 {
-    // return generate_goto(value, precision);
-    return "";
+    return generate_endOfPath();
 }
 
 } // namespace fanuc

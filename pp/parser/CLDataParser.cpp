@@ -34,7 +34,7 @@ bool CLDataParser::parse(int line, const std::string& data, std::vector<interfac
     pos_iterator_type position_begin(boost::spirit::istream_iterator{input >> std::noskipws}, {}), position_end;
 
     bool                                      ret = false;
-    all_attributes_grammar<pos_iterator_type> all_attr_gr(ignored_operations(), message);
+    all_attributes_grammar<pos_iterator_type> all_attr_gr(message);
 
     try
     {
