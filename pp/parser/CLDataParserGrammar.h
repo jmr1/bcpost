@@ -56,6 +56,14 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
+struct ignored_operations : qi::symbols<char, std::string>
+{
+    ignored_operations()
+    {
+        add("$$", "$$")("PAINT", "PAINT");
+    }
+};
+
 /*template <typename Iterator>
 class start_program_grammar : public qi::grammar<Iterator, ProgramBeginEndData()>
 {
@@ -109,7 +117,7 @@ public:
                          (qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) >
                          -(qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float);
 
-        BOOST_SPIRIT_DEBUG_NODES(/*(attr_value_float_opt)(attr_value_float)*/ (goto_attribute));
+        BOOST_SPIRIT_DEBUG_NODES((goto_attribute));
     }
 
 private:
@@ -117,126 +125,22 @@ private:
     qi::rule<Iterator, interface::Goto(), qi::blank_type> goto_attribute;
 };
 
-/*template <typename Iterator>
-class general_attribute_grammar : public qi::grammar<Iterator, GeneralAttributeData()>
-{
-public:
-    general_attribute_grammar(const word_symbols& symbols)
-        : general_attribute_grammar::base_type(general_attribute)
-    {
-        attr_value               = +qi::char_("0-9");
-        attr_value2              = +qi::char_("0-9");
-        attr_value_quoted_string = qi::char_('"') > +qi::char_("a-zA-Z0-9") > qi::char_('"');
-        general_attribute        = (symbols | +(qi::char_("a-zA-Z.:/")) | qi::char_("#") | qi::char_("=") |
-                             attr_value_quoted_string) > qi::omit[*qi::blank] > -qi::char_("-+") > -qi::char_("Q") >
-                            -attr_value > qi::no_skip[-qi::char_('.')] > qi::no_skip[-attr_value2] > -qi::char_("~");
-        BOOST_SPIRIT_DEBUG_NODES((attr_value_quoted_string)(general_attribute));
-    }
-
-private:
-    qi::rule<Iterator, std::string()>          attr_value;
-    qi::rule<Iterator, std::string()>          attr_value2;
-    qi::rule<Iterator, std::string()>          attr_value_quoted_string;
-    qi::rule<Iterator, GeneralAttributeData()> general_attribute;
-};*/
-
-/*template <typename Iterator>
-class comment_attribute_grammar : public qi::grammar<Iterator, CommentData()>
-{
-public:
-    comment_attribute_grammar()
-        : comment_attribute_grammar::base_type(comment)
-    {
-        comment = qi::char_(';') > *(qi::char_ - '~') > (qi::char_('~') | qi::attr(0)) >> qi::eoi;
-        BOOST_SPIRIT_DEBUG_NODE(comment);
-    }
-
-private:
-    qi::rule<Iterator, CommentData()> comment;
-};
-
-template <typename Iterator>
-class line_number_attribute_grammar : public qi::grammar<Iterator, LineNumberData()>
-{
-public:
-    line_number_attribute_grammar()
-        : line_number_attribute_grammar::base_type(line_number)
-    {
-        line_number = qi::uint_ > qi::blank;
-        BOOST_SPIRIT_DEBUG_NODE(line_number);
-    }
-
-private:
-    qi::rule<Iterator, LineNumberData()> line_number;
-};
-
-template <typename Iterator>
-class cycle_def_attribute_grammar : public qi::grammar<Iterator, CycleDef()>
-{
-public:
-    cycle_def_attribute_grammar(bool& was_cycle_def)
-        : cycle_def_attribute_grammar::base_type(cycle_def)
-    {
-        attr_value  = +qi::char_("0-9");
-        attr_value2 = +qi::char_("0-9");
-        cycle_def   = qi::string("CYCL") > qi::omit[+qi::blank] > (qi::string("DEF") | qi::string("CALL")) >
-                    qi::omit[*qi::blank] > -attr_value > qi::no_skip[-qi::char_('.')] > qi::no_skip[-(attr_value2)] >>
-                    qi::eps(phx::ref(was_cycle_def) = true);
-        BOOST_SPIRIT_DEBUG_NODE(cycle_def);
-    }
-
-private:
-    qi::rule<Iterator, std::string()> attr_value;
-    qi::rule<Iterator, std::string()> attr_value2;
-    qi::rule<Iterator, CycleDef()>    cycle_def;
-};
-
-template <typename Iterator>
-class cycle_param_attribute_grammar : public qi::grammar<Iterator, CycleParam()>
-{
-public:
-    cycle_param_attribute_grammar()
-        : cycle_param_attribute_grammar::base_type(cycle_param)
-    {
-        attr_value  = +qi::char_("0-9");
-        attr_value2 = +qi::char_("0-9");
-        cycle_param = qi::char_("Q") > qi::int_ > qi::omit[*qi::blank] > qi::char_("=") > qi::omit[*qi::blank] >
-                      -qi::char_("-+") > -(attr_value) > qi::no_skip[-qi::char_('.')] > qi::no_skip[-(attr_value2)];
-        BOOST_SPIRIT_DEBUG_NODE(cycle_param);
-    }
-
-private:
-    qi::rule<Iterator, std::string()> attr_value;
-    qi::rule<Iterator, std::string()> attr_value2;
-    qi::rule<Iterator, CycleParam()>  cycle_param;
-};*/
-
 template <typename Iterator>
 class all_attributes_grammar : public qi::grammar<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type>
 {
 public:
     all_attributes_grammar(const word_symbols& sym, std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
-    //, cycle_def_rule(was_cycle_def)
-    //, general_attribute_rule(sym /*, was_cycle_def*/)
     {
-        line_attribute =
-            (goto_rule /*cycle_def_rule | cycle_param_rule | comment_rule | start_program_rule | general_attribute_rule*/);
+        line_attribute     = (goto_rule /* | general_attribute_rule*/);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
 
 private:
-    // comment_attribute_grammar<Iterator>                                 comment_rule;
-    // line_number_attribute_grammar<Iterator>                             line_number_rule;
-    // cycle_def_attribute_grammar<Iterator>                               cycle_def_rule;
-    // cycle_param_attribute_grammar<Iterator>                             cycle_param_rule;
-    // start_program_grammar<Iterator>                                     start_program_rule;
-    // general_attribute_grammar<Iterator>                                 general_attribute_rule;
     goto_grammar<Iterator>                                                         goto_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
-    // bool                                                                was_cycle_def{};
 };
 
 using pos_iterator_type = boost::spirit::classic::position_iterator2<boost::spirit::istream_iterator>;
