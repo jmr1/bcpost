@@ -105,12 +105,12 @@ bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) co
         boost::apply_visitor(CheckTypeVisitor(), v_expected);
     CPPUNIT_ASSERT(value_expected);
 
-    CPPUNIT_ASSERT_EQUAL(value_expected->corner_radius, value.corner_radius);
-    CPPUNIT_ASSERT_EQUAL(value_expected->diameter, value.diameter);
-    CPPUNIT_ASSERT_EQUAL(value_expected->flute_length, value.flute_length);
-    CPPUNIT_ASSERT_EQUAL(value_expected->length, value.length);
     CPPUNIT_ASSERT_EQUAL(value_expected->module_type, value.module_type);
-    CPPUNIT_ASSERT_EQUAL(value_expected->point_angle, value.point_angle);
+    FloatValueComparer()(value_expected->corner_radius, value.corner_radius);
+    FloatValueComparer()(value_expected->diameter, value.diameter);
+    FloatValueComparer()(value_expected->flute_length, value.flute_length);
+    FloatValueComparer()(value_expected->length, value.length);
+    FloatValueComparer()(value_expected->point_angle, value.point_angle);
 
     return true;
 }

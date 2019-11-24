@@ -44,11 +44,11 @@ struct ToolPath
 struct TldataDrill
 {
     std::string module_type;
-    double      diameter;
-    double      corner_radius;
-    double      length;
-    double      point_angle;
-    double      flute_length;
+    FloatValue  diameter;
+    FloatValue  corner_radius;
+    FloatValue  length;
+    FloatValue  point_angle;
+    FloatValue  flute_length;
 };
 
 using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill>;

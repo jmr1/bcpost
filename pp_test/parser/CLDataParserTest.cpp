@@ -34,7 +34,7 @@ static void verify(std::string&& data, std::vector<pp::interface::AttributeVaria
     std::cout << message << std::endl;
     if (ret)
         CPPUNIT_ASSERT_EQUAL_MESSAGE("parse(): returned true but it contains error message", true, message.empty());
-    CPPUNIT_ASSERT_EQUAL_MESSAGE("parse(): returned value not equal", ret_expected, ret);
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("parse(): ret value not equal", ret_expected, ret);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("parse(): Number of elements in the container not equal", av_expected.size(),
                                  av.value.size());
 
@@ -120,6 +120,30 @@ void CLDataParserTest::toolPathTest()
     verify("TOOL PATH/DRILLING_1, TOOL, STD_DRILL_D10", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
     verify("TOOL  PATH / DRILLING_1, TOOL, STD_DRILL_D10 ", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
     verify("TOOL\tPATH/DRILLING_1, TOOL, STD_DRILL_D10", {ToolPath{"DRILLING_1", "STD_DRILL_D10"}}, true);
+}
+
+void CLDataParserTest::tldataDrillTest()
+{
+    using namespace pp::interface;
+
+    verify("TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,35.0000",
+           {TldataDrill{"MILL", FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           true);
+
+    verify(" TLDATA / DRILL , MILL , 10.0000 , 0.0000 , 80.0000 , 118.0000 , 35.0000 ",
+           {TldataDrill{"MILL", FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                        FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           true);
+
+    verify("TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000", {}, false);
+    verify("TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,", {}, false);
 }
 
 } // namespace cldata_test

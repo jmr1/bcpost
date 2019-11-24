@@ -64,17 +64,37 @@ BOOST_FUSION_ADAPT_STRUCT(
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::TldataDrill,
     (std::string, module_type)
-    (double, diameter)
-    (double, corner_radius)
-    (double, length)
-    (double, point_angle)
-    (double, flute_length)
+    (pp::interface::FloatValue, diameter)
+    (pp::interface::FloatValue, corner_radius)
+    (pp::interface::FloatValue, length)
+    (pp::interface::FloatValue, point_angle)
+    (pp::interface::FloatValue, flute_length)
 )
 
 // clang-format on
 
 namespace pp {
 namespace cldata {
+
+template <typename Iterator>
+class float_value_grammar : public qi::grammar<Iterator, interface::FloatValue()>
+{
+public:
+    float_value_grammar()
+        : float_value_grammar::base_type(float_value_attribute)
+    {
+        attr_value            = +qi::char_("0-9");
+        attr_value2           = +qi::char_("0-9");
+        float_value_attribute = (-qi::char_("-+") > attr_value > -qi::char_(".") > -attr_value2) |
+                                (-qi::char_("-+") > -attr_value > qi::char_(".") > attr_value2);
+        BOOST_SPIRIT_DEBUG_NODES((float_value_attribute));
+    }
+
+private:
+    qi::rule<Iterator, std::string()>           attr_value;
+    qi::rule<Iterator, std::string()>           attr_value2;
+    qi::rule<Iterator, interface::FloatValue()> float_value_attribute;
+};
 
 template <typename Iterator>
 class end_of_path_grammar : public qi::grammar<Iterator, interface::EndOfPath()>
@@ -109,6 +129,27 @@ private:
     qi::rule<Iterator, interface::ToolPath(), qi::blank_type> tool_path_attribute;
 };
 
+template <typename Iterator>
+class tldata_drill_grammar : public qi::grammar<Iterator, interface::TldataDrill(), qi::blank_type>
+{
+public:
+    tldata_drill_grammar()
+        : tldata_drill_grammar::base_type(tldata_drill_attribute)
+    {
+        // TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,35.0000
+        tldata_drill_attribute = qi::lit("TLDATA") > qi::lit("/") > qi::lit("DRILL") >
+                                 (qi::lit(",") > qi::lexeme[+qi::char_("a-zA-Z0-9_")]) >
+                                 (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                                 (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                                 (qi::lit(",") > attr_value_float) > qi::eoi;
+        BOOST_SPIRIT_DEBUG_NODES((tldata_drill_attribute));
+    }
+
+private:
+    float_value_grammar<Iterator>                                attr_value_float;
+    qi::rule<Iterator, interface::TldataDrill(), qi::blank_type> tldata_drill_attribute;
+};
+
 struct ignored_operations : qi::symbols<char, std::string>
 {
     ignored_operations()
@@ -134,31 +175,13 @@ private:
 };
 
 template <typename Iterator>
-class float_value_grammar : public qi::grammar<Iterator, interface::FloatValue()>
-{
-public:
-    float_value_grammar()
-        : float_value_grammar::base_type(float_value_attribute)
-    {
-        attr_value            = +qi::char_("0-9");
-        attr_value2           = +qi::char_("0-9");
-        float_value_attribute = -qi::char_("-+") > -attr_value > -qi::char_(".") > -attr_value2;
-        BOOST_SPIRIT_DEBUG_NODES((float_value_attribute));
-    }
-
-private:
-    qi::rule<Iterator, std::string()>           attr_value;
-    qi::rule<Iterator, std::string()>           attr_value2;
-    qi::rule<Iterator, interface::FloatValue()> float_value_attribute;
-};
-
-template <typename Iterator>
 class goto_grammar : public qi::grammar<Iterator, interface::Goto(), qi::blank_type>
 {
 public:
     goto_grammar()
         : goto_grammar::base_type(goto_attribute)
     {
+        // GOTO/-24.5855,-115.0000,100.0000,0.0000000,0.0000000,1.0000000
         goto_attribute = qi::lit("GOTO") > qi::lit("/") > attr_value_float > (qi::lit(",") > attr_value_float) >
                          (qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) >
                          -(qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float);
@@ -178,7 +201,7 @@ public:
     all_attributes_grammar(std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | end_of_path_rule);
+        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | tldata_drill_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
@@ -188,6 +211,7 @@ private:
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     tool_path_grammar<Iterator>                                                    tool_path_rule;
+    tldata_drill_grammar<Iterator>                                                 tldata_drill_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
 };

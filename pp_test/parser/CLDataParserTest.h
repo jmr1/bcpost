@@ -15,6 +15,7 @@ public:
     CPPUNIT_TEST(ignoredValueTest);
     CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST(toolPathTest);
+    CPPUNIT_TEST(tldataDrillTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -26,6 +27,7 @@ protected:
     void ignoredValueTest();
     void endOfPathTest();
     void toolPathTest();
+    void tldataDrillTest();
 };
 
 } // namespace cldata_test
