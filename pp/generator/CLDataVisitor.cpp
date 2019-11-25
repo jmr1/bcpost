@@ -8,6 +8,7 @@
 #include "GotoGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
+#include "SelectToolGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -38,15 +39,12 @@ bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 
 bool CLDataVisitor::operator()(const interface::LoadTool& value) const
 {
-    abort();
-    //generated.emplace_back(generate_tldataDrill(value, precision));
     return true;
 }
 
 bool CLDataVisitor::operator()(const interface::SelectTool& value) const
 {
-    abort();
-    //generated.emplace_back(generate_tldataDrill(value, precision));
+    generated.emplace_back(generate_selectTool(value));
     return true;
 }
 
