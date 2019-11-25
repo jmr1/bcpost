@@ -12,24 +12,28 @@
 namespace pp {
 namespace fanuc {
 
-std::string CLDataVisitor::operator()(const interface::Goto& value) const
+bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    return generate_goto(value, precision);
+    generated.emplace_back(generate_goto(value, precision));
+    return true;
 }
 
-std::string CLDataVisitor::operator()(const interface::EndOfPath& value) const
+bool CLDataVisitor::operator()(const interface::EndOfPath& value) const
 {
-    return generate_endOfPath();
+    generated.emplace_back(generate_endOfPath());
+    return true;
 }
 
-std::string CLDataVisitor::operator()(const interface::ToolPath& value) const
+bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 {
-    return generate_toolPath(value);
+    generated.emplace_back(generate_toolPath(value));
+    return true;
 }
 
-std::string CLDataVisitor::operator()(const interface::TldataDrill& value) const
+bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
-    return generate_tldataDrill(value, precision);
+    generated.emplace_back(generate_tldataDrill(value, precision));
+    return true;
 }
 
 } // namespace fanuc
