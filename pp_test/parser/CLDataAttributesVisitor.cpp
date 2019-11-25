@@ -85,6 +85,16 @@ bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) cons
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Ignored& value) const
+{
+    auto value_expected = boost::get<interface::Ignored>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    return true;
+}
+
 bool CLDataAttributesVisitor::operator()(const interface::ToolPath& value) const
 {
     auto value_expected = boost::get<interface::ToolPath>(&v_expected);

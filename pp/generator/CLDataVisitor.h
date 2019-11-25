@@ -18,6 +18,7 @@ public:
 
     bool operator()(const interface::Goto& value) const;
     bool operator()(const interface::EndOfPath& value) const;
+    bool operator()(const interface::Ignored& value) const;
     bool operator()(const interface::ToolPath& value) const;
     bool operator()(const interface::TldataDrill& value) const;
     bool operator()(const interface::LoadTool& value) const;

@@ -35,6 +35,10 @@ struct EndOfPath
 {
 };
 
+struct Ignored
+{
+};
+
 struct ToolPath
 {
     std::string operation_name;
@@ -61,7 +65,7 @@ struct SelectTool
     int tool_number;
 };
 
-using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill, LoadTool, SelectTool>;
+using AttributeVariant = boost::variant<Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

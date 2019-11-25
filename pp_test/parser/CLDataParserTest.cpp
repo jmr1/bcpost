@@ -94,10 +94,10 @@ void CLDataParserTest::ignoredValueTest()
 {
     using namespace pp::interface;
 
-    verify("$$ centerline data", {AttributeVariant{}}, true);
+    verify("$$ centerline data", {Ignored{}}, true);
 
-    verify("PAINT/PATH", {AttributeVariant{}}, true);
-    verify("PAINT/SPEED,10", {AttributeVariant{}}, true);
+    verify("PAINT/PATH", {Ignored{}}, true);
+    verify("PAINT/SPEED,10", {Ignored{}}, true);
     verify("PANT/PATH", {}, false);
 }
 

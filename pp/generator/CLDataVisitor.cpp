@@ -25,6 +25,11 @@ bool CLDataVisitor::operator()(const interface::EndOfPath& value) const
     return true;
 }
 
+bool CLDataVisitor::operator()(const interface::Ignored& value) const
+{
+    return true;
+}
+
 bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 {
     generated.emplace_back(generate_toolPath(value));

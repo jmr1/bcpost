@@ -56,6 +56,10 @@ BOOST_FUSION_ADAPT_STRUCT(
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::Ignored
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::ToolPath,
     (std::string, operation_name)
     (std::string, tool_name)
@@ -201,7 +205,7 @@ struct ignored_operations : qi::symbols<char, std::string>
 };
 
 template <typename Iterator>
-class ignored_value_grammar : public qi::grammar<Iterator, void()>
+class ignored_value_grammar : public qi::grammar<Iterator, interface::Ignored()>
 {
 public:
     ignored_value_grammar()
@@ -213,7 +217,7 @@ public:
 
 private:
     ignored_operations         ignored;
-    qi::rule<Iterator, void()> ignored_value_attribute;
+    qi::rule<Iterator, interface::Ignored()> ignored_value_attribute;
 };
 
 template <typename Iterator>
