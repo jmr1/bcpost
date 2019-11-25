@@ -71,6 +71,16 @@ BOOST_FUSION_ADAPT_STRUCT(
     (pp::interface::FloatValue, flute_length)
 )
 
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::LoadTool,
+    (int, tool_number)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::SelectTool,
+    (int, tool_number)
+)
+
 // clang-format on
 
 namespace pp {
@@ -94,6 +104,38 @@ private:
     qi::rule<Iterator, std::string()>           attr_value;
     qi::rule<Iterator, std::string()>           attr_value2;
     qi::rule<Iterator, interface::FloatValue()> float_value_attribute;
+};
+
+template <typename Iterator>
+class load_tool_grammar : public qi::grammar<Iterator, interface::LoadTool(), qi::blank_type>
+{
+public:
+    load_tool_grammar()
+        : load_tool_grammar::base_type(load_tool_attribute)
+    {
+        // LOAD/TOOL,5
+        load_tool_attribute = qi::lit("LOAD") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::int_ > qi::eoi;
+        BOOST_SPIRIT_DEBUG_NODES((load_tool_attribute));
+    }
+
+private:
+    qi::rule<Iterator, interface::LoadTool(), qi::blank_type> load_tool_attribute;
+};
+
+template <typename Iterator>
+class select_tool_grammar : public qi::grammar<Iterator, interface::SelectTool(), qi::blank_type>
+{
+public:
+    select_tool_grammar()
+        : select_tool_grammar::base_type(select_tool_attribute)
+    {
+        // SELECT/TOOL,5
+        select_tool_attribute = qi::lit("SELECT") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::int_ > qi::eoi;
+        BOOST_SPIRIT_DEBUG_NODES((select_tool_attribute));
+    }
+
+private:
+    qi::rule<Iterator, interface::SelectTool(), qi::blank_type> select_tool_attribute;
 };
 
 template <typename Iterator>
@@ -201,7 +243,8 @@ public:
     all_attributes_grammar(std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | tldata_drill_rule | end_of_path_rule);
+        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | tldata_drill_rule | load_tool_rule |
+                          select_tool_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
@@ -211,6 +254,8 @@ private:
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     tool_path_grammar<Iterator>                                                    tool_path_rule;
+    load_tool_grammar<Iterator>                                                    load_tool_rule;
+    select_tool_grammar<Iterator>                                                  select_tool_rule;
     tldata_drill_grammar<Iterator>                                                 tldata_drill_rule;
     qi::rule<Iterator, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<Iterator, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;

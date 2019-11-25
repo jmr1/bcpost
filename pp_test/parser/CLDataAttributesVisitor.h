@@ -21,6 +21,8 @@ public:
     bool operator()(const interface::EndOfPath& value) const;
     bool operator()(const interface::ToolPath& value) const;
     bool operator()(const interface::TldataDrill& value) const;
+    bool operator()(const interface::LoadTool& value) const;
+    bool operator()(const interface::SelectTool& value) const;
 
 private:
     const interface::AttributeVariant& v_expected;

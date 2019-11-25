@@ -115,4 +115,28 @@ bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) co
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
+{
+    auto value_expected = boost::get<interface::LoadTool>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->tool_number, value.tool_number);
+
+    return true;
+}
+
+bool CLDataAttributesVisitor::operator()(const interface::SelectTool& value) const
+{
+    auto value_expected = boost::get<interface::SelectTool>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->tool_number, value.tool_number);
+
+    return true;
+}
+
 } // namespace cldata_test

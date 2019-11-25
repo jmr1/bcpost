@@ -16,6 +16,8 @@ public:
     CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST(tldataDrillTest);
+    CPPUNIT_TEST(loadToolTest);
+    CPPUNIT_TEST(selectToolTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -28,6 +30,8 @@ protected:
     void endOfPathTest();
     void toolPathTest();
     void tldataDrillTest();
+    void loadToolTest();
+    void selectToolTest();
 };
 
 } // namespace cldata_test

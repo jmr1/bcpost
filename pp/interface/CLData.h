@@ -51,7 +51,17 @@ struct TldataDrill
     FloatValue  flute_length;
 };
 
-using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill>;
+struct LoadTool
+{
+    int tool_number;
+};
+
+struct SelectTool
+{
+    int tool_number;
+};
+
+using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill, LoadTool, SelectTool>;
 
 struct CLDAtaAttributeData : public AttributeVariantData
 {

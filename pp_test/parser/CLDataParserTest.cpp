@@ -146,4 +146,30 @@ void CLDataParserTest::tldataDrillTest()
     verify("TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,", {}, false);
 }
 
+void CLDataParserTest::loadToolTest()
+{
+    using namespace pp::interface;
+
+    verify("LOAD/TOOL,5", {LoadTool{5}}, true);
+    verify(" LOAD / TOOL , 5 ", {LoadTool{5}}, true);
+    verify("LOAD/TOOL,5.2", {}, false);
+    verify("LOAD/TOOL,", {}, false);
+    verify("LOAD/TOOL,G", {}, false);
+    verify("LOAD/TUOOL,", {}, false);
+    verify("LOAUD/TOOL,", {}, false);
+}
+
+void CLDataParserTest::selectToolTest()
+{
+    using namespace pp::interface;
+
+    verify("SELECT/TOOL,5", {SelectTool{5}}, true);
+    verify(" SELECT / TOOL , 5 ", {SelectTool{5}}, true);
+    verify("SELECT/TOOL,5.2", {}, false);
+    verify("SELECT/TOOL,", {}, false);
+    verify("SELECT/TOOL,G", {}, false);
+    verify("SELECT/TUOOL,", {}, false);
+    verify("LOAUD/TOOL,", {}, false);
+}
+
 } // namespace cldata_test

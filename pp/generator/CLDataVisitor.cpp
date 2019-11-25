@@ -36,5 +36,19 @@ bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
     return true;
 }
 
+bool CLDataVisitor::operator()(const interface::LoadTool& value) const
+{
+    abort();
+    //generated.emplace_back(generate_tldataDrill(value, precision));
+    return true;
+}
+
+bool CLDataVisitor::operator()(const interface::SelectTool& value) const
+{
+    abort();
+    //generated.emplace_back(generate_tldataDrill(value, precision));
+    return true;
+}
+
 } // namespace fanuc
 } // namespace pp
