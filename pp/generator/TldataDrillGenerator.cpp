@@ -59,9 +59,9 @@ template <typename Iterator>
 class tldata_drill_grammar : public karma::grammar<Iterator, interface::TldataDrill()>
 {
 public:
-    tldata_drill_grammar()
+    tldata_drill_grammar(uint32_t precision)
         : tldata_drill_grammar::base_type(attribute)
-        , attr_value_float(3)
+        , attr_value_float(precision)
     {
         // G91 G28 Z0.0
         // G91 G28 X0.0 Y0.0
@@ -78,18 +78,18 @@ private:
 };
 
 template <typename Iterator>
-bool generate_tldataDrill(Iterator& sink, const interface::TldataDrill& value)
+bool generate_tldataDrill(Iterator& sink, const interface::TldataDrill& value, uint32_t precision)
 {
-    tldata_drill_grammar<Iterator> tldataDrill_g;
+    tldata_drill_grammar<Iterator> tldataDrill_g(precision);
     return karma::generate(sink, tldataDrill_g, value);
 }
 
-std::string generate_tldataDrill(const interface::TldataDrill& value)
+std::string generate_tldataDrill(const interface::TldataDrill& value, uint32_t precision)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_tldataDrill(sink, value);
+    generate_tldataDrill(sink, value, precision);
 
     return generated;
 }

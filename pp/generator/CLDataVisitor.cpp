@@ -29,7 +29,7 @@ std::string CLDataVisitor::operator()(const interface::ToolPath& value) const
 
 std::string CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
-    return generate_tldataDrill(value);
+    return generate_tldataDrill(value, precision);
 }
 
 } // namespace fanuc
