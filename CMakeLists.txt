@@ -3,7 +3,7 @@
 IF (BUILD_CGI_APP)
   SET(CMAKE_BUILD_TYPE MinSizeRel)
 ELSE ()
-  SET(CMAKE_BUILD_TYPE Debug)
+  SET(CMAKE_BUILD_TYPE Release)
 ENDIF ()
 
 IF (CMAKE_BUILD_TYPE)
@@ -58,7 +58,7 @@ SET (LIBPARSER_NAME_SHARED ${LIBPARSER_NAME}-shared)
 SET (LIBPARSER_NAME_STATIC ${LIBPARSER_NAME}-static)
 SET (LIBPARSER_NAME_UNITTEST ${LIBPARSER_NAME}-unittest)
 
-#SET (NCCGI_NAME nccgi.out)
+SET (BCPOST_NAME bcpost)
 
 #
 # Build verbose mode
@@ -163,7 +163,7 @@ SET (CMAKE_BUILD_TYPE "${BUILD_TYPE}") # options are: Release, Debug, RelWithDeb
 ADD_SUBDIRECTORY(pp)
 
 # Processes
-#ADD_SUBDIRECTORY(nccgi)
+ADD_SUBDIRECTORY(bcpost)
 
 enable_testing ()
 # Library unit tests

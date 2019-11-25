@@ -23,7 +23,7 @@ namespace cldata {
 bool CLDataParser::parse(int line, const std::string& data, interface::AttributeVariantData& value,
                          std::string& message, bool single_line_msg)
 {
-    return parse(line, data, static_cast<interface::CLDAtaAttributeData&>(value).value, message, single_line_msg);
+    return parse(line, data, static_cast<interface::CLDataAttributeData&>(value).value, message, single_line_msg);
 }
 
 bool CLDataParser::parse(int line, const std::string& data, std::vector<interface::AttributeVariant>& value,

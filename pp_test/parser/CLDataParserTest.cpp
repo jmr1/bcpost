@@ -27,7 +27,7 @@ static void verify(std::string&& data, std::vector<pp::interface::AttributeVaria
     using namespace pp::interface;
 
     std::string         message;
-    CLDAtaAttributeData av;
+    CLDataAttributeData av;
 
     CLDataParser pp;
     auto         ret = pp.parse(1, data, av, message, true);

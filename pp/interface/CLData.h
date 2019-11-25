@@ -63,7 +63,7 @@ struct SelectTool
 
 using AttributeVariant = boost::variant<Goto, EndOfPath, ToolPath, TldataDrill, LoadTool, SelectTool>;
 
-struct CLDAtaAttributeData : public AttributeVariantData
+struct CLDataAttributeData : public AttributeVariantData
 {
     std::vector<AttributeVariant> value;
 };

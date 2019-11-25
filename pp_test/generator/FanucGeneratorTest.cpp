@@ -27,7 +27,7 @@ static void verify(std::vector<pp::interface::AttributeVariant>&& av, std::vecto
 
     std::string              message;
     std::vector<std::string> data;
-    CLDAtaAttributeData      cl_data;
+    CLDataAttributeData      cl_data;
     cl_data.value = std::move(av);
 
     FanucGenerator fg(3);

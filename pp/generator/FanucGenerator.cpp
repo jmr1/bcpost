@@ -12,7 +12,7 @@ namespace fanuc {
 bool FanucGenerator::generate(int line, const interface::AttributeVariantData& value,
                               std::vector<std::string>& generated, std::string& message, bool single_line_msg)
 {
-    return generate(line, static_cast<const interface::CLDAtaAttributeData&>(value).value, generated, message,
+    return generate(line, static_cast<const interface::CLDataAttributeData&>(value).value, generated, message,
                     single_line_msg);
 }
 
