@@ -27,6 +27,7 @@
 
 //#include "MessageTextImpl.h"
 
+#include "FloatValueGenerator.h"
 #include "interface/CLData.h"
 
 namespace karma   = boost::spirit::karma;
@@ -38,14 +39,6 @@ namespace fusion  = boost::fusion;
 // clang-format off
 
 // must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT_NAMED(
-    const pp::interface::FloatValue, fvGoto,
-    (boost::optional<char>, sign)
-    (boost::optional<std::string>, value)
-    (boost::optional<char>, dot)
-    (boost::optional<std::string>, value2)
-)
 
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::Goto,
@@ -62,63 +55,7 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace fanuc {
 
-class float_rounder
-{
-public:
-    float_rounder(uint32_t precision)
-        : precision(precision)
-    {
-    }
-
-    void exec(std::string& value) const
-    {
-        std::string tmp = value;
-        if (tmp.size() > precision)
-            tmp = tmp.substr(0, precision);
-        auto ret = std::find_if(tmp.rbegin(), tmp.rend(), [](const auto& v) { return v != '0' ? true : false; });
-        if (ret != tmp.rbegin())
-            tmp.erase(ret.base(), tmp.end());
-        value = tmp;
-    }
-
-private:
-    const uint32_t precision;
-};
-
-template <typename Iterator>
-class float_value_grammar : public karma::grammar<Iterator, boost::fusion::adapted::fvGoto()>
-{
-public:
-    float_value_grammar(uint32_t precision)
-        : float_value_grammar::base_type(float_value_attribute)
-        , fr(precision)
-    {
-        float_value_attribute %= -karma::char_
-                                 << -karma::string << -karma::char_
-                                 << -karma::string[phx::bind(&float_rounder::exec, phx::cref(fr), karma::_1)];
-    }
-
-private:
-    float_rounder                                           fr;
-    karma::rule<Iterator, boost::fusion::adapted::fvGoto()> float_value_attribute;
-};
-
 #ifdef THROW_WHEN_ERROR
-
-struct float_value_exception : std::runtime_error
-{
-    float_value_exception(const std::string& message)
-        : std::runtime_error(message.c_str())
-    {
-    }
-};
-
-inline bool verify_throw(const interface::FloatValue& value)
-{
-    if (!value.sign && !value.value && !value.dot && !value.value2)
-        throw float_value_exception("Brak wartości.");
-    return true;
-}
 
 template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
@@ -143,15 +80,6 @@ private:
 
 #else
 
-inline bool verify(const boost::fusion::adapted::fvGoto& value)
-{
-    if (!value.obj.sign && !value.obj.value && !value.obj.dot && !value.obj.value2)
-        return false;
-    if (!value.obj.dot && value.obj.value2)
-        return false;
-    return true;
-}
-
 template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
@@ -169,9 +97,9 @@ public:
     }
 
 private:
-    float_value_grammar<Iterator>                           attr_value_float_check;
-    karma::rule<Iterator, boost::fusion::adapted::fvGoto()> attr_value_float;
-    karma::rule<Iterator, interface::Goto()>                goto_attribute;
+    float_value_grammar<Iterator>                attr_value_float_check;
+    karma::rule<Iterator, interface::FloatValue> attr_value_float;
+    karma::rule<Iterator, interface::Goto()>     goto_attribute;
 };
 
 #endif

@@ -27,6 +27,7 @@
 
 //#include "MessageTextImpl.h"
 
+#include "FloatValueGenerator.h"
 #include "interface/CLData.h"
 
 namespace karma   = boost::spirit::karma;
@@ -38,14 +39,6 @@ namespace fusion  = boost::fusion;
 // clang-format off
 
 // must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT_NAMED(
-    const pp::interface::FloatValue, fvTldataDrill,
-    (boost::optional<char>, sign)
-    (boost::optional<std::string>, value)
-    (boost::optional<char>, dot)
-    (boost::optional<std::string>, value2)
-)
 
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::TldataDrill,
@@ -62,27 +55,13 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace fanuc {
 
-// This is simplified implementation as this data isn't going to be output for TldataDrill type
-template <typename Iterator>
-class float_value_grammar : public karma::grammar<Iterator, boost::fusion::adapted::fvTldataDrill()>
-{
-public:
-    float_value_grammar()
-        : float_value_grammar::base_type(float_value_attribute)
-    {
-        float_value_attribute = -karma::char_ << -karma::string << -karma::char_ << -karma::string;
-    }
-
-private:
-    karma::rule<Iterator, boost::fusion::adapted::fvTldataDrill()> float_value_attribute;
-};
-
 template <typename Iterator>
 class tldata_drill_grammar : public karma::grammar<Iterator, interface::TldataDrill()>
 {
 public:
     tldata_drill_grammar()
         : tldata_drill_grammar::base_type(attribute)
+        , attr_value_float(3)
     {
         // G91 G28 Z0.0
         // G91 G28 X0.0 Y0.0
