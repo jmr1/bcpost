@@ -38,7 +38,7 @@ bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 
 bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
-    generated.emplace_back(generate_tldataDrill(value, precision));
+    generated.emplace_back(generate_tldataDrill(line, step, value, precision));
     return true;
 }
 

@@ -7,7 +7,8 @@
 namespace pp {
 namespace fanuc {
 
-std::string generate_tldataDrill(const interface::TldataDrill& value, uint32_t precision);
+std::string generate_tldataDrill(uint32_t& line, uint32_t step, const interface::TldataDrill& value,
+                                 uint32_t precision);
 
 } // namespace fanuc
 } // namespace pp
