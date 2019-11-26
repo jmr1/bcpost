@@ -52,11 +52,12 @@ template <typename Iterator>
 class select_tool_grammar : public karma::grammar<Iterator, interface::SelectTool()>
 {
 public:
-    select_tool_grammar()
+    select_tool_grammar(uint32_t& line, uint32_t step)
         : select_tool_grammar::base_type(attribute)
     {
-        // T5 M06
-        attribute = karma::lit("T") << karma::int_ << karma::space << "M06";
+        // :6 T5 M06
+        attribute = ":" << karma::lit(phx::ref(line) += step) << " "
+                        << "T" << karma::int_ << karma::space << "M06";
     }
 
 private:
@@ -64,18 +65,18 @@ private:
 };
 
 template <typename Iterator>
-bool generate_selectTool(Iterator& sink, const interface::SelectTool& value)
+bool generate_selectTool(Iterator& sink, uint32_t& line, uint32_t step, const interface::SelectTool& value)
 {
-    select_tool_grammar<Iterator> selectTool_g;
+    select_tool_grammar<Iterator> selectTool_g(line, step);
     return karma::generate(sink, selectTool_g, value);
 }
 
-std::string generate_selectTool(const interface::SelectTool& value)
+std::string generate_selectTool(uint32_t& line, uint32_t step, const interface::SelectTool& value)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_selectTool(sink, value);
+    generate_selectTool(sink, line, step, value);
 
     return generated;
 }

@@ -49,7 +49,7 @@ bool CLDataVisitor::operator()(const interface::LoadTool& value) const
 
 bool CLDataVisitor::operator()(const interface::SelectTool& value) const
 {
-    generated.emplace_back(generate_selectTool(value));
+    generated.emplace_back(generate_selectTool(line, step, value));
     return true;
 }
 

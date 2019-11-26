@@ -134,7 +134,7 @@ void FanucGeneratorTest::selectToolTest()
 {
     using namespace pp::interface;
 
-    verify({SelectTool{5}}, {"T5 M06"}, true);
+    verify({SelectTool{5}}, {":1 T5 M06"}, true);
 }
 
 } // namespace fanuc_test
