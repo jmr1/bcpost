@@ -32,7 +32,7 @@ bool CLDataVisitor::operator()(const interface::Ignored& value) const
 
 bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 {
-    generated.emplace_back(generate_toolPath(value));
+    generated.emplace_back(generate_toolPath(line, step, value));
     return true;
 }
 

@@ -27,7 +27,7 @@ static void verify(std::vector<pp::interface::AttributeVariant>&& av, std::vecto
 
     const uint32_t           step      = 1;
     const uint32_t           precision = 3;
-    uint32_t                 line      = 1;
+    uint32_t                 line      = 0;
     std::string              message;
     std::vector<std::string> data;
     CLDataAttributeData      cl_data;
@@ -111,8 +111,8 @@ void FanucGeneratorTest::toolPathTest()
     verify({ToolPath{"DRILLING_1", "STD_DRILL_D10"}},
            {"%\n"
             "O0001\n"
-            "G40 G17 G90 G49 G21\n"
-            "(DRILLING_1)"},
+            "N1 G40 G17 G90 G49 G21\n"
+            "N2 (DRILLING_1)"},
            true);
 }
 

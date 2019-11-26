@@ -53,15 +53,16 @@ template <typename Iterator>
 class tool_path_grammar : public karma::grammar<Iterator, interface::ToolPath()>
 {
 public:
-    tool_path_grammar()
+    tool_path_grammar(uint32_t& line, uint32_t step)
         : tool_path_grammar::base_type(attribute)
     {
         // %
         // O0001
-        // G40 G17 G90 G49 G21
-        // (DRILLING_1)
-        attribute = karma::lit("%") << karma::eol << "O0001" << karma::eol << "G40 G17 G90 G49 G21" << karma::eol << "("
-                                    << karma::string << ")" << karma::omit[karma::string];
+        // N1 G40 G17 G90 G49 G21
+        // N2 (DRILLING_1)
+        attribute = "%" << karma::eol << "O0001" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G40 G17 G90 G49 G21" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "(" << karma::string << ")" << karma::omit[karma::string];
     }
 
 private:
@@ -69,18 +70,18 @@ private:
 };
 
 template <typename Iterator>
-bool generate_toolPath(Iterator& sink, const interface::ToolPath& value)
+bool generate_toolPath(Iterator& sink, uint32_t& line, uint32_t step, const interface::ToolPath& value)
 {
-    tool_path_grammar<Iterator> toolPath_g;
+    tool_path_grammar<Iterator> toolPath_g(line, step);
     return karma::generate(sink, toolPath_g, value);
 }
 
-std::string generate_toolPath(const interface::ToolPath& value)
+std::string generate_toolPath(uint32_t& line, uint32_t step, const interface::ToolPath& value)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_toolPath(sink, value);
+    generate_toolPath(sink, line, step, value);
 
     return generated;
 }
