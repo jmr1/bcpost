@@ -55,12 +55,12 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}}},
-           {"G94 G90 X-24.585 Y-115. Z100."}, true);
+           {"N1 G94 G90 X-24.585 Y-115. Z100."}, true);
 
     verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
                  FloatValue{'-', std::string("115"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', std::string("0000")}}},
-           {"G94 G90 X-24.585 Y-115. Z100."}, true);
+           {"N1 G94 G90 X-24.585 Y-115. Z100."}, true);
 
 #ifdef THROW_WHEN_ERROR // an example of a test when exceptions are thrown
     verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
@@ -69,23 +69,23 @@ void FanucGeneratorTest::gotoTest()
 #else
     verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
                  FloatValue{'-', std::string("115"), '.', std::string("0000")}}},
-           {"G94 G90 X-24.585 Y-115. Z<error>"}, true);
+           {"N1 G94 G90 X-24.585 Y-115. Z<error>"}, true);
 #endif
 
-    verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")}}}, {"G94 G90 X-24.585 Y<error> Z<error>"},
+    verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")}}}, {"N1 G94 G90 X-24.585 Y<error> Z<error>"},
            true);
 
-    verify({Goto{}}, {"G94 G90 X<error> Y<error> Z<error>"}, true);
+    verify({Goto{}}, {"N1 G94 G90 X<error> Y<error> Z<error>"}, true);
 
     verify({Goto{FloatValue{'-', std::string("24"), boost::none, std::string("5855")},
                  FloatValue{'-', std::string("115"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', std::string("0000")}}},
-           {"G94 G90 X<error> Y-115. Z100."}, true);
+           {"N1 G94 G90 X<error> Y-115. Z100."}, true);
 
     verify({Goto{FloatValue{'-', boost::none, '.', std::string("5855")},
                  FloatValue{boost::none, boost::none, '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', boost::none}}},
-           {"G94 G90 X-.585 Y. Z100."}, true);
+           {"N1 G94 G90 X-.585 Y. Z100."}, true);
 }
 
 void FanucGeneratorTest::endOfPathTest()

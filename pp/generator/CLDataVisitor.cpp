@@ -15,7 +15,7 @@ namespace fanuc {
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    generated.emplace_back(generate_goto(value, precision));
+    generated.emplace_back(generate_goto(line, step, value, precision));
     return true;
 }
 

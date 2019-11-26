@@ -61,15 +61,14 @@ template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
 public:
-    goto_grammar(uint32_t precision)
+    goto_grammar(uint32_t& line, uint32_t step, uint32_t precision)
         : goto_grammar::base_type(goto_attribute)
         , attr_value_float_throw(precision)
     {
         // G94 G90 X-24.585 Y-115. Z100.
         attr_value_float %= attr_value_float_throw[karma::_pass = phx::bind(&verify_throw, karma::_1)];
-        goto_attribute %= karma::lit("G94")
-                          << ' ' << karma::lit("G90") << ' ' << karma::lit("X") << attr_value_float << ' '
-                          << karma::lit("Y") << attr_value_float << ' ' << karma::lit("Z") << attr_value_float;
+        goto_attribute %= "N" << karma::lit(phx::ref(line) += step) << " G94 G90 X" << attr_value_float << " Y"
+                              << attr_value_float << " Z" << attr_value_float;
     }
 
 private:
@@ -84,16 +83,15 @@ template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
 public:
-    goto_grammar(uint32_t precision)
+    goto_grammar(uint32_t& line, uint32_t step, uint32_t precision)
         : goto_grammar::base_type(goto_attribute)
         , attr_value_float_check(precision)
     {
         // G94 G90 X-24.585 Y-115. Z100.
         attr_value_float %=
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
-        goto_attribute %= karma::lit("G94")
-                          << ' ' << karma::lit("G90") << ' ' << karma::lit("X") << attr_value_float << ' '
-                          << karma::lit("Y") << attr_value_float << ' ' << karma::lit("Z") << attr_value_float;
+        goto_attribute = "N" << karma::lit(phx::ref(line) += step) << " G94 G90 X" << attr_value_float << " Y"
+                             << attr_value_float << " Z" << attr_value_float;
     }
 
 private:
@@ -105,18 +103,18 @@ private:
 #endif
 
 template <typename Iterator>
-bool generate_goto(Iterator& sink, const interface::Goto& v, uint32_t precision)
+bool generate_goto(Iterator& sink, uint32_t& line, uint32_t step, const interface::Goto& v, uint32_t precision)
 {
-    goto_grammar<Iterator> goto_g(precision);
+    goto_grammar<Iterator> goto_g(line, step, precision);
     return karma::generate(sink, goto_g, v);
 }
 
-std::string generate_goto(const interface::Goto& value, uint32_t precision)
+std::string generate_goto(uint32_t& line, uint32_t step, const interface::Goto& value, uint32_t precision)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_goto(sink, value, precision);
+    generate_goto(sink, line, step, value, precision);
 
     return generated;
 }
