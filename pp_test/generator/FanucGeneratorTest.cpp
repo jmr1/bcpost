@@ -25,13 +25,16 @@ static void verify(std::vector<pp::interface::AttributeVariant>&& av, std::vecto
     using namespace pp::fanuc;
     using namespace pp::interface;
 
+    const uint32_t           step      = 1;
+    const uint32_t           precision = 3;
+    uint32_t                 line      = 1;
     std::string              message;
     std::vector<std::string> data;
     CLDataAttributeData      cl_data;
     cl_data.value = std::move(av);
 
-    FanucGenerator fg(3);
-    auto           ret = fg.generate(1, cl_data, data, message, true);
+    FanucGenerator fg(step, precision);
+    auto           ret = fg.generate(line, cl_data, data, message, true);
     std::cout << message << std::endl;
     if (ret)
         CPPUNIT_ASSERT_EQUAL_MESSAGE("generate(): returned true but it contains error message", true, message.empty());

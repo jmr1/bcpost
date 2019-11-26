@@ -33,6 +33,8 @@ int main(int argc, char* argv[])
     std::string input;
     std::string output;
     bool        single_line_output;
+    uint32_t    step;
+    uint32_t    precision;
 
     // Declare the supported options.
     po::options_description desc("Allowed options");
@@ -41,6 +43,8 @@ int main(int argc, char* argv[])
         ("help,h", "produce help message")
         ("verbose,v", "output additional information")
         ("single-line-output,s", po::value<bool>(&single_line_output)->default_value(true), "whether the error output is single line")
+        ("step", po::value<uint32_t>(&step)->default_value(1), "counter step value for lines numbering")
+        ("precision", po::value<uint32_t>(&precision)->default_value(3), "number of digits after comma to which the floating point number will be rounded")
         ("output,o", po::value<std::string>(&input), "path to output generated file")
         ("input,i", po::value<std::string>(&input), "path to input CLData file")
     ;
@@ -129,15 +133,16 @@ int main(int argc, char* argv[])
 
     std::cout << line_nbr << " lines parsed, " << line_err << " error(s) found!" << std::endl;
 
+    uint32_t                  line = 0;
     std::vector<std::string>  gen_data;
-    pp::fanuc::FanucGenerator fg(3);
+    pp::fanuc::FanucGenerator fg(step, precision);
 
     for (size_t x = 0; x < av_vec.size(); ++x)
     {
         std::string message;
         const auto& cl_data = av_vec[x];
 
-        if (!fg.generate(static_cast<int>(x), cl_data, gen_data, message, true))
+        if (!fg.generate(line, cl_data, gen_data, message, true))
         {
             std::cout << "x=" << x << ": " << message << std::endl;
         }

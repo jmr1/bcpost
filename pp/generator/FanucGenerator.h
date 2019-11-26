@@ -15,8 +15,9 @@ namespace fanuc {
 class PARSER_API FanucGenerator : public GeneratorBase
 {
 public:
-    FanucGenerator(uint32_t precision)
-        : precision(precision)
+    FanucGenerator(uint32_t step, uint32_t precision)
+        : step(step)
+        , precision(precision)
     {
     }
 
@@ -26,18 +27,19 @@ public:
     FanucGenerator& operator=(const FanucGenerator&) = delete;
     FanucGenerator& operator=(FanucGenerator&&) = default;
 
-    virtual bool generate(int line, const interface::AttributeVariantData& value, std::vector<std::string>& generated,
-                          std::string& message, bool single_line_msg) override;
+    virtual bool generate(uint32_t& line, const interface::AttributeVariantData& value,
+                          std::vector<std::string>& generated, std::string& message, bool single_line_msg) override;
 
 private:
-    bool generate(int line, const std::vector<interface::AttributeVariant>& value, std::vector<std::string>& generated,
-                  std::string& message, bool single_line_msg);
+    bool generate(uint32_t& line, const std::vector<interface::AttributeVariant>& value,
+                  std::vector<std::string>& generated, std::string& message, bool single_line_msg);
 
 private:
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4251)
 #endif
+    uint32_t step;
     uint32_t precision;
 #ifdef _MSC_VER
 #pragma warning(pop)

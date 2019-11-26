@@ -17,8 +17,8 @@ public:
     {
     }
 
-    virtual bool generate(int line, const interface::AttributeVariantData& value, std::vector<std::string>& generated,
-                          std::string& message, bool single_line_msg) = 0;
+    virtual bool generate(uint32_t& line, const interface::AttributeVariantData& value,
+                          std::vector<std::string>& generated, std::string& message, bool single_line_msg) = 0;
 };
 
 } // namespace pp
