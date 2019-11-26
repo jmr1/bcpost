@@ -41,7 +41,7 @@ template <typename Iterator>
 class end_of_path_grammar : public karma::grammar<Iterator, interface::EndOfPath()>
 {
 public:
-    end_of_path_grammar()
+    end_of_path_grammar(uint32_t& line, uint32_t step)
         : end_of_path_grammar::base_type(attribute)
     {
         // G69
@@ -52,9 +52,14 @@ public:
         // M09
         // M30
         // %
-        attribute %= karma::lit("G69") << karma::eol << "G91 G28 Z0.0" << karma::eol << "G91 G28 X0.0 Y0.0"
-                                       << karma::eol << "G90 G53 G00 A0.0 C0.0" << karma::eol << "M05" << karma::eol
-                                       << "M09" << karma::eol << "M30" << karma::eol << "%";
+        attribute = "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G69" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G91 G28 Z0.0" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G91 G28 X0.0 Y0.0" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G90 G53 G00 A0.0 C0.0" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "M05" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "M09" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "M30" << karma::eol << "%";
     }
 
 private:
@@ -62,18 +67,18 @@ private:
 };
 
 template <typename Iterator>
-bool generate_endOfPath(Iterator& sink)
+bool generate_endOfPath(Iterator& sink, uint32_t& line, uint32_t step)
 {
-    end_of_path_grammar<Iterator> endOfPath_g;
+    end_of_path_grammar<Iterator> endOfPath_g(line, step);
     return karma::generate(sink, endOfPath_g);
 }
 
-std::string generate_endOfPath()
+std::string generate_endOfPath(uint32_t& line, uint32_t step)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_endOfPath(sink);
+    generate_endOfPath(sink, line, step);
 
     return generated;
 }

@@ -6,9 +6,9 @@
 
 #include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
+#include "SelectToolGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
-#include "SelectToolGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -21,7 +21,7 @@ bool CLDataVisitor::operator()(const interface::Goto& value) const
 
 bool CLDataVisitor::operator()(const interface::EndOfPath& value) const
 {
-    generated.emplace_back(generate_endOfPath());
+    generated.emplace_back(generate_endOfPath(line, step));
     return true;
 }
 

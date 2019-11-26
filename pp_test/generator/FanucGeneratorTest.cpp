@@ -72,8 +72,8 @@ void FanucGeneratorTest::gotoTest()
            {"N1 G94 G90 X-24.585 Y-115. Z<error>"}, true);
 #endif
 
-    verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")}}}, {"N1 G94 G90 X-24.585 Y<error> Z<error>"},
-           true);
+    verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")}}},
+           {"N1 G94 G90 X-24.585 Y<error> Z<error>"}, true);
 
     verify({Goto{}}, {"N1 G94 G90 X<error> Y<error> Z<error>"}, true);
 
@@ -93,13 +93,13 @@ void FanucGeneratorTest::endOfPathTest()
     using namespace pp::interface;
 
     verify({EndOfPath{}},
-           {"G69\n"
-            "G91 G28 Z0.0\n"
-            "G91 G28 X0.0 Y0.0\n"
-            "G90 G53 G00 A0.0 C0.0\n"
-            "M05\n"
-            "M09\n"
-            "M30\n"
+           {"N1 G69\n"
+            "N2 G91 G28 Z0.0\n"
+            "N3 G91 G28 X0.0 Y0.0\n"
+            "N4 G90 G53 G00 A0.0 C0.0\n"
+            "N5 M05\n"
+            "N6 M09\n"
+            "N7 M30\n"
             "%"},
            true);
 }

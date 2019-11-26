@@ -7,7 +7,7 @@
 namespace pp {
 namespace fanuc {
 
-std::string generate_endOfPath();
+std::string generate_endOfPath(uint32_t& line, uint32_t step);
 
 } // namespace fanuc
 } // namespace pp
