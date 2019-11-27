@@ -149,4 +149,24 @@ bool CLDataAttributesVisitor::operator()(const interface::SelectTool& value) con
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Msys& value) const
+{
+    auto value_expected = boost::get<interface::Msys>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    FloatValueComparer()(value_expected->shift_x, value.shift_x);
+    FloatValueComparer()(value_expected->shift_y, value.shift_y);
+    FloatValueComparer()(value_expected->shift_z, value.shift_z);
+    FloatValueComparer()(value_expected->col1_x, value.col1_x);
+    FloatValueComparer()(value_expected->col1_y, value.col1_y);
+    FloatValueComparer()(value_expected->col1_z, value.col1_z);
+    FloatValueComparer()(value_expected->col2_x, value.col2_x);
+    FloatValueComparer()(value_expected->col2_y, value.col2_y);
+    FloatValueComparer()(value_expected->col2_z, value.col2_z);
+
+    return true;
+}
+
 } // namespace cldata_test

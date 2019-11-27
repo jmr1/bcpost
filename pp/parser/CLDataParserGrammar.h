@@ -85,6 +85,19 @@ BOOST_FUSION_ADAPT_STRUCT(
     (int, tool_number)
 )
 
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::Msys,
+    (pp::interface::FloatValue, shift_x)
+    (pp::interface::FloatValue, shift_y)
+    (pp::interface::FloatValue, shift_z)
+    (pp::interface::FloatValue, col1_x)
+    (pp::interface::FloatValue, col1_y)
+    (pp::interface::FloatValue, col1_z)
+    (pp::interface::FloatValue, col2_x)
+    (pp::interface::FloatValue, col2_y)
+    (pp::interface::FloatValue, col2_z)
+)
+
 // clang-format on
 
 namespace pp {
@@ -176,6 +189,27 @@ private:
 };
 
 template <typename Iterator>
+class msys_grammar : public qi::grammar<Iterator, interface::Msys(), qi::blank_type>
+{
+public:
+    msys_grammar()
+        : msys_grammar::base_type(msys_attribute)
+    {
+        // MSYS/0.0000,0.0000,180.0000,0.5000000,0.0000000,0.8660254,0.8660254,0.0000000,-0.5000000
+        msys_attribute = qi::lit("MSYS") > qi::lit("/") > attr_value_float > (qi::lit(",") > attr_value_float) >
+                         (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                         (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                         (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                         (qi::lit(",") > attr_value_float) > qi::eoi;
+        BOOST_SPIRIT_DEBUG_NODES((msys_attribute));
+    }
+
+private:
+    float_value_grammar<Iterator>                         attr_value_float;
+    qi::rule<Iterator, interface::Msys(), qi::blank_type> msys_attribute;
+};
+
+template <typename Iterator>
 class tldata_drill_grammar : public qi::grammar<Iterator, interface::TldataDrill(), qi::blank_type>
 {
 public:
@@ -216,7 +250,7 @@ public:
     }
 
 private:
-    ignored_operations         ignored;
+    ignored_operations                       ignored;
     qi::rule<Iterator, interface::Ignored()> ignored_value_attribute;
 };
 
@@ -248,13 +282,14 @@ public:
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
         line_attribute     = (ignored_rule | goto_rule | tool_path_rule | tldata_drill_rule | load_tool_rule |
-                          select_tool_rule | end_of_path_rule);
+                          select_tool_rule | msys_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
 
 private:
     goto_grammar<Iterator>                                                         goto_rule;
+    msys_grammar<Iterator>                                                         msys_rule;
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     tool_path_grammar<Iterator>                                                    tool_path_rule;

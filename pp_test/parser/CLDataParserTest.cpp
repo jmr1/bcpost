@@ -172,4 +172,21 @@ void CLDataParserTest::selectToolTest()
     verify("LOAUD/TOOL,", {}, false);
 }
 
+void CLDataParserTest::msysTest()
+{
+    using namespace pp::interface;
+
+    verify("MSYS/0.0000,0.0000,180.0000,0.5000000,0.0000000,0.8660254,0.8660254,0.0000000,-0.5000000",
+           {Msys{FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("180"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("5000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("8660254")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("8660254")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{'-', std::string("0"), '.', std::string("5000000")}}},
+           true);
+}
+
 } // namespace cldata_test

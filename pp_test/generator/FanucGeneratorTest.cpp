@@ -119,6 +119,7 @@ void FanucGeneratorTest::toolPathTest()
 void FanucGeneratorTest::tldataDrillTest()
 {
     using namespace pp::interface;
+
     verify({TldataDrill{"MILL", FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
                         FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
                         FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
@@ -135,6 +136,25 @@ void FanucGeneratorTest::selectToolTest()
     using namespace pp::interface;
 
     verify({SelectTool{5}}, {":1 T5 M06"}, true);
+}
+
+void FanucGeneratorTest::msysTest()
+{
+    using namespace pp::interface;
+
+    verify({Msys{FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("180"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("5000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("8660254")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("8660254")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("5000000")}}},
+           {"N1 G97 G90 G54\n"
+            "N2 G68.2 X0.5 Y0. Z0.866 I0.866 J0. K0.5\n"
+            "N3 G53.1\n"},
+           true);
 }
 
 } // namespace fanuc_test

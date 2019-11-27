@@ -16,6 +16,7 @@ public:
     CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST(tldataDrillTest);
     CPPUNIT_TEST(selectToolTest);
+    CPPUNIT_TEST(msysTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -28,6 +29,7 @@ protected:
     void toolPathTest();
     void tldataDrillTest();
     void selectToolTest();
+    void msysTest();
 };
 
 } // namespace fanuc_test

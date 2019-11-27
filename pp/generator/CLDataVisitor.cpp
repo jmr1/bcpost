@@ -9,6 +9,7 @@
 #include "SelectToolGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
+#include "MsysGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -50,6 +51,12 @@ bool CLDataVisitor::operator()(const interface::LoadTool& value) const
 bool CLDataVisitor::operator()(const interface::SelectTool& value) const
 {
     generated.emplace_back(generate_selectTool(line, step, value));
+    return true;
+}
+
+bool CLDataVisitor::operator()(const interface::Msys& value) const
+{
+    generated.emplace_back(generate_msys(line, step, value, precision));
     return true;
 }
 

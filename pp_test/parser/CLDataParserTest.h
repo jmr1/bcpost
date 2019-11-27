@@ -18,6 +18,7 @@ public:
     CPPUNIT_TEST(tldataDrillTest);
     CPPUNIT_TEST(loadToolTest);
     CPPUNIT_TEST(selectToolTest);
+    CPPUNIT_TEST(msysTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -32,6 +33,7 @@ protected:
     void tldataDrillTest();
     void loadToolTest();
     void selectToolTest();
+    void msysTest();
 };
 
 } // namespace cldata_test

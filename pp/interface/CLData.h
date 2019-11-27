@@ -65,7 +65,20 @@ struct SelectTool
     int tool_number;
 };
 
-using AttributeVariant = boost::variant<Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool>;
+struct Msys
+{
+    FloatValue shift_x;
+    FloatValue shift_y;
+    FloatValue shift_z;
+    FloatValue col1_x;
+    FloatValue col1_y;
+    FloatValue col1_z;
+    FloatValue col2_x;
+    FloatValue col2_y;
+    FloatValue col2_z;
+};
+
+using AttributeVariant = boost::variant<Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

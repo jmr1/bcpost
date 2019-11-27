@@ -25,6 +25,7 @@ public:
     bool operator()(const interface::TldataDrill& value) const;
     bool operator()(const interface::LoadTool& value) const;
     bool operator()(const interface::SelectTool& value) const;
+    bool operator()(const interface::Msys& value) const;
 
 private:
     std::vector<std::string>& generated;
