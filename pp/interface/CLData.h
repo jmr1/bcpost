@@ -13,6 +13,10 @@
 namespace pp {
 namespace interface {
 
+struct Nil
+{
+};
+
 struct FloatValue
 {
     boost::optional<char>        sign;
@@ -78,7 +82,11 @@ struct Msys
     FloatValue col2_z;
 };
 
-using AttributeVariant = boost::variant<Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys>;
+struct CycleOff
+{
+};
+
+using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys, CycleOff>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

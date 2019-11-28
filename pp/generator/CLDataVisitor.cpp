@@ -10,9 +10,15 @@
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
 #include "MsysGenerator.h"
+#include "CycleOffGenerator.h"
 
 namespace pp {
 namespace fanuc {
+
+bool CLDataVisitor::operator()(const interface::Nil& value) const
+{
+    return false;
+}
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
@@ -57,6 +63,12 @@ bool CLDataVisitor::operator()(const interface::SelectTool& value) const
 bool CLDataVisitor::operator()(const interface::Msys& value) const
 {
     generated.emplace_back(generate_msys(line, step, value, precision));
+    return true;
+}
+
+bool CLDataVisitor::operator()(const interface::CycleOff& value) const
+{
+    generated.emplace_back(generate_cycleOff(line, step));
     return true;
 }
 

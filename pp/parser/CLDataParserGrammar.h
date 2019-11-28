@@ -60,6 +60,10 @@ BOOST_FUSION_ADAPT_STRUCT(
 )
 
 BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::CycleOff
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::ToolPath,
     (std::string, operation_name)
     (std::string, tool_name)
@@ -96,6 +100,10 @@ BOOST_FUSION_ADAPT_STRUCT(
     (pp::interface::FloatValue, col2_x)
     (pp::interface::FloatValue, col2_y)
     (pp::interface::FloatValue, col2_z)
+)
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::Nil
 )
 
 // clang-format on
@@ -168,6 +176,21 @@ public:
 
 private:
     qi::rule<Iterator, interface::EndOfPath()> end_of_path_attribute;
+};
+
+template <typename Iterator>
+class cycle_off_grammar : public qi::grammar<Iterator, interface::CycleOff(), qi::blank_type>
+{
+public:
+    cycle_off_grammar()
+        : cycle_off_grammar::base_type(cycle_off_attribute)
+    {
+        cycle_off_attribute = qi::lit("CYCLE") > qi::lit("/") > qi::lit("OFF")[phx::construct<interface::CycleOff>()];
+        BOOST_SPIRIT_DEBUG_NODES((cycle_off_attribute));
+    }
+
+private:
+    qi::rule<Iterator, interface::CycleOff(), qi::blank_type> cycle_off_attribute;
 };
 
 template <typename Iterator>
@@ -281,8 +304,8 @@ public:
     all_attributes_grammar(std::string& message)
         : all_attributes_grammar::base_type(line_attribute_vec)
     {
-        line_attribute     = (ignored_rule | goto_rule | tool_path_rule | tldata_drill_rule | load_tool_rule |
-                          select_tool_rule | msys_rule | end_of_path_rule);
+        line_attribute     = (ignored_rule | goto_rule | cycle_off_rule | tool_path_rule | tldata_drill_rule |
+                          load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
         line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
         BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
     }
@@ -290,6 +313,7 @@ public:
 private:
     goto_grammar<Iterator>                                                         goto_rule;
     msys_grammar<Iterator>                                                         msys_rule;
+    cycle_off_grammar<Iterator>                                                    cycle_off_rule;
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     tool_path_grammar<Iterator>                                                    tool_path_rule;

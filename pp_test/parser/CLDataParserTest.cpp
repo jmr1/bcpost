@@ -189,4 +189,13 @@ void CLDataParserTest::msysTest()
            true);
 }
 
+void CLDataParserTest::cycleOffTest()
+{
+    using namespace pp::interface;
+
+    verify("CYCLE/OFF", {CycleOff{}}, true);
+    verify(" CYCLE / OFF ", {CycleOff{}}, true);
+    verify("CYCLE OFF", {}, false);
+}
+
 } // namespace cldata_test

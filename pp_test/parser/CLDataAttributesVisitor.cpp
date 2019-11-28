@@ -58,6 +58,12 @@ struct FloatValueComparer
     }
 };
 
+bool CLDataAttributesVisitor::operator()(const interface::Nil& value) const
+{
+    abort();
+    return false;
+}
+
 bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
 {
     auto value_expected = boost::get<interface::Goto>(&v_expected);
@@ -165,6 +171,16 @@ bool CLDataAttributesVisitor::operator()(const interface::Msys& value) const
     FloatValueComparer()(value_expected->col2_x, value.col2_x);
     FloatValueComparer()(value_expected->col2_y, value.col2_y);
     FloatValueComparer()(value_expected->col2_z, value.col2_z);
+
+    return true;
+}
+
+bool CLDataAttributesVisitor::operator()(const interface::CycleOff& value) const
+{
+    auto value_expected = boost::get<interface::CycleOff>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
 
     return true;
 }

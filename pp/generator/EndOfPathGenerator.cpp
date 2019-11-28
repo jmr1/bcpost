@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "GotoGenerator.h"
+#include "EndOfPathGenerator.h"
 
 #include <iomanip>
 #include <string>
@@ -44,13 +44,13 @@ public:
     end_of_path_grammar(uint32_t& line, uint32_t step)
         : end_of_path_grammar::base_type(attribute)
     {
-        // G69
-        // G91 G28 Z0.0
-        // G91 G28 X0.0 Y0.0
-        // G90 G53 G00 A0.0 C0.0
-        // M05
-        // M09
-        // M30
+        // N1 G69
+        // N2 G91 G28 Z0.0
+        // N3 G91 G28 X0.0 Y0.0
+        // N4 G90 G53 G00 A0.0 C0.0
+        // N5 M05
+        // N6 M09
+        // N7 M30
         // %
         attribute = "N" << karma::lit(phx::ref(line) += step) << " "
                         << "G69" << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " "

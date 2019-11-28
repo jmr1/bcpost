@@ -166,4 +166,11 @@ void FanucGeneratorTest::msysTest()
            true);
 }
 
+void FanucGeneratorTest::cycleOffTest()
+{
+    using namespace pp::interface;
+
+    verify({CycleOff{}}, {"N1 G80"}, true);
+}
+
 } // namespace fanuc_test

@@ -17,6 +17,7 @@ public:
     {
     }
 
+    bool operator()(const interface::Nil& value) const;
     bool operator()(const interface::Goto& value) const;
     bool operator()(const interface::EndOfPath& value) const;
     bool operator()(const interface::Ignored& value) const;
@@ -25,6 +26,7 @@ public:
     bool operator()(const interface::LoadTool& value) const;
     bool operator()(const interface::SelectTool& value) const;
     bool operator()(const interface::Msys& value) const;
+    bool operator()(const interface::CycleOff& value) const;
 
 private:
     const interface::AttributeVariant& v_expected;

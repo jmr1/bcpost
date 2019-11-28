@@ -19,6 +19,7 @@ public:
     CPPUNIT_TEST(loadToolTest);
     CPPUNIT_TEST(selectToolTest);
     CPPUNIT_TEST(msysTest);
+    CPPUNIT_TEST(cycleOffTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -34,6 +35,7 @@ protected:
     void loadToolTest();
     void selectToolTest();
     void msysTest();
+    void cycleOffTest();
 };
 
 } // namespace cldata_test
