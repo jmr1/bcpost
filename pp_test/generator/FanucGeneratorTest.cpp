@@ -42,7 +42,16 @@ static void verify(std::vector<pp::interface::AttributeVariant>&& av, std::vecto
     CPPUNIT_ASSERT_EQUAL_MESSAGE("generate(): returned generated string size not equal", data_expected.size(),
                                  data.size());
     for (size_t x = 0; x < data_expected.size(); ++x)
+    {
+        // for (size_t y = 0; y < data_expected[x].size(); ++y)
+        //     CPPUNIT_ASSERT_EQUAL_MESSAGE("generate(): returned generated string not equal for character [" +
+        //                                      std::to_string(y) + "]",
+        //                                  data_expected[x][y], data[x][y]);
+        // CPPUNIT_ASSERT_EQUAL_MESSAGE("generate(): returned generated string size not equal for string[" +
+        //                                  std::to_string(x) + "]",
+        //                              data_expected[x].size(), data[x].size());
         CPPUNIT_ASSERT_EQUAL_MESSAGE("generate(): returned generated string not equal", data_expected[x], data[x]);
+    }
 }
 
 void FanucGeneratorTest::gotoTest()
@@ -153,7 +162,7 @@ void FanucGeneratorTest::msysTest()
                  FloatValue{boost::none, std::string("0"), '.', std::string("5000000")}}},
            {"N1 G97 G90 G54\n"
             "N2 G68.2 X0.5 Y0. Z0.866 I0.866 J0. K0.5\n"
-            "N3 G53.1\n"},
+            "N3 G53.1"},
            true);
 }
 
