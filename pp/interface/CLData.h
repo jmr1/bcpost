@@ -86,7 +86,32 @@ struct CycleOff
 {
 };
 
-using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys, CycleOff>;
+enum class RetractionType
+{
+    AUTO   = 98,
+    MANUAL = 99
+};
+
+enum class FedrateType
+{
+    IPM,
+    IPR,
+    MMPM,
+    MMPR
+};
+
+struct CycleDrill
+{
+    FloatValue                  rapto;
+    FloatValue                  fedto;
+    boost::optional<FloatValue> rtrcto;
+    RetractionType              retraction_type;
+    FedrateType                 fedrate_type;
+    FloatValue                  fedrate;
+};
+
+using AttributeVariant =
+    boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys, CycleOff>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {
