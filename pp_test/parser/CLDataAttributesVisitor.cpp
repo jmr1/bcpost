@@ -185,4 +185,21 @@ bool CLDataAttributesVisitor::operator()(const interface::CycleOff& value) const
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::CycleDrill& value) const
+{
+    auto value_expected = boost::get<interface::CycleDrill>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    FloatValueComparer()(value_expected->rapto, value.rapto);
+    FloatValueComparer()(value_expected->fedto, value.fedto);
+    FloatValueComparer()(value_expected->rtrcto, value.rtrcto);
+    CPPUNIT_ASSERT_EQUAL(value_expected->retraction_type, value.retraction_type);
+    CPPUNIT_ASSERT_EQUAL(value_expected->fedrate_type, value.fedrate_type);
+    FloatValueComparer()(value_expected->fedrate, value.fedrate);
+
+    return true;
+}
+
 } // namespace cldata_test

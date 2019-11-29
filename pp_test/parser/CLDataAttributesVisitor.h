@@ -27,6 +27,7 @@ public:
     bool operator()(const interface::SelectTool& value) const;
     bool operator()(const interface::Msys& value) const;
     bool operator()(const interface::CycleOff& value) const;
+    bool operator()(const interface::CycleDrill& value) const;
 
 private:
     const interface::AttributeVariant& v_expected;

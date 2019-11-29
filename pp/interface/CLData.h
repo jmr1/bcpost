@@ -110,8 +110,8 @@ struct CycleDrill
     FloatValue                  fedrate;
 };
 
-using AttributeVariant =
-    boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool, Msys, CycleOff>;
+using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool,
+                                        Msys, CycleDrill, CycleOff>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

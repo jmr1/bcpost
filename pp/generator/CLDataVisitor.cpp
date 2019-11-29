@@ -72,5 +72,12 @@ bool CLDataVisitor::operator()(const interface::CycleOff& value) const
     return true;
 }
 
+bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
+{
+    abort();
+    //generated.emplace_back(generate_cycleDrill(line, step));
+    return true;
+}
+
 } // namespace fanuc
 } // namespace pp

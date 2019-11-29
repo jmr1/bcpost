@@ -106,6 +106,40 @@ BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::Nil
 )
 
+//enum class RetractionType
+//{
+//    AUTO   = 98,
+//    MANUAL = 99
+//};
+//
+//enum class FedrateType
+//{
+//    IPM,
+//    IPR,
+//    MMPM,
+//    MMPR
+//};
+//
+//struct CycleDrill
+//{
+//    FloatValue                  rapto;
+//    FloatValue                  fedto;
+//    boost::optional<FloatValue> rtrcto;
+//    RetractionType              retraction_type;
+//    FedrateType                 fedrate_type;
+//    FloatValue                  fedrate;
+//};
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::CycleDrill,
+    (pp::interface::FloatValue, rapto)
+    (pp::interface::FloatValue, fedto)
+    (boost::optional<pp::interface::FloatValue>, rtrcto)
+    (pp::interface::RetractionType, retraction_type)
+    (pp::interface::FedrateType, fedrate_type)
+    (pp::interface::FloatValue, fedrate)
+)
+
 // clang-format on
 
 namespace pp {
@@ -176,6 +210,37 @@ public:
 
 private:
     qi::rule<Iterator, interface::EndOfPath()> end_of_path_attribute;
+};
+
+std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value);
+std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);
+
+template <typename Iterator>
+class cycle_drill_grammar : public qi::grammar<Iterator, interface::CycleDrill(), qi::blank_type>
+{
+public:
+    cycle_drill_grammar()
+        : cycle_drill_grammar::base_type(cycle_drill_attribute)
+    {
+        retraction_type.add("AUTO", interface::RetractionType::AUTO)("MANUAL", interface::RetractionType::MANUAL);
+        fedrate_type.add("IPM", interface::FedrateType::IPM)("IPR", interface::FedrateType::IPR)(
+            "MMPM", interface::FedrateType::MMPM)("MMPR", interface::FedrateType::MMPM);
+
+        // CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,AUTO,MMPM,250.0000
+        // RTRCO may have value defined, if not then the RAPTO value is taken
+        cycle_drill_attribute = qi::lit("CYCLE") > qi::lit("/") > qi::lit("DRILL") > qi::lit(",") > qi::lit("RAPTO") >
+                                qi::lit(",") > attr_value_float > qi::lit(",") > qi::lit("RAPTO") > qi::lit(",") >
+                                attr_value_float > -(qi::lit(",") > qi::lit("RTRCTO")) >
+                                -(qi::lit(",") > attr_value_float) > qi::lit(",") > retraction_type > qi::lit(",") >
+                                fedrate_type > qi::lit(",") > attr_value_float;
+        BOOST_SPIRIT_DEBUG_NODES((cycle_drill_attribute));
+    }
+
+private:
+    qi::symbols<char, interface::RetractionType>                retraction_type;
+    qi::symbols<char, interface::FedrateType>                   fedrate_type;
+    float_value_grammar<Iterator>                               attr_value_float;
+    qi::rule<Iterator, interface::CycleDrill(), qi::blank_type> cycle_drill_attribute;
 };
 
 template <typename Iterator>
@@ -314,6 +379,7 @@ private:
     goto_grammar<Iterator>                                                         goto_rule;
     msys_grammar<Iterator>                                                         msys_rule;
     cycle_off_grammar<Iterator>                                                    cycle_off_rule;
+    cycle_drill_grammar<Iterator>                                                  cycle_drill_rule;
     end_of_path_grammar<Iterator>                                                  end_of_path_rule;
     ignored_value_grammar<Iterator>                                                ignored_rule;
     tool_path_grammar<Iterator>                                                    tool_path_rule;
