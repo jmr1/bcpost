@@ -6,7 +6,7 @@
 #include "CLDataParserGrammar.h"
 
 namespace pp {
-namespace cldata {
+namespace interface {
 
 std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value)
 {
@@ -41,6 +41,10 @@ std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value
     }
     return ostr;
 }
+
+} // namespace interface
+
+namespace cldata {
 
 template class all_attributes_grammar<pos_iterator_type>;
 

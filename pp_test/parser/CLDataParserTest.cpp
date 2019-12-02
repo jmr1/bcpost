@@ -198,4 +198,15 @@ void CLDataParserTest::cycleOffTest()
     verify("CYCLE OFF", {}, false);
 }
 
+void CLDataParserTest::cycleDrillTest()
+{
+    using namespace pp::interface;
+
+    verify("CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,AUTO,MMPM,250.0000",
+           {CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
+                       FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
+                       FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
+           true);
+}
+
 } // namespace cldata_test
