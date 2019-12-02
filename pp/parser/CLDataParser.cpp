@@ -17,6 +17,8 @@
 
 #include "CLDataParserGrammar.h"
 
+namespace classic = boost::spirit::classic;
+
 namespace pp {
 namespace cldata {
 
@@ -33,8 +35,8 @@ bool CLDataParser::parse(int line, const std::string& data, std::vector<interfac
     typedef boost::spirit::classic::position_iterator2<boost::spirit::istream_iterator> pos_iterator_type;
     pos_iterator_type position_begin(boost::spirit::istream_iterator{input >> std::noskipws}, {}), position_end;
 
-    bool                                      ret = false;
-    all_attributes_grammar<pos_iterator_type> all_attr_gr(message);
+    bool                   ret = false;
+    all_attributes_grammar all_attr_gr(message);
 
     try
     {

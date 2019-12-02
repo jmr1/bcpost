@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "MsysGrammar.h"
 
 #include <iomanip>
 
@@ -37,7 +37,16 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
+    pp::interface::Msys,
+    (pp::interface::FloatValue, shift_x)
+    (pp::interface::FloatValue, shift_y)
+    (pp::interface::FloatValue, shift_z)
+    (pp::interface::FloatValue, col1_x)
+    (pp::interface::FloatValue, col1_y)
+    (pp::interface::FloatValue, col1_z)
+    (pp::interface::FloatValue, col2_x)
+    (pp::interface::FloatValue, col2_y)
+    (pp::interface::FloatValue, col2_z)
 )
 
 // clang-format on
@@ -45,13 +54,16 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+msys_grammar::msys_grammar()
+    : msys_grammar::base_type(msys_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // MSYS/0.0000,0.0000,180.0000,0.5000000,0.0000000,0.8660254,0.8660254,0.0000000,-0.5000000
+    msys_attribute = qi::lit("MSYS") > qi::lit("/") > attr_value_float > (qi::lit(",") > attr_value_float) >
+                     (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                     (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                     (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                     (qi::lit(",") > attr_value_float) > qi::eoi;
+    BOOST_SPIRIT_DEBUG_NODES((msys_attribute));
 }
 
 } // namespace cldata

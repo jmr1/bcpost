@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "GotoGrammar.h"
 
 #include <iomanip>
 
@@ -37,7 +37,13 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
+    pp::interface::Goto,
+    (pp::interface::FloatValue, x)
+    (pp::interface::FloatValue, y)
+    (pp::interface::FloatValue, z)
+    (boost::optional<pp::interface::FloatValue>, i)
+    (boost::optional<pp::interface::FloatValue>, j)
+    (boost::optional<pp::interface::FloatValue>, k)
 )
 
 // clang-format on
@@ -45,13 +51,15 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+goto_grammar::goto_grammar()
+    : goto_grammar::base_type(goto_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // GOTO/-24.5855,-115.0000,100.0000,0.0000000,0.0000000,1.0000000
+    goto_attribute = qi::lit("GOTO") > qi::lit("/") > attr_value_float > (qi::lit(",") > attr_value_float) >
+                     (qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) >
+                     -(qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float);
+
+    BOOST_SPIRIT_DEBUG_NODES((goto_attribute));
 }
 
 } // namespace cldata

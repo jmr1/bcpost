@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "IgnoredValueGrammar.h"
 
 #include <iomanip>
 
@@ -37,7 +37,7 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
+    pp::interface::Ignored
 )
 
 // clang-format on
@@ -45,13 +45,11 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+ignored_value_grammar::ignored_value_grammar()
+    : ignored_value_grammar::base_type(ignored_value_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    ignored_value_attribute = qi::omit[ignored] > qi::omit[*(qi::char_ - qi::eol)];
+    BOOST_SPIRIT_DEBUG_NODES((ignored_value_attribute));
 }
 
 } // namespace cldata

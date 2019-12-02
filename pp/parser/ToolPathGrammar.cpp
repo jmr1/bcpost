@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "ToolPathGrammar.h"
 
 #include <iomanip>
 
@@ -37,7 +37,9 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
+    pp::interface::ToolPath,
+    (std::string, operation_name)
+    (std::string, tool_name)
 )
 
 // clang-format on
@@ -45,13 +47,14 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+tool_path_grammar::tool_path_grammar()
+    : tool_path_grammar::base_type(tool_path_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // TOOL PATH/DRILLING_1,TOOL,STD_DRILL_D10
+    tool_path_attribute = qi::lexeme[qi::lit("TOOL") > qi::omit[+qi::space]] > qi::lit("PATH") > qi::lit("/") >
+                          qi::lexeme[+qi::char_("a-zA-Z0-9_")] > qi::lit(",") > qi::lit("TOOL") > qi::lit(",") >
+                          qi::lexeme[+qi::char_("a-zA-Z0-9_")] > qi::eoi;
+    BOOST_SPIRIT_DEBUG_NODES((tool_path_attribute));
 }
 
 } // namespace cldata

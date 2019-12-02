@@ -3,7 +3,7 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "TldataDrillGrammar.h"
 
 #include <iomanip>
 
@@ -37,7 +37,13 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
+    pp::interface::TldataDrill,
+    (std::string, module_type)
+    (pp::interface::FloatValue, diameter)
+    (pp::interface::FloatValue, corner_radius)
+    (pp::interface::FloatValue, length)
+    (pp::interface::FloatValue, point_angle)
+    (pp::interface::FloatValue, flute_length)
 )
 
 // clang-format on
@@ -45,13 +51,15 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+tldata_drill_grammar::tldata_drill_grammar()
+    : tldata_drill_grammar::base_type(tldata_drill_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | load_tool_rule | select_tool_rule | msys_rule | end_of_path_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,35.0000
+    tldata_drill_attribute = qi::lit("TLDATA") > qi::lit("/") > qi::lit("DRILL") >
+                             (qi::lit(",") > qi::lexeme[+qi::char_("a-zA-Z0-9_")]) > (qi::lit(",") > attr_value_float) >
+                             (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                             (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) > qi::eoi;
+    BOOST_SPIRIT_DEBUG_NODES((tldata_drill_attribute));
 }
 
 } // namespace cldata
