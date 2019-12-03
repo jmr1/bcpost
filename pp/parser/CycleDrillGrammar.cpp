@@ -30,30 +30,6 @@ namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::FloatValue,
-    (boost::optional<char>, sign)
-    (boost::optional<std::string>, value)
-    (boost::optional<char>, dot)
-    (boost::optional<std::string>, value2)
-)
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::CycleDrill,
-    (pp::interface::FloatValue, rapto)
-    (pp::interface::FloatValue, fedto)
-    (boost::optional<pp::interface::FloatValue>, rtrcto)
-    (pp::interface::RetractionType, retraction_type)
-    (pp::interface::FedrateType, fedrate_type)
-    (pp::interface::FloatValue, fedrate)
-)
-
-// clang-format on
-
 namespace pp {
 namespace interface {
 

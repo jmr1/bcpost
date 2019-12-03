@@ -11,6 +11,22 @@
 
 namespace qi = boost::spirit::qi;
 
+// clang-format off
+
+// must be in global namespace
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::CycleDrill,
+    (pp::interface::FloatValue, rapto)
+    (pp::interface::FloatValue, fedto)
+    (boost::optional<pp::interface::FloatValue>, rtrcto)
+    (pp::interface::RetractionType, retraction_type)
+    (pp::interface::FedrateType, fedrate_type)
+    (pp::interface::FloatValue, fedrate)
+)
+
+// clang-format on
+
 namespace pp {
 namespace cldata {
 

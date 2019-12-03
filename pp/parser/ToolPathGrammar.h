@@ -8,6 +8,18 @@
 
 namespace qi = boost::spirit::qi;
 
+// clang-format off
+
+// must be in global namespace
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::ToolPath,
+    (std::string, operation_name)
+    (std::string, tool_name)
+)
+
+// clang-format on
+
 namespace pp {
 namespace cldata {
 

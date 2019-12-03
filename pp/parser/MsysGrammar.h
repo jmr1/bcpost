@@ -10,6 +10,25 @@
 
 namespace qi = boost::spirit::qi;
 
+// clang-format off
+
+// must be in global namespace
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::Msys,
+    (pp::interface::FloatValue, shift_x)
+    (pp::interface::FloatValue, shift_y)
+    (pp::interface::FloatValue, shift_z)
+    (pp::interface::FloatValue, col1_x)
+    (pp::interface::FloatValue, col1_y)
+    (pp::interface::FloatValue, col1_z)
+    (pp::interface::FloatValue, col2_x)
+    (pp::interface::FloatValue, col2_y)
+    (pp::interface::FloatValue, col2_z)
+)
+
+// clang-format on
+
 namespace pp {
 namespace cldata {
 
