@@ -80,11 +80,11 @@ cycle_drill_grammar::cycle_drill_grammar()
 
     // CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,AUTO,MMPM,250.0000
     // RTRCO may have value defined, if not then the RAPTO value is taken
-    cycle_drill_attribute = qi::lit("CYCLE") > qi::lit("/") > qi::lit("DRILL") > qi::lit(",") > qi::lit("RAPTO") >
-                            qi::lit(",") > attr_value_float > qi::lit(",") > qi::lit("FEDTO") > qi::lit(",") >
-                            attr_value_float > qi::lit(",") > qi::lit("RTRCTO") > qi::lit(",") >
-                            -((attr_value_float - retraction_type) > qi::lit(",")) > retraction_type > qi::lit(",") >
-                            fedrate_type > qi::lit(",") > attr_value_float;
+    cycle_drill_attribute = &(qi::lit("CYCLE") >> qi::lit("/") >> qi::lit("DRILL")) > qi::lit("CYCLE") > qi::lit("/") >
+                            qi::lit("DRILL") > qi::lit(",") > qi::lit("RAPTO") > qi::lit(",") > attr_value_float >
+                            qi::lit(",") > qi::lit("FEDTO") > qi::lit(",") > attr_value_float > qi::lit(",") >
+                            qi::lit("RTRCTO") > qi::lit(",") > -((attr_value_float - retraction_type) > qi::lit(",")) >
+                            retraction_type > qi::lit(",") > fedrate_type > qi::lit(",") > attr_value_float;
     BOOST_SPIRIT_DEBUG_NODES((cycle_drill_attribute));
 }
 
