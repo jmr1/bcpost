@@ -3,14 +3,14 @@
 #pragma warning(disable : 4348)
 #endif
 
+#ifndef NDEBUG
+#define BOOST_SPIRIT_DEBUG
+#endif
+
 #include "TldataDrillGenerator.h"
 
 #include <iomanip>
 #include <string>
-
-#ifndef NDEBUG
-#define BOOST_SPIRIT_DEBUG
-#endif
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/fusion/adapted.hpp>
