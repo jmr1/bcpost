@@ -30,6 +30,16 @@ namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
+// clang-format off
+
+// must be in global namespace
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::Nil
+)
+
+// clang-format on
+
 namespace pp {
 namespace interface {
 
