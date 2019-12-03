@@ -16,7 +16,6 @@
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/phoenix/bind.hpp>
-//#include <boost/bind.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/karma.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
@@ -24,8 +23,6 @@
 #include <boost/spirit/include/phoenix_operator.hpp>
 //#include <boost/phoenix/object/dynamic_cast.hpp>
 //#include <boost/phoenix/operator/self.hpp>
-
-//#include "MessageTextImpl.h"
 
 #include "FloatValueGenerator.h"
 #include "interface/CLData.h"

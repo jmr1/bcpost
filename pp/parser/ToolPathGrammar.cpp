@@ -22,8 +22,6 @@
 #include <boost/spirit/include/qi_symbols.hpp>
 #include <boost/spirit/include/support_multi_pass.hpp>
 
-//#include "MessageTextImpl.h"
-
 #include "interface/CLData.h"
 
 namespace qi      = boost::spirit::qi;

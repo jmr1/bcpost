@@ -23,8 +23,6 @@
 //#include <boost/phoenix/object/dynamic_cast.hpp>
 //#include <boost/phoenix/operator/self.hpp>
 
-//#include "MessageTextImpl.h"
-
 #include "interface/CLData.h"
 
 namespace karma   = boost::spirit::karma;
