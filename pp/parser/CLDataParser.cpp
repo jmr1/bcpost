@@ -3,13 +3,13 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "CLDataParser.h"
-
-#include <iomanip>
-
 #ifndef NDEBUG
 #define BOOST_SPIRIT_DEBUG
 #endif
+
+#include "CLDataParser.h"
+
+#include <iomanip>
 
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/config/warning_disable.hpp>

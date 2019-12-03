@@ -3,13 +3,13 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "ToolPathGrammar.h"
-
-#include <iomanip>
-
 #ifndef NDEBUG
 #define BOOST_SPIRIT_DEBUG
 #endif
+
+#include "ToolPathGrammar.h"
+
+#include <iomanip>
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>

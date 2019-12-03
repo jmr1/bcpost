@@ -3,13 +3,13 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include "TldataDrillGrammar.h"
-
-#include <iomanip>
-
 #ifndef NDEBUG
 #define BOOST_SPIRIT_DEBUG
 #endif
+
+#include "TldataDrillGrammar.h"
+
+#include <iomanip>
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
@@ -35,6 +35,14 @@ namespace fusion  = boost::fusion;
 // clang-format off
 
 // must be in global namespace
+
+BOOST_FUSION_ADAPT_STRUCT(
+    pp::interface::FloatValue,
+    (boost::optional<char>, sign)
+    (boost::optional<std::string>, value)
+    (boost::optional<char>, dot)
+    (boost::optional<std::string>, value2)
+)
 
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::TldataDrill,
