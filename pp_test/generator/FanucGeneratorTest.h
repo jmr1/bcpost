@@ -18,6 +18,7 @@ public:
     CPPUNIT_TEST(selectToolTest);
     CPPUNIT_TEST(msysTest);
     CPPUNIT_TEST(cycleOffTest);
+    CPPUNIT_TEST(cycleDrillTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -32,6 +33,7 @@ protected:
     void selectToolTest();
     void msysTest();
     void cycleOffTest();
+    void cycleDrillTest();
 };
 
 } // namespace fanuc_test

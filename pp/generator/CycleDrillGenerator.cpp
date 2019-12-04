@@ -26,11 +26,11 @@
 #include "FloatValueGenerator.h"
 #include "interface/CLData.h"
 
-    namespace karma = boost::spirit::karma;
-namespace ascii     = boost::spirit::ascii;
-namespace classic   = boost::spirit::classic;
-namespace phx       = boost::phoenix;
-namespace fusion    = boost::fusion;
+namespace karma   = boost::spirit::karma;
+namespace ascii   = boost::spirit::ascii;
+namespace classic = boost::spirit::classic;
+namespace phx     = boost::phoenix;
+namespace fusion  = boost::fusion;
 
 // clang-format off
 
@@ -55,14 +55,15 @@ template <typename Iterator>
 class cycle_drill_grammar : public karma::grammar<Iterator, interface::CycleDrill()>
 {
 public:
-    cycle_drill_grammar(uint32_t& line, uint32_t step, uint32_t precision)
+    cycle_drill_grammar(GeneratorData& data, uint32_t& line, uint32_t step, uint32_t precision)
         : cycle_drill_grammar::base_type(attribute)
         , attr_value_float(precision)
     {
         // N12 G98 G81 X-24.585 Y-115. Z36.996 F250. R73.
-        attribute = "N" << karma::lit(phx::ref(line) += step) << " "
-                        << "G98 G81" << karma::omit[attr_value_float] << karma::omit[attr_value_float]
-                        << karma::omit[attr_value_float];
+        attribute =
+            "N" << karma::lit(phx::ref(line) += step) << " "
+                << "G98 G81 X" /*<< data.x << " Y" << data.y << " Z" << data.z*/ << karma::omit[attr_value_float]
+                << karma::omit[attr_value_float] << karma::omit[attr_value_float];
     }
 
 private:
@@ -71,19 +72,20 @@ private:
 };
 
 template <typename Iterator>
-bool generate_cycleDrill(Iterator& sink, uint32_t& line, uint32_t step, const interface::CycleDrill& value,
-                         uint32_t precision)
+bool generate_cycleDrill(Iterator& sink, GeneratorData& data, uint32_t& line, uint32_t step,
+                         const interface::CycleDrill& value, uint32_t precision)
 {
-    cycle_drill_grammar<Iterator> cycleDrill_g(line, step, precision);
+    cycle_drill_grammar<Iterator> cycleDrill_g(data, line, step, precision);
     return karma::generate(sink, cycleDrill_g, value);
 }
 
-std::string generate_cycleDrill(uint32_t& line, uint32_t step, const interface::CycleDrill& value, uint32_t precision)
+std::string generate_cycleDrill(GeneratorData& data, uint32_t& line, uint32_t step, const interface::CycleDrill& value,
+                                uint32_t precision)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_cycleDrill(sink, line, step, value, precision);
+    generate_cycleDrill(sink, data, line, step, value, precision);
 
     return generated;
 }

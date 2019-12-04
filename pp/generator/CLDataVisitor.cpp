@@ -4,14 +4,14 @@
 
 #include <boost/variant.hpp>
 
+#include "CycleDrillGenerator.h"
+#include "CycleOffGenerator.h"
 #include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
+#include "MsysGenerator.h"
 #include "SelectToolGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
-#include "MsysGenerator.h"
-#include "CycleOffGenerator.h"
-#include "CycleDrillGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -23,7 +23,7 @@ bool CLDataVisitor::operator()(const interface::Nil& value) const
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    generated.emplace_back(generate_goto(line, step, value, precision));
+    generated.emplace_back(generate_goto(data, line, step, value, precision));
     return true;
 }
 
@@ -75,7 +75,7 @@ bool CLDataVisitor::operator()(const interface::CycleOff& value) const
 
 bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 {
-    generated.emplace_back(generate_cycleDrill(line, step, value, precision));
+    generated.emplace_back(generate_cycleDrill(data, line, step, value, precision));
     return true;
 }
 

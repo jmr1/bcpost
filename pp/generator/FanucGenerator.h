@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "GeneratorBase.h"
+#include "GeneratorData.h"
 #include "interface/CLData.h"
 #include "interface/GeneralDefines.h"
 
@@ -39,8 +40,9 @@ private:
 #pragma warning(push)
 #pragma warning(disable : 4251)
 #endif
-    uint32_t step;
-    uint32_t precision;
+    GeneratorData data{};
+    uint32_t      step;
+    uint32_t      precision;
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

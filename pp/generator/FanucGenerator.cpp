@@ -22,7 +22,7 @@ bool FanucGenerator::generate(uint32_t& line, const std::vector<interface::Attri
     try
     {
         for (size_t x = 0; x < value.size(); ++x)
-            boost::apply_visitor(CLDataVisitor(line, step, precision, generated), value[x]);
+            boost::apply_visitor(CLDataVisitor(data, line, step, precision, generated), value[x]);
     }
 #ifdef THROW_WHEN_ERROR
     catch (const float_value_exception& e)
