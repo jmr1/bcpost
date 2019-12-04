@@ -11,6 +11,7 @@
 #include "ToolPathGenerator.h"
 #include "MsysGenerator.h"
 #include "CycleOffGenerator.h"
+#include "CycleDrillGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -74,8 +75,7 @@ bool CLDataVisitor::operator()(const interface::CycleOff& value) const
 
 bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 {
-    abort();
-    //generated.emplace_back(generate_cycleDrill(line, step));
+    generated.emplace_back(generate_cycleDrill(line, step, value, precision));
     return true;
 }
 
