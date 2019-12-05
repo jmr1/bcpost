@@ -9,6 +9,7 @@
 #include "CycleDrillGenerator.h"
 
 #include <iomanip>
+#include <map>
 #include <string>
 
 #include <boost/config/warning_disable.hpp>
@@ -55,15 +56,26 @@ template <typename Iterator>
 class cycle_drill_grammar : public karma::grammar<Iterator, interface::CycleDrill()>
 {
 public:
-    cycle_drill_grammar(GeneratorData& data, uint32_t& line, uint32_t step, uint32_t precision)
+    cycle_drill_grammar(const std::map<std::string, std::string>& m, uint32_t& line, uint32_t step, uint32_t precision)
         : cycle_drill_grammar::base_type(attribute)
         , attr_value_float(precision)
     {
+        auto func = [&m](const std::string& value) {
+            return phx::bind(
+                static_cast<const std::string& (std::map<std::string, std::string>::*)(const std::string&)const>(
+                    &std::map<std::string, std::string>::at),
+                &m, value);
+        };
+
+        const auto x = func("X");
+        const auto y = func("Y");
+        const auto z = func("Z");
+
         // N12 G98 G81 X-24.585 Y-115. Z36.996 F250. R73.
-        attribute =
-            "N" << karma::lit(phx::ref(line) += step) << " "
-                << "G98 G81 X" /*<< data.x << " Y" << data.y << " Z" << data.z*/ << karma::omit[attr_value_float]
-                << karma::omit[attr_value_float] << karma::omit[attr_value_float];
+        attribute = "N" << karma::lit(phx::ref(line) += step) << " "
+                        << "G98 G81 X" << karma::lit(x) << " Y" << karma::lit(y) << " Z" << karma::lit(z)
+                        << karma::omit[attr_value_float] << karma::omit[attr_value_float]
+                        << karma::omit[attr_value_float];
     }
 
 private:
@@ -75,7 +87,18 @@ template <typename Iterator>
 bool generate_cycleDrill(Iterator& sink, GeneratorData& data, uint32_t& line, uint32_t step,
                          const interface::CycleDrill& value, uint32_t precision)
 {
-    cycle_drill_grammar<Iterator> cycleDrill_g(data, line, step, precision);
+    std::map<std::string, std::string> m;
+
+    auto func = [&m, precision](const std::string& key, const auto& value) {
+        m.emplace(key, generate_floatValue(value ? *value : interface::FloatValue{boost::none, std::string("0"), '.'},
+                                           precision));
+    };
+
+    func("X", data.x);
+    func("Y", data.y);
+    func("Z", data.z);
+
+    cycle_drill_grammar<Iterator> cycleDrill_g(m, line, step, precision);
     return karma::generate(sink, cycleDrill_g, value);
 }
 

@@ -3,18 +3,17 @@
 #pragma warning(disable : 4348)
 #endif
 
-#include <iomanip>
-#include <string>
-
 #ifndef NDEBUG
 #define BOOST_SPIRIT_DEBUG
 #endif
+
+#include <iomanip>
+#include <string>
 
 #include <boost/config/warning_disable.hpp>
 #include <boost/fusion/adapted.hpp>
 #include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/phoenix/bind.hpp>
-//#include <boost/bind.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/karma.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
@@ -51,21 +50,9 @@ namespace fanuc {
 class float_rounder
 {
 public:
-    float_rounder(uint32_t precision)
-        : precision(precision)
-    {
-    }
+    float_rounder(uint32_t precision);
 
-    void exec(std::string& value) const
-    {
-        std::string tmp = value;
-        if (tmp.size() > precision)
-            tmp = tmp.substr(0, precision);
-        auto ret = std::find_if(tmp.rbegin(), tmp.rend(), [](const auto& v) { return v != '0' ? true : false; });
-        if (ret != tmp.rbegin())
-            tmp.erase(ret.base(), tmp.end());
-        value = tmp;
-    }
+    void exec(std::string& value) const;
 
 private:
     const uint32_t precision;
@@ -99,25 +86,22 @@ struct float_value_exception : std::runtime_error
     }
 };
 
-inline bool verify_throw(const interface::FloatValue& value)
-{
-    if (!value.sign && !value.value && !value.dot && !value.value2)
-        throw float_value_exception("Brak wartości.");
-    return true;
-}
+bool verify_throw(const interface::FloatValue& value);
 
 #else
 
-inline bool verify(const interface::FloatValue& value)
-{
-    if (!value.sign && !value.value && !value.dot && !value.value2)
-        return false;
-    if (!value.dot && value.value2)
-        return false;
-    return true;
-}
+bool verify(const interface::FloatValue& value);
 
 #endif
+
+template <typename Iterator>
+bool generate_floatValue(Iterator& sink, const interface::FloatValue& value, uint32_t precision)
+{
+    float_value_grammar<Iterator> floatValue_g(precision);
+    return karma::generate(sink, floatValue_g, value);
+}
+
+std::string generate_floatValue(const interface::FloatValue& value, uint32_t precision);
 
 } // namespace fanuc
 } // namespace pp
