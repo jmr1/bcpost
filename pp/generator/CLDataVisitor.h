@@ -32,6 +32,7 @@ public:
     bool operator()(const interface::Msys& value) const;
     bool operator()(const interface::CycleOff& value) const;
     bool operator()(const interface::CycleDrill& value) const;
+    bool operator()(const interface::SpindlRpm& value) const;
 
 private:
     GeneratorData&            data;

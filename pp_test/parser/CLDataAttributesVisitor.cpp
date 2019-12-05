@@ -202,4 +202,17 @@ bool CLDataAttributesVisitor::operator()(const interface::CycleDrill& value) con
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::SpindlRpm& value) const
+{
+    auto value_expected = boost::get<interface::SpindlRpm>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    FloatValueComparer()(value_expected->rpm, value.rpm);
+    CPPUNIT_ASSERT_EQUAL(value_expected->rotation_direction, value.rotation_direction);
+
+    return true;
+}
+
 } // namespace cldata_test

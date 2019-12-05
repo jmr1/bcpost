@@ -79,5 +79,12 @@ bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
     return true;
 }
 
+bool CLDataVisitor::operator()(const interface::SpindlRpm& value) const
+{
+    abort();
+    //generated.emplace_back(generate_spindleRpm(line, step, value));
+    return true;
+}
+
 } // namespace fanuc
 } // namespace pp

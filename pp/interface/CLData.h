@@ -110,8 +110,20 @@ struct CycleDrill
     FloatValue                  fedrate;
 };
 
+enum class RotationDirection
+{
+    CLW = 3,
+    CCLW
+};
+
+struct SpindlRpm
+{
+    FloatValue        rpm;
+    RotationDirection rotation_direction;
+};
+
 using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool,
-                                        Msys, CycleDrill, CycleOff>;
+                                        Msys, CycleDrill, CycleOff, SpindlRpm>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {
