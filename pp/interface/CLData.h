@@ -92,6 +92,8 @@ enum class RetractionType
     MANUAL = 99
 };
 
+std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value);
+
 enum class FedrateType
 {
     IPM,
@@ -99,6 +101,8 @@ enum class FedrateType
     MMPM,
     MMPR
 };
+
+std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);
 
 struct CycleDrill
 {
@@ -115,6 +119,8 @@ enum class RotationDirection
     CLW = 3,
     CCLW
 };
+
+extern std::ostream& operator<<(std::ostream& ostr, const interface::RotationDirection& value);
 
 struct SpindlRpm
 {

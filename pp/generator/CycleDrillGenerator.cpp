@@ -50,13 +50,6 @@ BOOST_FUSION_ADAPT_STRUCT(
 // clang-format on
 
 namespace pp {
-namespace interface {
-
-extern std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value);
-extern std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);
-
-} // namespace interface
-
 namespace fanuc {
 
 template <typename Iterator>

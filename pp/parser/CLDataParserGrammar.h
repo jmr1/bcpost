@@ -14,6 +14,7 @@
 #include "LoadToolGrammar.h"
 #include "MsysGrammar.h"
 #include "SelectToolGrammar.h"
+#include "SpindlRpmGrammar.h"
 #include "TldataDrillGrammar.h"
 #include "ToolPathGrammar.h"
 
@@ -39,6 +40,7 @@ private:
     load_tool_grammar                                                                       load_tool_rule;
     select_tool_grammar                                                                     select_tool_rule;
     tldata_drill_grammar                                                                    tldata_drill_rule;
+    spindl_rpm_grammar                                                                      spindl_rpm_rule;
     qi::rule<pos_iterator_type, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<pos_iterator_type, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
 };
