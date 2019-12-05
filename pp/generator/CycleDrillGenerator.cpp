@@ -50,6 +50,13 @@ BOOST_FUSION_ADAPT_STRUCT(
 // clang-format on
 
 namespace pp {
+namespace interface {
+
+extern std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value);
+extern std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);
+
+} // namespace interface
+
 namespace fanuc {
 
 template <typename Iterator>
@@ -64,7 +71,7 @@ public:
             return phx::bind(
                 static_cast<const std::string& (std::map<std::string, std::string>::*)(const std::string&)const>(
                     &std::map<std::string, std::string>::at),
-                &m, value);
+                phx::cref(m), value);
         };
 
         const auto x = func("X");
@@ -75,7 +82,8 @@ public:
         attribute = "N" << karma::lit(phx::ref(line) += step) << " "
                         << "G98 G81 X" << karma::lit(x) << " Y" << karma::lit(y) << " Z" << karma::lit(z)
                         << karma::omit[attr_value_float] << karma::omit[attr_value_float]
-                        << karma::omit[attr_value_float];
+                        << karma::omit[-attr_value_float] << karma::omit[karma::stream] << karma::omit[karma::stream]
+                        << " F" << attr_value_float << " R73.";
     }
 
 private:

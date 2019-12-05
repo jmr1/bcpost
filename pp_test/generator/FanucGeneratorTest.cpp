@@ -180,7 +180,7 @@ void FanucGeneratorTest::cycleDrillTest()
     verify({CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
                        FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
                        FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
-           {"N1 G98 G81 X-24.585 Y-115. Z36.996 F250. R73."}, true);
+           {"N1 G98 G81 X0. Y0. Z0. F250. R73."}, true);
 }
 
 } // namespace fanuc_test

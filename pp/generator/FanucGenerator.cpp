@@ -41,6 +41,16 @@ bool FanucGenerator::generate(uint32_t& line, const std::vector<interface::Attri
         message = e.what();
         return false;
     }
+    catch (const std::bad_alloc& e)
+    {
+        message = e.what();
+        return false;
+    }
+    catch (const std::exception& e)
+    {
+        message = e.what();
+        return false;
+    }
 
     return true;
 }
