@@ -220,6 +220,9 @@ void CLDataParserTest::cycleDrillTest()
                        FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
                        FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
            true);
+
+    verify("CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,WRONG,MMPM,250.0000", {}, false);
+    verify("CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,AUTO,WRONG,250.0000", {}, false);
 }
 
 void CLDataParserTest::spindlRpmTest()
@@ -231,6 +234,8 @@ void CLDataParserTest::spindlRpmTest()
 
     verify("SPINDL/RPM,600,CCLW", {SpindlRpm{FloatValue{boost::none, std::string("600")}, RotationDirection::CCLW}},
            true);
+
+    verify("SPINDL/RPM,800,WRONG", {}, false);
 }
 
 } // namespace cldata_test
