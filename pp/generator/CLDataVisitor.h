@@ -11,13 +11,14 @@ namespace fanuc {
 class CLDataVisitor : public boost::static_visitor<bool>
 {
 public:
-    CLDataVisitor(GeneratorData& data, uint32_t& line, const uint32_t step, uint32_t precision,
+    CLDataVisitor(GeneratorData& data, uint32_t& line, const uint32_t step, uint32_t precision, bool& was_G0,
                   std::vector<std::string>& generated)
         : data(data)
         , generated(generated)
         , line(line)
         , step(step)
         , precision(precision)
+        , was_G0(was_G0)
     {
     }
 
@@ -41,6 +42,7 @@ private:
     uint32_t&                 line;
     const uint32_t            step;
     const uint32_t            precision;
+    bool&                     was_G0;
 };
 
 } // namespace fanuc

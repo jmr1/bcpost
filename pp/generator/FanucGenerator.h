@@ -43,6 +43,7 @@ private:
     GeneratorData data{};
     uint32_t      step;
     uint32_t      precision;
+    bool          was_G0{};
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

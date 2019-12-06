@@ -49,6 +49,7 @@ bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
     generated.emplace_back(generate_tldataDrill(line, step, value, precision));
+    was_G0 = true;
     return true;
 }
 
@@ -89,7 +90,11 @@ bool CLDataVisitor::operator()(const interface::SpindlRpm& value) const
 
 bool CLDataVisitor::operator()(const interface::Rapid& value) const
 {
-    generated.emplace_back(generate_rapid(line, step));
+    if (!was_G0)
+    {
+        generated.emplace_back(generate_rapid(line, step));
+        was_G0 = true;
+    }
     return true;
 }
 
