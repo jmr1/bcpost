@@ -183,4 +183,19 @@ void FanucGeneratorTest::cycleDrillTest()
            {"N1 G98 G81 X0. Y0. Z0. F250. R73."}, true);
 }
 
+void FanucGeneratorTest::spindlRpmTest()
+{
+    using namespace pp::interface;
+
+    verify({SpindlRpm{FloatValue{boost::none, std::string("800")},
+                       RotationDirection::CLW
+                       }},
+           {"N1 G43 H00 S800 M03"}, true);
+
+    verify({SpindlRpm{FloatValue{boost::none, std::string("700")},
+                       RotationDirection::CCLW
+                       }},
+           {"N1 G43 H00 S700 M04"}, true);
+}
+
 } // namespace fanuc_test

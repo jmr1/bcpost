@@ -12,6 +12,7 @@
 #include "SelectToolGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
+#include "SpindlRpmGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -81,8 +82,7 @@ bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 
 bool CLDataVisitor::operator()(const interface::SpindlRpm& value) const
 {
-    abort();
-    //generated.emplace_back(generate_spindleRpm(line, step, value));
+    generated.emplace_back(generate_spindlRpm(line, step, value, precision));
     return true;
 }
 
