@@ -222,4 +222,15 @@ void CLDataParserTest::cycleDrillTest()
            true);
 }
 
+void CLDataParserTest::spindlRpmTest()
+{
+    using namespace pp::interface;
+
+    verify("SPINDL/RPM,800,CLW", {SpindlRpm{FloatValue{boost::none, std::string("800")}, RotationDirection::CLW}},
+           true);
+
+    verify("SPINDL/RPM,600,CCLW", {SpindlRpm{FloatValue{boost::none, std::string("600")}, RotationDirection::CCLW}},
+           true);
+}
+
 } // namespace cldata_test
