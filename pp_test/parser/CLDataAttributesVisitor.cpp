@@ -215,4 +215,14 @@ bool CLDataAttributesVisitor::operator()(const interface::SpindlRpm& value) cons
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Rapid& value) const
+{
+    auto value_expected = boost::get<interface::Rapid>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    return true;
+}
+
 } // namespace cldata_test

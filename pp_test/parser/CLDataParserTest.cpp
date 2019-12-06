@@ -238,4 +238,12 @@ void CLDataParserTest::spindlRpmTest()
     verify("SPINDL/RPM,800,WRONG", {}, false);
 }
 
+void CLDataParserTest::rapidTest()
+{
+    using namespace pp::interface;
+
+    verify("RAPID", {Rapid{}}, true);
+    verify("RAPI", {}, false);
+}
+
 } // namespace cldata_test

@@ -22,6 +22,7 @@ public:
     CPPUNIT_TEST(cycleOffTest);
     CPPUNIT_TEST(cycleDrillTest);
     CPPUNIT_TEST(spindlRpmTest);
+    CPPUNIT_TEST(rapidTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -40,6 +41,7 @@ protected:
     void cycleOffTest();
     void cycleDrillTest();
     void spindlRpmTest();
+    void rapidTest();
 };
 
 } // namespace cldata_test

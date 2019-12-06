@@ -128,8 +128,12 @@ struct SpindlRpm
     RotationDirection rotation_direction;
 };
 
+struct Rapid
+{
+};
+
 using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool,
-                                        Msys, CycleDrill, CycleOff, SpindlRpm>;
+                                        Msys, CycleDrill, CycleOff, SpindlRpm, Rapid>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

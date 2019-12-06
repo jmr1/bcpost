@@ -187,15 +187,18 @@ void FanucGeneratorTest::spindlRpmTest()
 {
     using namespace pp::interface;
 
-    verify({SpindlRpm{FloatValue{boost::none, std::string("800")},
-                       RotationDirection::CLW
-                       }},
-           {"N1 G43 H00 S800 M03"}, true);
+    verify({SpindlRpm{FloatValue{boost::none, std::string("800")}, RotationDirection::CLW}}, {"N1 G43 H00 S800 M03"},
+           true);
 
-    verify({SpindlRpm{FloatValue{boost::none, std::string("700")},
-                       RotationDirection::CCLW
-                       }},
-           {"N1 G43 H00 S700 M04"}, true);
+    verify({SpindlRpm{FloatValue{boost::none, std::string("700")}, RotationDirection::CCLW}}, {"N1 G43 H00 S700 M04"},
+           true);
+}
+
+void FanucGeneratorTest::rapidTest()
+{
+    using namespace pp::interface;
+
+    verify({Rapid{}}, {"N1 G90 G53 G00 A0.0 C0.0"}, true);
 }
 
 } // namespace fanuc_test

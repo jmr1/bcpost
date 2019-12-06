@@ -13,6 +13,7 @@
 #include "IgnoredValueGrammar.h"
 #include "LoadToolGrammar.h"
 #include "MsysGrammar.h"
+#include "RapidGrammar.h"
 #include "SelectToolGrammar.h"
 #include "SpindlRpmGrammar.h"
 #include "TldataDrillGrammar.h"
@@ -32,6 +33,7 @@ public:
 private:
     goto_grammar                                                                            goto_rule;
     msys_grammar                                                                            msys_rule;
+    rapid_grammar                                                                           rapid_rule;
     cycle_off_grammar                                                                       cycle_off_rule;
     cycle_drill_grammar                                                                     cycle_drill_rule;
     end_of_path_grammar                                                                     end_of_path_rule;
