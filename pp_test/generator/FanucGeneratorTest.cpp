@@ -102,13 +102,14 @@ void FanucGeneratorTest::endOfPathTest()
     using namespace pp::interface;
 
     verify({EndOfPath{}},
-           {"N1 G69\n"
-            "N2 G91 G28 Z0.0\n"
-            "N3 G91 G28 X0.0 Y0.0\n"
-            "N4 G90 G53 G00 A0.0 C0.0\n"
-            "N5 M05\n"
-            "N6 M09\n"
-            "N7 M30\n"
+           {"N1 G49 G21\n"
+            "N2 G69\n"
+            "N3 G91 G28 Z0.0\n"
+            "N4 G91 G28 X0.0 Y0.0\n"
+            "N5 G90 G53 G00 A0.0 C0.0\n"
+            "N6 M05\n"
+            "N7 M09\n"
+            "N8 M30\n"
             "%"},
            true);
 }

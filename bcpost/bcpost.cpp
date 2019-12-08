@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
         ("single-line-output,s", po::value<bool>(&single_line_output)->default_value(true), "whether the error output is single line")
         ("step", po::value<uint32_t>(&step)->default_value(1), "counter step value for lines numbering")
         ("precision", po::value<uint32_t>(&precision)->default_value(3), "number of digits after comma to which the floating point number will be rounded")
-        ("output,o", po::value<std::string>(&input), "path to output generated file")
+        ("output,o", po::value<std::string>(&output), "path to output generated file")
         ("input,i", po::value<std::string>(&input), "path to input CLData file")
     ;
     // clang-format on
@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
     std::ifstream file(input.c_str());
     if (file.fail())
     {
-        std::cerr << "ERROR: Path to file [" << input << "] is wrong!" << std::endl;
+        std::cerr << "ERROR: Path to input file [" << input << "] is wrong!" << std::endl;
         return 1;
     }
 
@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
         std::ofstream file(output.c_str());
         if (file.fail())
         {
-            std::cerr << "ERROR: Path to file [" << output << "] is wrong!" << std::endl;
+            std::cerr << "ERROR: Path to output file [" << output << "] is wrong!" << std::endl;
             return 1;
         }
 
