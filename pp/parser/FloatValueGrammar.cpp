@@ -33,9 +33,48 @@ namespace fusion  = boost::fusion;
 namespace pp {
 namespace interface {
 
-FloatValue operator+(FloatValue lhs, const FloatValue& rhs)
+std::string to_string(const FloatValue& value)
 {
-    return lhs;
+    std::string tmp;
+    if (value.sign)
+        tmp += *value.sign;
+    if (value.value)
+        tmp += *value.value;
+    if (value.dot)
+        tmp += *value.dot;
+    if (value.value2)
+        tmp += *value.value2;
+    return tmp;
+}
+
+FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
+{
+    double dlhs = std::atof(to_string(lhs).c_str());
+    double drhs = std::atof(to_string(rhs).c_str());
+
+    std::string        data(std::to_string(dlhs + drhs));
+    std::istringstream input(data);
+    typedef boost::spirit::classic::position_iterator2<boost::spirit::istream_iterator> pos_iterator_type;
+    pos_iterator_type position_begin(boost::spirit::istream_iterator{input >> std::noskipws}, {}), position_end;
+
+    FloatValue                  fv_ret{};
+    cldata::float_value_grammar fv;
+
+    try
+    {
+        if (qi::phrase_parse(position_begin, position_end, fv, qi::blank, fv_ret))
+            return fv_ret;
+    }
+    catch (const qi::expectation_failure<pos_iterator_type>& e)
+    {
+        return fv_ret;
+    }
+    catch (const std::exception& e)
+    {
+        return fv_ret;
+    }
+
+    return fv_ret;
 }
 
 } // namespace interface
