@@ -95,6 +95,19 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, boost::none, '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', boost::none}}},
            {"N1 G94 G90 X-.585 Y. Z100."}, true);
+
+    verify({CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
+                       FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
+                       FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}},
+            Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("115"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}}},
+           {"N1 G98 G81 X-24.585 Y-115. Z100. F250. R73.\n"
+            "N2 G00 Z100."},
+           true);
 }
 
 void FanucGeneratorTest::endOfPathTest()
@@ -181,7 +194,7 @@ void FanucGeneratorTest::cycleDrillTest()
     verify({CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
                        FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
                        FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
-           {"N1 G98 G81 X0. Y0. Z0. F250. R73."}, true);
+           {}, true);
 }
 
 void FanucGeneratorTest::spindlRpmTest()

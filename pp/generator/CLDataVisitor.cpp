@@ -4,7 +4,6 @@
 
 #include <boost/variant.hpp>
 
-#include "CycleDrillGenerator.h"
 #include "CycleOffGenerator.h"
 #include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
@@ -25,7 +24,8 @@ bool CLDataVisitor::operator()(const interface::Nil& value) const
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    generated.emplace_back(generate_goto(data, line, step, value, precision));
+    generated.emplace_back(generate_goto(data, line, step, value, precision, in_cycle, first_goto_in_cycle));
+    first_goto_in_cycle = false;
     return true;
 }
 
@@ -72,13 +72,18 @@ bool CLDataVisitor::operator()(const interface::Msys& value) const
 
 bool CLDataVisitor::operator()(const interface::CycleOff& value) const
 {
+    in_cycle            = false;
+    first_goto_in_cycle = false;
     generated.emplace_back(generate_cycleOff(line, step));
     return true;
 }
 
 bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 {
-    generated.emplace_back(generate_cycleDrill(data, line, step, value, precision));
+    in_cycle            = true;
+    first_goto_in_cycle = true;
+    data.rapto          = value.rapto;
+    data.fedrate        = value.fedrate;
     return true;
 }
 

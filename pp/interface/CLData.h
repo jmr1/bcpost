@@ -25,6 +25,8 @@ struct FloatValue
     boost::optional<std::string> value2;
 };
 
+FloatValue operator+(FloatValue lhs, const FloatValue& rhs);
+
 struct Goto
 {
     FloatValue                  x;

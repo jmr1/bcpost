@@ -44,6 +44,8 @@ private:
     uint32_t      step;
     uint32_t      precision;
     bool          was_G0{};
+    bool          in_cycle{};
+    bool          first_goto_in_cycle{};
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif

@@ -31,6 +31,15 @@ namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
 namespace pp {
+namespace interface {
+
+FloatValue operator+(FloatValue lhs, const FloatValue& rhs)
+{
+    return lhs;
+}
+
+} // namespace interface
+
 namespace cldata {
 
 float_value_grammar::float_value_grammar()
