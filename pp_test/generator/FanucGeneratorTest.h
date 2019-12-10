@@ -12,6 +12,7 @@ public:
 
     CPPUNIT_TEST_SUITE(FanucGeneratorTest);
     CPPUNIT_TEST(gotoTest);
+    CPPUNIT_TEST(gotoInCircleTest);
     CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST(tldataDrillTest);
@@ -29,6 +30,7 @@ public:
 
 protected:
     void gotoTest();
+    void gotoInCircleTest();
     void endOfPathTest();
     void toolPathTest();
     void tldataDrillTest();

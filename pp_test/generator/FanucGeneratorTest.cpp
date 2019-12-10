@@ -95,6 +95,11 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, boost::none, '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', boost::none}}},
            {"N1 G94 G90 X-.585 Y. Z100."}, true);
+}
+
+void FanucGeneratorTest::gotoInCircleTest()
+{
+    using namespace pp::interface;
 
     verify({CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
                        FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
