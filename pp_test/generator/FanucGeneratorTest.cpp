@@ -101,7 +101,13 @@ void FanucGeneratorTest::gotoInCircleTest()
 {
     using namespace pp::interface;
 
-    verify({CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
+    verify({Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("115"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
+            CycleDrill{FloatValue{boost::none, std::string("3"), '.', std::string("0000")},
                        FloatValue{'-', std::string("33"), '.', std::string("0043")}, boost::none, RetractionType::AUTO,
                        FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}},
             Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
@@ -109,9 +115,26 @@ void FanucGeneratorTest::gotoInCircleTest()
                  FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
+            Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("115"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
+            CycleOff{},
+            Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("115"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}}},
-           {"N1 G98 G81 X-24.585 Y-115. Z100. F250. R103.\n"
-            "N2 G00 Z100."},
+           {"N1 G94 G90 X-24.585 Y-115. Z100.",
+            "N2 G98 G81 X-24.585 Y-115. Z100. F250. R103.\n"
+            "N3 G00 Z100.",
+            "N4 G81 X-24.585 Y-115. Z100. F250. R103.\n"
+            "N5 G00 Z100.",
+            "N6 G80", "N7 G94 G90 X-24.585 Y-115. Z100."},
            true);
 }
 
