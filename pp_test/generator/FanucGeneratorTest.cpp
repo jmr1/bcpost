@@ -105,7 +105,7 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}}},
-           {"N1 G98 G81 X-24.585 Y-115. Z100. F250. R73.\n"
+           {"N1 G98 G81 X-24.585 Y-115. Z100. F250. R103.\n"
             "N2 G00 Z100."},
            true);
 }

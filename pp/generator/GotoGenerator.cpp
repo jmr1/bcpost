@@ -133,7 +133,7 @@ public:
                                   << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
                                   << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
                                   << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F"
-                                  << karma::lit(f) << " R" << karma::lit(rapto) << karma::eol << "N"
+                                  << karma::lit(f) << " R" << to_string(*data.rapto + *data.z) << karma::eol << "N"
                                   << karma::lit(phx::ref(line) += step) << " G00 Z100.";
         }
         else
@@ -142,7 +142,7 @@ public:
                                   << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
                                   << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
                                   << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F"
-                                  << karma::lit(f) << " R" << karma::lit(rapto) << karma::eol << "N"
+                                  << karma::lit(f) << " R" << to_string(*data.rapto + *data.z) << karma::eol << "N"
                                   << karma::lit(phx::ref(line) += step) << " G00 Z100.";
         }
     }
