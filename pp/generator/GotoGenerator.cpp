@@ -99,6 +99,11 @@ private:
     karma::rule<Iterator, interface::Goto()>     goto_attribute;
 };
 
+std::string sum(const interface::FloatValue& lhs, const interface::FloatValue& rhs)
+{
+    return to_string(lhs + rhs);
+}
+
 template <typename Iterator>
 class goto_in_cycle_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
@@ -133,12 +138,13 @@ public:
         else
             block_start = " G81 X";
 
-        goto_attribute %= "N" << karma::lit(phx::ref(line) += step) << block_start
-                              << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
-                              << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
-                              << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F"
-                              << karma::lit(f) << " R" << to_string(*data.rapto + *data.z) << karma::eol << "N"
-                              << karma::lit(phx::ref(line) += step) << " G00 Z100.";
+        goto_attribute %=
+            "N" << karma::lit(phx::ref(line) += step) << block_start
+                << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
+                << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
+                << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F" << karma::lit(f) << " R"
+                << karma::lit(phx::bind(&sum, phx::ref(*data.rapto), phx::bind(&interface::Goto::z, karma::_val)))
+                << karma::eol << "N" << karma::lit(phx::ref(line) += step) << " G00 Z100.";
     }
 
 private:
