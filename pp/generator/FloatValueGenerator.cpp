@@ -10,7 +10,7 @@
 #include "interface/CLData.h"
 
 namespace pp {
-namespace fanuc {
+namespace interface {
 
 float_rounder::float_rounder(uint32_t precision)
     : precision(precision)
@@ -27,6 +27,10 @@ void float_rounder::exec(std::string& value) const
         tmp.erase(ret.base(), tmp.end());
     value = tmp;
 }
+
+} // namespace interface
+
+namespace fanuc {
 
 #ifdef THROW_WHEN_ERROR
 

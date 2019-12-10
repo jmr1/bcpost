@@ -9,6 +9,14 @@ using namespace pp;
 
 namespace cldata_test {
 
+struct FloatValueComparer
+{
+    void operator()(const interface::FloatValue& value_expected, const interface::FloatValue& value);
+
+    void operator()(const boost::optional<interface::FloatValue>& value_expected,
+                    const boost::optional<interface::FloatValue>& value);
+};
+
 class CLDataAttributesVisitor : public boost::static_visitor<bool>
 {
 public:

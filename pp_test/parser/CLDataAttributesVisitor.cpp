@@ -18,45 +18,42 @@ struct CheckTypeVisitor : public boost::static_visitor<>
     }
 };
 
-struct FloatValueComparer
+void FloatValueComparer::operator()(const interface::FloatValue& value_expected, const interface::FloatValue& value)
 {
-    void operator()(const interface::FloatValue& value_expected, const interface::FloatValue& value)
+    if (value_expected.sign == boost::none)
+        CPPUNIT_ASSERT(value.sign == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected.sign, *value.sign);
+
+    if (value_expected.value == boost::none)
+        CPPUNIT_ASSERT(value.value == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected.value, *value.value);
+
+    if (value_expected.dot == boost::none)
+        CPPUNIT_ASSERT(value.dot == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected.dot, *value.dot);
+
+    if (value_expected.value2 == boost::none)
+        CPPUNIT_ASSERT(value.value2 == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected.value2, *value.value2);
+}
+
+void FloatValueComparer::operator()(const boost::optional<interface::FloatValue>& value_expected,
+                                    const boost::optional<interface::FloatValue>& value)
+{
+    if (value_expected == boost::none)
     {
-        if (value_expected.sign == boost::none)
-            CPPUNIT_ASSERT(value.sign == boost::none);
-        else
-            CPPUNIT_ASSERT_EQUAL(*value_expected.sign, *value.sign);
-
-        if (value_expected.value == boost::none)
-            CPPUNIT_ASSERT(value.value == boost::none);
-        else
-            CPPUNIT_ASSERT_EQUAL(*value_expected.value, *value.value);
-
-        if (value_expected.dot == boost::none)
-            CPPUNIT_ASSERT(value.dot == boost::none);
-        else
-            CPPUNIT_ASSERT_EQUAL(*value_expected.dot, *value.dot);
-
-        if (value_expected.value2 == boost::none)
-            CPPUNIT_ASSERT(value.value2 == boost::none);
-        else
-            CPPUNIT_ASSERT_EQUAL(*value_expected.value2, *value.value2);
+        CPPUNIT_ASSERT(value == boost::none);
     }
-
-    void operator()(const boost::optional<interface::FloatValue>& value_expected,
-                    const boost::optional<interface::FloatValue>& value)
+    else
     {
-        if (value_expected == boost::none)
-        {
-            CPPUNIT_ASSERT(value == boost::none);
-        }
-        else
-        {
-            CPPUNIT_ASSERT(value != boost::none);
-            operator()(*value_expected, *value);
-        }
+        CPPUNIT_ASSERT(value != boost::none);
+        operator()(*value_expected, *value);
     }
-};
+}
 
 bool CLDataAttributesVisitor::operator()(const interface::Nil& value) const
 {

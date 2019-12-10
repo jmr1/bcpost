@@ -27,6 +27,17 @@ struct FloatValue
 
 FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs);
 
+class float_rounder
+{
+public:
+    float_rounder(uint32_t precision);
+
+    void exec(std::string& value) const;
+
+private:
+    const uint32_t precision;
+};
+
 struct Goto
 {
     FloatValue                  x;
@@ -122,7 +133,7 @@ enum class RotationDirection
     CCLW
 };
 
-extern std::ostream& operator<<(std::ostream& ostr, const interface::RotationDirection& value);
+std::ostream& operator<<(std::ostream& ostr, const interface::RotationDirection& value);
 
 struct SpindlRpm
 {

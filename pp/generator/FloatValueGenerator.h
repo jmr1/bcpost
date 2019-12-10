@@ -47,17 +47,6 @@ BOOST_FUSION_ADAPT_STRUCT(
 namespace pp {
 namespace fanuc {
 
-class float_rounder
-{
-public:
-    float_rounder(uint32_t precision);
-
-    void exec(std::string& value) const;
-
-private:
-    const uint32_t precision;
-};
-
 template <typename Iterator>
 class float_value_grammar : public karma::grammar<Iterator, interface::FloatValue()>
 {
@@ -66,13 +55,13 @@ public:
         : float_value_grammar::base_type(float_value_attribute)
         , fr(precision)
     {
-        float_value_attribute %= -karma::char_
-                                 << -karma::string << -karma::char_
-                                 << -karma::string[phx::bind(&float_rounder::exec, phx::cref(fr), karma::_1)];
+        float_value_attribute %=
+            -karma::char_ << -karma::string << -karma::char_
+                          << -karma::string[phx::bind(&interface::float_rounder::exec, phx::cref(fr), karma::_1)];
     }
 
 private:
-    float_rounder                                  fr;
+    interface::float_rounder                       fr;
     karma::rule<Iterator, interface::FloatValue()> float_value_attribute;
 };
 

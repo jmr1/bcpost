@@ -63,7 +63,12 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
     try
     {
         if (qi::phrase_parse(position_begin, position_end, fv, qi::blank, fv_ret))
+        {
+            const auto precision = std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
+            if (fv_ret.value2)
+                interface::float_rounder(precision).exec(*fv_ret.value2);
             return fv_ret;
+        }
     }
     catch (const qi::expectation_failure<pos_iterator_type>& e)
     {
