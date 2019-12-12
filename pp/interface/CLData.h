@@ -76,12 +76,12 @@ struct TldataDrill
 
 struct LoadTool
 {
-    int tool_number;
+    uint32_t tool_number;
 };
 
 struct SelectTool
 {
-    int tool_number;
+    uint32_t tool_number;
 };
 
 struct Msys

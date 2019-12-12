@@ -14,7 +14,7 @@ namespace qi = boost::spirit::qi;
 
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::LoadTool,
-    (int, tool_number)
+    (uint32_t, tool_number)
 )
 
 // clang-format on

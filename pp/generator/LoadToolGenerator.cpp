@@ -37,7 +37,7 @@ namespace fusion  = boost::fusion;
 
 BOOST_FUSION_ADAPT_STRUCT(
     pp::interface::LoadTool,
-    (int, tool_number)
+    (uint32_t, tool_number)
 )
 
 // clang-format on
@@ -54,7 +54,7 @@ public:
     {
         // :6 T5 M06
         attribute = ":" << karma::lit(phx::ref(line) += step) << " "
-                        << "T" << karma::int_ << karma::space << "M06";
+                        << "T" << karma::uint_ << karma::space << "M06";
     }
 
 private:

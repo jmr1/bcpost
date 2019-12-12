@@ -37,7 +37,7 @@ select_tool_grammar::select_tool_grammar()
     : select_tool_grammar::base_type(select_tool_attribute)
 {
     // SELECT/TOOL,5
-    select_tool_attribute = qi::lit("SELECT") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::int_ > qi::eoi;
+    select_tool_attribute = qi::lit("SELECT") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::uint_ > qi::eoi;
     BOOST_SPIRIT_DEBUG_NODES((select_tool_attribute));
 }
 
