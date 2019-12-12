@@ -2,7 +2,6 @@
 
 #include <boost/spirit/include/karma.hpp>
 
-#include "GeneratorData.h"
 #include "interface/CLData.h"
 
 namespace pp {

@@ -25,6 +25,7 @@
 //#include <boost/phoenix/operator/self.hpp>
 
 #include "FloatValueGenerator.h"
+#include "GeneratorData.h"
 #include "interface/CLData.h"
 
 namespace karma   = boost::spirit::karma;
