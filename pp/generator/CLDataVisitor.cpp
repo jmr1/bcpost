@@ -9,7 +9,7 @@
 #include "GotoGenerator.h"
 #include "MsysGenerator.h"
 #include "RapidGenerator.h"
-#include "SelectToolGenerator.h"
+#include "LoadToolGenerator.h"
 #include "SpindlRpmGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
@@ -56,12 +56,12 @@ bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 
 bool CLDataVisitor::operator()(const interface::LoadTool& value) const
 {
+    generated.emplace_back(generate_loadTool(line, step, value));
     return true;
 }
 
 bool CLDataVisitor::operator()(const interface::SelectTool& value) const
 {
-    generated.emplace_back(generate_selectTool(line, step, value));
     return true;
 }
 

@@ -141,16 +141,16 @@ int main(int argc, char* argv[])
                });
     });
 
-    auto select_tool_it = std::find_if(msys_it, std::end(av_vec), [](const auto& vec) {
+    auto load_tool_it = std::find_if(msys_it, std::end(av_vec), [](const auto& vec) {
         return std::end(vec.value) != std::find_if(std::begin(vec.value), std::end(vec.value), [](const auto& item) {
-                   if (boost::get<pp::interface::SelectTool>(&item))
+                   if (boost::get<pp::interface::LoadTool>(&item))
                        return true;
                    return false;
                });
     });
 
-    if(select_tool_it != std::end(av_vec))
-        std::iter_swap(msys_it, select_tool_it);
+    if (load_tool_it != std::end(av_vec))
+        std::iter_swap(msys_it, load_tool_it);
 
     uint32_t                  line = 0;
     std::vector<std::string>  gen_data;

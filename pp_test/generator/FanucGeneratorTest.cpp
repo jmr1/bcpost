@@ -182,11 +182,11 @@ void FanucGeneratorTest::tldataDrillTest()
            true);
 }
 
-void FanucGeneratorTest::selectToolTest()
+void FanucGeneratorTest::loadToolTest()
 {
     using namespace pp::interface;
 
-    verify({SelectTool{5}}, {":1 T5 M06"}, true);
+    verify({LoadTool{5}}, {":1 T5 M06"}, true);
 }
 
 void FanucGeneratorTest::msysTest()

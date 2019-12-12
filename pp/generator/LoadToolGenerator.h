@@ -7,7 +7,7 @@
 namespace pp {
 namespace fanuc {
 
-std::string generate_selectTool(uint32_t& line, uint32_t step, const interface::SelectTool& value);
+std::string generate_loadTool(uint32_t& line, uint32_t step, const interface::LoadTool& value);
 
 } // namespace fanuc
 } // namespace pp

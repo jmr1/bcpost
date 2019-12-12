@@ -16,7 +16,7 @@ public:
     CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST(toolPathTest);
     CPPUNIT_TEST(tldataDrillTest);
-    CPPUNIT_TEST(selectToolTest);
+    CPPUNIT_TEST(loadToolTest);
     CPPUNIT_TEST(msysTest);
     CPPUNIT_TEST(cycleOffTest);
     CPPUNIT_TEST(cycleDrillTest);
@@ -35,7 +35,7 @@ protected:
     void endOfPathTest();
     void toolPathTest();
     void tldataDrillTest();
-    void selectToolTest();
+    void loadToolTest();
     void msysTest();
     void cycleOffTest();
     void cycleDrillTest();

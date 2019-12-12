@@ -7,7 +7,7 @@
 #define BOOST_SPIRIT_DEBUG
 #endif
 
-#include "SelectToolGenerator.h"
+#include "LoadToolGenerator.h"
 
 #include <iomanip>
 #include <string>
@@ -36,7 +36,7 @@ namespace fusion  = boost::fusion;
 // must be in global namespace
 
 BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::SelectTool,
+    pp::interface::LoadTool,
     (int, tool_number)
 )
 
@@ -46,11 +46,11 @@ namespace pp {
 namespace fanuc {
 
 template <typename Iterator>
-class select_tool_grammar : public karma::grammar<Iterator, interface::SelectTool()>
+class load_tool_grammar : public karma::grammar<Iterator, interface::LoadTool()>
 {
 public:
-    select_tool_grammar(uint32_t& line, uint32_t step)
-        : select_tool_grammar::base_type(attribute)
+    load_tool_grammar(uint32_t& line, uint32_t step)
+        : load_tool_grammar::base_type(attribute)
     {
         // :6 T5 M06
         attribute = ":" << karma::lit(phx::ref(line) += step) << " "
@@ -58,22 +58,22 @@ public:
     }
 
 private:
-    karma::rule<Iterator, interface::SelectTool()> attribute;
+    karma::rule<Iterator, interface::LoadTool()> attribute;
 };
 
 template <typename Iterator>
-bool generate_selectTool(Iterator& sink, uint32_t& line, uint32_t step, const interface::SelectTool& value)
+bool generate_loadTool(Iterator& sink, uint32_t& line, uint32_t step, const interface::LoadTool& value)
 {
-    select_tool_grammar<Iterator> selectTool_g(line, step);
-    return karma::generate(sink, selectTool_g, value);
+    load_tool_grammar<Iterator> loadTool_g(line, step);
+    return karma::generate(sink, loadTool_g, value);
 }
 
-std::string generate_selectTool(uint32_t& line, uint32_t step, const interface::SelectTool& value)
+std::string generate_loadTool(uint32_t& line, uint32_t step, const interface::LoadTool& value)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_selectTool(sink, line, step, value);
+    generate_loadTool(sink, line, step, value);
 
     return generated;
 }
