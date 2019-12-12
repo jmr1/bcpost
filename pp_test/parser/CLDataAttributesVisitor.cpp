@@ -222,4 +222,22 @@ bool CLDataAttributesVisitor::operator()(const interface::Rapid& value) const
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Cutcom& value) const
+{
+    auto value_expected = boost::get<interface::Cutcom>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->cutter_compensation, value.cutter_compensation);
+
+    if (value_expected->register_number == boost::none)
+        CPPUNIT_ASSERT(value.register_number == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected->register_number, *value.register_number);
+
+    return true;
+}
+
+
 } // namespace cldata_test

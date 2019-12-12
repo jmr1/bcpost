@@ -246,4 +246,12 @@ void CLDataParserTest::rapidTest()
     verify("RAPI", {}, false);
 }
 
+void CLDataParserTest::cutcomTest()
+{
+    using namespace pp::interface;
+
+    verify("CUTCOM/RIGHT,1", {Cutcom{CutterCompensation::RIGHT, 1}}, true);
+    verify("CUTCOM/OFF", {Cutcom{CutterCompensation::OFF}}, true);
+}
+
 } // namespace cldata_test

@@ -103,5 +103,12 @@ bool CLDataVisitor::operator()(const interface::Rapid& value) const
     return true;
 }
 
+bool CLDataVisitor::operator()(const interface::Cutcom& value) const
+{
+    abort();
+    //generated.emplace_back(generate_spindlRpm(line, step, value, precision));
+    return true;
+}
+
 } // namespace fanuc
 } // namespace pp

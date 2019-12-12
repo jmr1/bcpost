@@ -147,8 +147,24 @@ struct Rapid
 {
 };
 
+enum class CutterCompensation
+{
+    ON,
+    OFF   = 40,
+    LEFT  = 41,
+    RIGHT = 42
+};
+
+std::ostream& operator<<(std::ostream& ostr, const interface::CutterCompensation& value);
+
+struct Cutcom
+{
+    CutterCompensation        cutter_compensation;
+    boost::optional<uint32_t> register_number;
+};
+
 using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool,
-                                        Msys, CycleDrill, CycleOff, SpindlRpm, Rapid>;
+                                        Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

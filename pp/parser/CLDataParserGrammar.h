@@ -6,6 +6,7 @@
 
 #include "PosIteratorType.h"
 
+#include "CutcomGrammar.h"
 #include "CycleDrillGrammar.h"
 #include "CycleOffGrammar.h"
 #include "EndOfPathGrammar.h"
@@ -43,6 +44,7 @@ private:
     select_tool_grammar                                                                     select_tool_rule;
     tldata_drill_grammar                                                                    tldata_drill_rule;
     spindl_rpm_grammar                                                                      spindl_rpm_rule;
+    cutcom_grammar                                                                          cutcom_rule;
     qi::rule<pos_iterator_type, interface::AttributeVariant(), qi::blank_type>              line_attribute;
     qi::rule<pos_iterator_type, std::vector<interface::AttributeVariant>(), qi::blank_type> line_attribute_vec;
 };
