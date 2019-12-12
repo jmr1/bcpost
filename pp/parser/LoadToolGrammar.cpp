@@ -37,7 +37,8 @@ load_tool_grammar::load_tool_grammar()
     : load_tool_grammar::base_type(load_tool_attribute)
 {
     // LOAD/TOOL,5
-    load_tool_attribute = qi::lit("LOAD") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::uint_ > qi::eoi;
+    load_tool_attribute = qi::lit("LOAD") > qi::lit("/") > qi::lit("TOOL") > qi::lit(",") > qi::uint_ >
+                          -(qi::lit(",") > qi::lit("ADJUST") > qi::lit(",") > qi::uint_) > qi::eoi;
     BOOST_SPIRIT_DEBUG_NODES((load_tool_attribute));
 }
 

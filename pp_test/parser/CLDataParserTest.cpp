@@ -157,6 +157,8 @@ void CLDataParserTest::loadToolTest()
     verify("LOAD/TOOL,G", {}, false);
     verify("LOAD/TUOOL,", {}, false);
     verify("LOAUD/TOOL,", {}, false);
+
+    verify("LOAD/TOOL,4,ADJUST,1", {LoadTool{4, 1}}, true);
 }
 
 void CLDataParserTest::selectToolTest()

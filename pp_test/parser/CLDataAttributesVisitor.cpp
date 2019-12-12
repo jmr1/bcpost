@@ -137,6 +137,11 @@ bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
 
     CPPUNIT_ASSERT_EQUAL(value_expected->tool_number, value.tool_number);
 
+    if (value_expected->adjust == boost::none)
+        CPPUNIT_ASSERT(value.adjust == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected->adjust, *value.adjust);
+
     return true;
 }
 
@@ -238,6 +243,5 @@ bool CLDataAttributesVisitor::operator()(const interface::Cutcom& value) const
 
     return true;
 }
-
 
 } // namespace cldata_test

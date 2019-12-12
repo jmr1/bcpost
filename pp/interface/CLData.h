@@ -76,7 +76,8 @@ struct TldataDrill
 
 struct LoadTool
 {
-    uint32_t tool_number;
+    uint32_t                  tool_number;
+    boost::optional<uint32_t> adjust;
 };
 
 struct SelectTool

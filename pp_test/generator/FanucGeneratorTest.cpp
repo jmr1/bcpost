@@ -187,6 +187,7 @@ void FanucGeneratorTest::loadToolTest()
     using namespace pp::interface;
 
     verify({LoadTool{5}}, {":1 T5 M06"}, true);
+    verify({LoadTool{5, 1}}, {":1 T5 M06"}, true);
 }
 
 void FanucGeneratorTest::msysTest()
@@ -247,8 +248,8 @@ void FanucGeneratorTest::cutcomTest()
 {
     using namespace pp::interface;
 
-    verify({Cutcom{CutterCompensation::LEFT,4}}, {"N1 G41 D4"}, true);
-    verify({Cutcom{CutterCompensation::RIGHT,3}}, {"N1 G42 D3"}, true);
+    verify({Cutcom{CutterCompensation::LEFT, 4}}, {"N1 G41 D4"}, true);
+    verify({Cutcom{CutterCompensation::RIGHT, 3}}, {"N1 G42 D3"}, true);
     verify({Cutcom{CutterCompensation::OFF}}, {"N1 G40"}, true);
 }
 
