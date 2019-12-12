@@ -243,4 +243,13 @@ void FanucGeneratorTest::rapidTest()
     verify({Rapid{}}, {"N1 G90 G53 G00 A0.0 C0.0"}, true);
 }
 
+void FanucGeneratorTest::cutcomTest()
+{
+    using namespace pp::interface;
+
+    verify({Cutcom{CutterCompensation::LEFT,4}}, {"N1 G41 D4"}, true);
+    verify({Cutcom{CutterCompensation::RIGHT,3}}, {"N1 G42 D3"}, true);
+    verify({Cutcom{CutterCompensation::OFF}}, {"N1 G40"}, true);
+}
+
 } // namespace fanuc_test

@@ -251,7 +251,9 @@ void CLDataParserTest::cutcomTest()
     using namespace pp::interface;
 
     verify("CUTCOM/RIGHT,1", {Cutcom{CutterCompensation::RIGHT, 1}}, true);
+    verify("CUTCOM/LEFT,3", {Cutcom{CutterCompensation::LEFT, 3}}, true);
     verify("CUTCOM/OFF", {Cutcom{CutterCompensation::OFF}}, true);
+    verify("CUTCOM/ON", {Cutcom{CutterCompensation::ON}}, true);
 }
 
 } // namespace cldata_test

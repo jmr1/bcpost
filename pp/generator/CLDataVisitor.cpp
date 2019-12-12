@@ -13,6 +13,7 @@
 #include "SpindlRpmGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
+#include "CutcomGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -105,8 +106,7 @@ bool CLDataVisitor::operator()(const interface::Rapid& value) const
 
 bool CLDataVisitor::operator()(const interface::Cutcom& value) const
 {
-    abort();
-    //generated.emplace_back(generate_spindlRpm(line, step, value, precision));
+    generated.emplace_back(generate_cutcom(line, step, value, precision));
     return true;
 }
 
