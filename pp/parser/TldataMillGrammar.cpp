@@ -7,7 +7,7 @@
 #define BOOST_SPIRIT_DEBUG
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "TldataMillGrammar.h"
 
 #include <iomanip>
 
@@ -30,27 +30,20 @@ namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
-)
-
-// clang-format on
-
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+tldata_mill_grammar::tldata_mill_grammar()
+    : tldata_mill_grammar::base_type(tldata_mill_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | tldata_mill_rule | load_tool_rule | select_tool_rule | msys_rule |
-                      end_of_path_rule | spindl_rpm_rule | rapid_rule | cutcom_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // TLDATA/MILL,80.0000,0.0000,75.0000,0.0000,0.0000
+    tldata_mill_attribute = &(qi::lit("TLDATA") >> qi::lit("/") >> qi::lit("MILL")) > qi::lit("TLDATA") > qi::lit("/") >
+                            qi::lit("MILL") > (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                            (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                            (qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) >
+                            -(qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) >
+                            -(qi::lit(",") > attr_value_float) > -(qi::lit(",") > attr_value_float) > qi::eoi;
+    BOOST_SPIRIT_DEBUG_NODES((tldata_mill_attribute));
 }
 
 } // namespace cldata

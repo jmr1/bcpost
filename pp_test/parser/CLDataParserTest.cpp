@@ -146,6 +146,34 @@ void CLDataParserTest::tldataDrillTest()
     verify("TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,", {}, false);
 }
 
+void CLDataParserTest::tldataMillTest()
+{
+    using namespace pp::interface;
+
+    verify("TLDATA/MILL,10.0000,0.0000,80.0000,118.0000,35.0000",
+           {TldataMill{FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           true);
+
+    verify("TLDATA/MILL,10.0000,0.0000,80.0000,118.0000,35.0000,10.0000,0.0000,80.0000,118.0000,35.0000",
+           {TldataMill{FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("35"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           true);
+
+    verify("TLDATA/MILL,10.0000,0.0000,80.0000,118.0000", {}, false);
+}
+
 void CLDataParserTest::loadToolTest()
 {
     using namespace pp::interface;

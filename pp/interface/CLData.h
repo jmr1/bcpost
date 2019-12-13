@@ -74,6 +74,20 @@ struct TldataDrill
     FloatValue  flute_length;
 };
 
+struct TldataMill
+{
+    FloatValue                  diameter;
+    FloatValue                  lower_radius;
+    FloatValue                  length;
+    FloatValue                  taper_angle;
+    FloatValue                  tip_angle;
+    boost::optional<FloatValue> x_center_r1;
+    boost::optional<FloatValue> y_center_r1;
+    boost::optional<FloatValue> upper_radius;
+    boost::optional<FloatValue> x_center_r2;
+    boost::optional<FloatValue> y_center_r2;
+};
+
 struct LoadTool
 {
     uint32_t                  tool_number;
@@ -164,8 +178,8 @@ struct Cutcom
     boost::optional<uint32_t> register_number;
 };
 
-using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, LoadTool, SelectTool,
-                                        Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
+using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, TldataMill, LoadTool,
+                                        SelectTool, Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

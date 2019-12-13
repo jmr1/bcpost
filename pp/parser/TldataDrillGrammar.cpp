@@ -37,10 +37,11 @@ tldata_drill_grammar::tldata_drill_grammar()
     : tldata_drill_grammar::base_type(tldata_drill_attribute)
 {
     // TLDATA/DRILL,MILL,10.0000,0.0000,80.0000,118.0000,35.0000
-    tldata_drill_attribute = qi::lit("TLDATA") > qi::lit("/") > qi::lit("DRILL") >
-                             (qi::lit(",") > qi::lexeme[+qi::char_("a-zA-Z0-9_")]) > (qi::lit(",") > attr_value_float) >
+    tldata_drill_attribute = &(qi::lit("TLDATA") >> qi::lit("/") >> qi::lit("DRILL")) > qi::lit("TLDATA") >
+                             qi::lit("/") > qi::lit("DRILL") > (qi::lit(",") > qi::lexeme[+qi::char_("a-zA-Z0-9_")]) >
                              (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
-                             (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) > qi::eoi;
+                             (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                             (qi::lit(",") > attr_value_float) > qi::eoi;
     BOOST_SPIRIT_DEBUG_NODES((tldata_drill_attribute));
 }
 

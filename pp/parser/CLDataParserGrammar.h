@@ -18,6 +18,7 @@
 #include "SelectToolGrammar.h"
 #include "SpindlRpmGrammar.h"
 #include "TldataDrillGrammar.h"
+#include "TldataMillGrammar.h"
 #include "ToolPathGrammar.h"
 
 namespace qi = boost::spirit::qi;
@@ -43,6 +44,7 @@ private:
     load_tool_grammar                                                                       load_tool_rule;
     select_tool_grammar                                                                     select_tool_rule;
     tldata_drill_grammar                                                                    tldata_drill_rule;
+    tldata_mill_grammar                                                                     tldata_mill_rule;
     spindl_rpm_grammar                                                                      spindl_rpm_rule;
     cutcom_grammar                                                                          cutcom_rule;
     qi::rule<pos_iterator_type, interface::AttributeVariant(), qi::blank_type>              line_attribute;

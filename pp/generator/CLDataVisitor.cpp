@@ -4,16 +4,16 @@
 
 #include <boost/variant.hpp>
 
+#include "CutcomGenerator.h"
 #include "CycleOffGenerator.h"
 #include "EndOfPathGenerator.h"
 #include "GotoGenerator.h"
+#include "LoadToolGenerator.h"
 #include "MsysGenerator.h"
 #include "RapidGenerator.h"
-#include "LoadToolGenerator.h"
 #include "SpindlRpmGenerator.h"
 #include "TldataDrillGenerator.h"
 #include "ToolPathGenerator.h"
-#include "CutcomGenerator.h"
 
 namespace pp {
 namespace fanuc {
@@ -51,6 +51,13 @@ bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
     generated.emplace_back(generate_tldataDrill(line, step, value, precision));
     was_G0 = true;
+    return true;
+}
+bool CLDataVisitor::operator()(const interface::TldataMill& value) const
+{
+    abort();
+    // generated.emplace_back(generate_tldataMill(line, step, value, precision));
+    // was_G0 = true;
     return true;
 }
 

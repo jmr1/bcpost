@@ -128,6 +128,27 @@ bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) co
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::TldataMill& value) const
+{
+    auto value_expected = boost::get<interface::TldataMill>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    FloatValueComparer()(value_expected->diameter, value.diameter);
+    FloatValueComparer()(value_expected->lower_radius, value.lower_radius);
+    FloatValueComparer()(value_expected->length, value.length);
+    FloatValueComparer()(value_expected->taper_angle, value.taper_angle);
+    FloatValueComparer()(value_expected->tip_angle, value.tip_angle);
+    FloatValueComparer()(value_expected->x_center_r1, value.x_center_r1);
+    FloatValueComparer()(value_expected->y_center_r1, value.y_center_r1);
+    FloatValueComparer()(value_expected->upper_radius, value.upper_radius);
+    FloatValueComparer()(value_expected->x_center_r2, value.x_center_r2);
+    FloatValueComparer()(value_expected->y_center_r2, value.y_center_r2);
+
+    return true;
+}
+
 bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
 {
     auto value_expected = boost::get<interface::LoadTool>(&v_expected);
