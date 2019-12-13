@@ -54,8 +54,10 @@ public:
         : load_tool_grammar::base_type(attribute)
     {
         // :6 T5 M06
-        attribute = ":" << karma::lit(phx::ref(line) += step) << " "
-                        << "T" << karma::uint_ << " M06" << -karma::omit[karma::uint_];
+        attribute =
+            ":" << karma::lit(phx::ref(line) += step) << " "
+                << "T" << karma::uint_ << " M06"
+                << -(karma::eol << "N" << karma::lit(phx::ref(line) += step) << " G43 H" << karma::uint_ << " Z100.");
     }
 
 private:

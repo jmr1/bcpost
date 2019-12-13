@@ -187,7 +187,10 @@ void FanucGeneratorTest::loadToolTest()
     using namespace pp::interface;
 
     verify({LoadTool{5}}, {":1 T5 M06"}, true);
-    verify({LoadTool{5, 1}}, {":1 T5 M06"}, true);
+    verify({LoadTool{5, 1}},
+           {":1 T5 M06\n"
+            "N2 G43 H1 Z100."},
+           true);
 }
 
 void FanucGeneratorTest::msysTest()
