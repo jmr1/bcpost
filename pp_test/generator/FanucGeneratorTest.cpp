@@ -182,6 +182,21 @@ void FanucGeneratorTest::tldataDrillTest()
            true);
 }
 
+void FanucGeneratorTest::tldataMillTest()
+{
+    using namespace pp::interface;
+
+    verify({TldataMill{FloatValue{boost::none, std::string("10"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("80"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("118"), '.', std::string("0000")},
+                       FloatValue{boost::none, std::string("35"), '.', std::string("0000")}}},
+           {"N1 G91 G28 Z0.0\n"
+            "N2 G91 G28 X0.0 Y0.0\n"
+            "N3 G90 G54 G00 A0.0 C0.0"},
+           true);
+}
+
 void FanucGeneratorTest::loadToolTest()
 {
     using namespace pp::interface;

@@ -13,6 +13,7 @@
 #include "RapidGenerator.h"
 #include "SpindlRpmGenerator.h"
 #include "TldataDrillGenerator.h"
+#include "TldataMillGenerator.h"
 #include "ToolPathGenerator.h"
 
 namespace pp {
@@ -55,9 +56,8 @@ bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 }
 bool CLDataVisitor::operator()(const interface::TldataMill& value) const
 {
-    abort();
-    // generated.emplace_back(generate_tldataMill(line, step, value, precision));
-    // was_G0 = true;
+    generated.emplace_back(generate_tldataMill(line, step, value, precision));
+    was_G0 = true;
     return true;
 }
 
