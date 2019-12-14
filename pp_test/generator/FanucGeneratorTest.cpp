@@ -244,6 +244,19 @@ void FanucGeneratorTest::msysTest()
             "N2 G68.2 X0.5 Y0. Z0.866 I0.866 J0. K0.5\n"
             "N3 G53.1"},
            true);
+
+    verify({Msys{FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("180"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")}}},
+           {"N1 G97 G90 G54\n"
+            "N2 G53.1"},
+           true);
 }
 
 void FanucGeneratorTest::cycleOffTest()

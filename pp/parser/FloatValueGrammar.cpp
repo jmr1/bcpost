@@ -47,6 +47,11 @@ std::string to_string(const FloatValue& value)
     return tmp;
 }
 
+double to_double(const FloatValue& value)
+{
+    return atof(to_string(value).c_str());
+}
+
 FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
 {
     double dlhs = std::atof(to_string(lhs).c_str());
@@ -64,7 +69,8 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
     {
         if (qi::phrase_parse(position_begin, position_end, fv, qi::blank, fv_ret))
         {
-            const auto precision = std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
+            const auto precision =
+                std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
             if (fv_ret.value2)
                 interface::float_rounder(precision).exec(*fv_ret.value2);
             return fv_ret;

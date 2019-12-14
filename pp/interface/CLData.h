@@ -28,6 +28,7 @@ struct FloatValue
 FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs);
 
 std::string to_string(const FloatValue& value);
+double      to_double(const FloatValue& value);
 
 class float_rounder
 {

@@ -59,21 +59,28 @@ template <typename Iterator>
 class msys_grammar : public karma::grammar<Iterator, interface::Msys()>
 {
 public:
-    msys_grammar(uint32_t& line, uint32_t step, uint32_t precision)
+    msys_grammar(uint32_t& line, uint32_t step, uint32_t precision, bool is_3axis)
         : msys_grammar::base_type(msys_attribute)
         , attr_value_float_check(precision)
     {
+        // 5 axis:
         // N7 G97 G90 G54
         // N8 G68.2 X0.0 Y0.0 Z0.0 I60. J90. K0.0
         // N9 G53.1
+        //
+        // 3 axis:
+        // N7 G97 G90 G54
+        // N8 G53.1
         attr_value_float %=
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
-        msys_attribute = "N" << karma::lit(phx::ref(line) += step) << " G97 G90 G54" << karma::eol << "N"
-                             << karma::lit(phx::ref(line) += step) << " G68.2" << karma::omit[attr_value_float]
-                             << karma::omit[attr_value_float] << karma::omit[attr_value_float] << " X"
-                             << attr_value_float << " Y" << attr_value_float << " Z" << attr_value_float << " I"
-                             << attr_value_float << " J" << attr_value_float << " K" << attr_value_float << karma::eol
-                             << "N" << karma::lit(phx::ref(line) += step) << " G53.1";
+        msys_attribute %=
+            "N" << karma::lit(phx::ref(line) += step) << " G97 G90 G54" << karma::eol
+                << (karma::eps(is_3axis) |
+                    ("N" << karma::lit(phx::ref(line) += step) << " G68.2" << karma::omit[attr_value_float]
+                         << karma::omit[attr_value_float] << karma::omit[attr_value_float] << " X" << attr_value_float
+                         << " Y" << attr_value_float << " Z" << attr_value_float << " I" << attr_value_float << " J"
+                         << attr_value_float << " K" << attr_value_float << karma::eol))
+                << "N" << karma::lit(phx::ref(line) += step) << " G53.1";
     }
 
 private:
@@ -85,7 +92,14 @@ private:
 template <typename Iterator>
 bool generate_msys(Iterator& sink, uint32_t& line, uint32_t step, const interface::Msys& v, uint32_t precision)
 {
-    msys_grammar<Iterator> msys_g(line, step, precision);
+    const auto col1_3axis = std::make_tuple(1., 0., 0.);
+    const auto col2_3axis = std::make_tuple(0., 1., 0.);
+    const auto col1       = std::make_tuple(to_double(v.col1_x), to_double(v.col1_y), to_double(v.col1_z));
+    const auto col2       = std::make_tuple(to_double(v.col2_x), to_double(v.col2_y), to_double(v.col2_z));
+
+    const auto is_3axis = (col1_3axis == col1 && col2_3axis == col2) || (col1_3axis == col2 && col2_3axis == col1);
+
+    msys_grammar<Iterator> msys_g(line, step, precision, is_3axis);
     return karma::generate(sink, msys_g, v);
 }
 
