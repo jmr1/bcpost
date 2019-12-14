@@ -274,6 +274,23 @@ void FanucGeneratorTest::spindlRpmTest()
            true);
 }
 
+void FanucGeneratorTest::fedratTest()
+{
+    using namespace pp::interface;
+
+    verify({Fedrat{FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
+           {"N1 G94 F250."}, true);
+
+    verify({Fedrat{FedrateType::MMPR, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
+           {"N1 G95 F250."}, true);
+
+    verify({Fedrat{FedrateType::IPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
+           {"N1 G94 F250."}, true);
+
+    verify({Fedrat{FedrateType::IPR, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}},
+           {"N1 G95 F250."}, true);
+}
+
 void FanucGeneratorTest::rapidTest()
 {
     using namespace pp::interface;

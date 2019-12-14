@@ -142,10 +142,10 @@ std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& va
 
 enum class FedrateType
 {
-    IPM,
-    IPR,
-    MMPM,
-    MMPR
+    IPM,  // G94
+    IPR,  // G95
+    MMPM, // G94
+    MMPR  // G95
 };
 
 std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);

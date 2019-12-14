@@ -8,7 +8,7 @@
 #include "CutcomGenerator.h"
 #include "CycleOffGenerator.h"
 #include "EndOfPathGenerator.h"
-//#include "FedratGenerator.h"
+#include "FedratGenerator.h"
 #include "GotoGenerator.h"
 #include "LoadToolGenerator.h"
 #include "MsysGenerator.h"
@@ -105,8 +105,7 @@ bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 
 bool CLDataVisitor::operator()(const interface::Fedrat& value) const
 {
-    abort();
-    // generated.emplace_back(generate_fedrat(line, step, value));
+    generated.emplace_back(generate_fedrat(line, step, value, precision));
     return true;
 }
 

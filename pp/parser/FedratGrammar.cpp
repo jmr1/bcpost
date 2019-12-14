@@ -31,30 +31,6 @@ namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
 namespace pp {
-namespace interface {
-
-/*std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value)
-{
-    switch (value)
-    {
-    case interface::FedrateType::IPM:
-        ostr << "IPM";
-        break;
-    case interface::FedrateType::IPR:
-        ostr << "IPR";
-        break;
-    case interface::FedrateType::MMPM:
-        ostr << "MMPM";
-        break;
-    case interface::FedrateType::MMPR:
-        ostr << "MMPR";
-        break;
-    }
-    return ostr;
-}*/
-
-} // namespace interface
-
 namespace cldata {
 
 fedrat_grammar::fedrat_grammar()
