@@ -4,7 +4,7 @@
 
 #include <boost/variant.hpp>
 
-//#include "CircleGenerator.h"
+#include "CircleGenerator.h"
 #include "CutcomGenerator.h"
 #include "CycleOffGenerator.h"
 #include "EndOfPathGenerator.h"
@@ -34,8 +34,7 @@ bool CLDataVisitor::operator()(const interface::Goto& value) const
 
 bool CLDataVisitor::operator()(const interface::Circle& value) const
 {
-    abort();
-    // generated.emplace_back(generate_circle(line, step, value, precision, in_cycle));
+    generated.emplace_back(generate_circle(line, step, value, precision));
     return true;
 }
 
