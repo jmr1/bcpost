@@ -12,6 +12,7 @@ public:
 
     CPPUNIT_TEST_SUITE(CLDataParserTest);
     CPPUNIT_TEST(gotoTest);
+    CPPUNIT_TEST(circleTest);
     CPPUNIT_TEST(ignoredValueTest);
     CPPUNIT_TEST(endOfPathTest);
     CPPUNIT_TEST(toolPathTest);
@@ -33,6 +34,7 @@ public:
 
 protected:
     void gotoTest();
+    void circleTest();
     void ignoredValueTest();
     void endOfPathTest();
     void toolPathTest();

@@ -7,7 +7,7 @@
 #define BOOST_SPIRIT_DEBUG
 #endif
 
-#include "CLDataParserGrammar.h"
+#include "CircleGrammar.h"
 
 #include <iomanip>
 
@@ -30,27 +30,21 @@ namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
 
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Nil
-)
-
-// clang-format on
-
 namespace pp {
 namespace cldata {
 
-all_attributes_grammar::all_attributes_grammar(std::string& message)
-    : all_attributes_grammar::base_type(line_attribute_vec)
+circle_grammar::circle_grammar()
+    : circle_grammar::base_type(circle_attribute)
 {
-    line_attribute     = (ignored_rule | goto_rule | circle_rule | cycle_drill_rule | cycle_off_rule | tool_path_rule |
-                      tldata_drill_rule | tldata_mill_rule | load_tool_rule | select_tool_rule | msys_rule |
-                      end_of_path_rule | spindl_rpm_rule | rapid_rule | cutcom_rule);
-    line_attribute_vec = /*-line_number_rule >*/ +line_attribute > qi::eoi;
-    BOOST_SPIRIT_DEBUG_NODES((line_attribute)(line_attribute_vec));
+    // CIRCLE/206.4575,-30.0000,0.0000,0.0000000,0.0000000,1.0000000,30.0000,0.0600,0.5000,30.0000,0.0000
+    circle_attribute = qi::lit("CIRCLE") > qi::lit("/") > attr_value_float > (qi::lit(",") > attr_value_float) >
+                       (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                       (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                       (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                       (qi::lit(",") > attr_value_float) > (qi::lit(",") > attr_value_float) >
+                       (qi::lit(",") > attr_value_float) > -(qi::lit(",") > qi::uint_);
+
+    BOOST_SPIRIT_DEBUG_NODES((circle_attribute));
 }
 
 } // namespace cldata

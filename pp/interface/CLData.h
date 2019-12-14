@@ -50,6 +50,22 @@ struct Goto
     boost::optional<FloatValue> k;
 };
 
+struct Circle
+{
+    FloatValue                x;
+    FloatValue                y;
+    FloatValue                z;
+    FloatValue                i;
+    FloatValue                j;
+    FloatValue                k;
+    FloatValue                r;
+    FloatValue                t;
+    FloatValue                f;
+    FloatValue                d;
+    FloatValue                e;
+    boost::optional<uint32_t> n;
+};
+
 struct EndOfPath
 {
 };
@@ -178,8 +194,8 @@ struct Cutcom
     boost::optional<uint32_t> register_number;
 };
 
-using AttributeVariant = boost::variant<Nil, Goto, EndOfPath, Ignored, ToolPath, TldataDrill, TldataMill, LoadTool,
-                                        SelectTool, Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
+using AttributeVariant = boost::variant<Nil, Goto, Circle, EndOfPath, Ignored, ToolPath, TldataDrill, TldataMill,
+                                        LoadTool, SelectTool, Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {

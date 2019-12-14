@@ -6,6 +6,7 @@
 
 #include "PosIteratorType.h"
 
+#include "CircleGrammar.h"
 #include "CutcomGrammar.h"
 #include "CycleDrillGrammar.h"
 #include "CycleOffGrammar.h"
@@ -34,6 +35,7 @@ public:
 
 private:
     goto_grammar                                                                            goto_rule;
+    circle_grammar                                                                          circle_rule;
     msys_grammar                                                                            msys_rule;
     rapid_grammar                                                                           rapid_rule;
     cycle_off_grammar                                                                       cycle_off_rule;

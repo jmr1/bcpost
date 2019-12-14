@@ -78,6 +78,33 @@ bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Circle& value) const
+{
+    auto value_expected = boost::get<interface::Circle>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    FloatValueComparer()(value_expected->x, value.x);
+    FloatValueComparer()(value_expected->y, value.y);
+    FloatValueComparer()(value_expected->z, value.z);
+    FloatValueComparer()(value_expected->i, value.i);
+    FloatValueComparer()(value_expected->j, value.j);
+    FloatValueComparer()(value_expected->k, value.k);
+    FloatValueComparer()(value_expected->r, value.r);
+    FloatValueComparer()(value_expected->t, value.t);
+    FloatValueComparer()(value_expected->f, value.f);
+    FloatValueComparer()(value_expected->d, value.d);
+    FloatValueComparer()(value_expected->e, value.e);
+
+    if (value_expected->n == boost::none)
+        CPPUNIT_ASSERT(value.n == boost::none);
+    else
+        CPPUNIT_ASSERT_EQUAL(*value_expected->n, *value.n);
+
+    return true;
+}
+
 bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) const
 {
     auto value_expected = boost::get<interface::EndOfPath>(&v_expected);

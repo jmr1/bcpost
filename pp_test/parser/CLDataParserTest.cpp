@@ -90,6 +90,25 @@ void CLDataParserTest::gotoTest()
     verify("GOTO/-24.5855,-1 15.0000,100", {}, false);
 }
 
+void CLDataParserTest::circleTest()
+{
+    using namespace pp::interface;
+
+    verify("CIRCLE/206.4575,-30.0000,0.0000,0.0000000,0.0000000,1.0000000,30.0000,0.0600,0.5000,30.0000,0.0000",
+           {Circle{FloatValue{boost::none, std::string("206"), '.', std::string("4575")},
+                   FloatValue{'-', std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                   FloatValue{boost::none, std::string("1"), '.', std::string("0000000")},
+                   FloatValue{boost::none, std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0600")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("5000")},
+                   FloatValue{boost::none, std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000")}}},
+           true);
+}
+
 void CLDataParserTest::ignoredValueTest()
 {
     using namespace pp::interface;
