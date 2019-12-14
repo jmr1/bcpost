@@ -11,6 +11,7 @@
 #include "CycleDrillGrammar.h"
 #include "CycleOffGrammar.h"
 #include "EndOfPathGrammar.h"
+#include "FedratGrammar.h"
 #include "GotoGrammar.h"
 #include "IgnoredValueGrammar.h"
 #include "LoadToolGrammar.h"
@@ -36,6 +37,7 @@ public:
 private:
     goto_grammar                                                                            goto_rule;
     circle_grammar                                                                          circle_rule;
+    fedrat_grammar                                                                          fedrat_rule;
     msys_grammar                                                                            msys_rule;
     rapid_grammar                                                                           rapid_rule;
     cycle_off_grammar                                                                       cycle_off_rule;

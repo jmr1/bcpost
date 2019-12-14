@@ -252,6 +252,19 @@ bool CLDataAttributesVisitor::operator()(const interface::CycleDrill& value) con
     return true;
 }
 
+bool CLDataAttributesVisitor::operator()(const interface::Fedrat& value) const
+{
+    auto value_expected = boost::get<interface::Fedrat>(&v_expected);
+    if (!value_expected)
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+    CPPUNIT_ASSERT(value_expected);
+
+    CPPUNIT_ASSERT_EQUAL(value_expected->fedrate_type, value.fedrate_type);
+    FloatValueComparer()(value_expected->units_number, value.units_number);
+
+    return true;
+}
+
 bool CLDataAttributesVisitor::operator()(const interface::SpindlRpm& value) const
 {
     auto value_expected = boost::get<interface::SpindlRpm>(&v_expected);

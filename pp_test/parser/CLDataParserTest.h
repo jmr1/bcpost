@@ -23,6 +23,7 @@ public:
     CPPUNIT_TEST(msysTest);
     CPPUNIT_TEST(cycleOffTest);
     CPPUNIT_TEST(cycleDrillTest);
+    CPPUNIT_TEST(fedratTest);
     CPPUNIT_TEST(spindlRpmTest);
     CPPUNIT_TEST(rapidTest);
     CPPUNIT_TEST(cutcomTest);
@@ -45,6 +46,7 @@ protected:
     void msysTest();
     void cycleOffTest();
     void cycleDrillTest();
+    void fedratTest();
     void spindlRpmTest();
     void rapidTest();
     void cutcomTest();

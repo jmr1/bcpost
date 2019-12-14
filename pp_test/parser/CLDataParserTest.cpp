@@ -274,6 +274,14 @@ void CLDataParserTest::cycleDrillTest()
     verify("CYCLE/DRILL,RAPTO,3.0000,FEDTO,-33.0043,RTRCTO,AUTO,WRONG,250.0000", {}, false);
 }
 
+void CLDataParserTest::fedratTest()
+{
+    using namespace pp::interface;
+
+    verify("FEDRAT/MMPM,250.0000",
+           {Fedrat{FedrateType::MMPM, FloatValue{boost::none, std::string("250"), '.', std::string("0000")}}}, true);
+}
+
 void CLDataParserTest::spindlRpmTest()
 {
     using namespace pp::interface;

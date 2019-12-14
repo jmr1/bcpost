@@ -160,6 +160,12 @@ struct CycleDrill
     FloatValue                  fedrate;
 };
 
+struct Fedrat
+{
+    FedrateType fedrate_type;
+    FloatValue  units_number;
+};
+
 enum class RotationDirection
 {
     CLW = 3,
@@ -194,8 +200,9 @@ struct Cutcom
     boost::optional<uint32_t> register_number;
 };
 
-using AttributeVariant = boost::variant<Nil, Goto, Circle, EndOfPath, Ignored, ToolPath, TldataDrill, TldataMill,
-                                        LoadTool, SelectTool, Msys, CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom>;
+using AttributeVariant =
+    boost::variant<Nil, Goto, Circle, EndOfPath, Ignored, ToolPath, TldataDrill, TldataMill, LoadTool, SelectTool, Msys,
+                   CycleDrill, CycleOff, SpindlRpm, Rapid, Cutcom, Fedrat>;
 
 struct CLDataAttributeData : public AttributeVariantData
 {
