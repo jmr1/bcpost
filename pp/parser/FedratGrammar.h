@@ -4,24 +4,13 @@
 #include <boost/spirit/include/qi_symbols.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionFedrat.h"
 
 #include "PosIteratorType.h"
 
 #include "FloatValueGrammar.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Fedrat,
-    (pp::interface::FedrateType, fedrate_type)
-    (pp::interface::FloatValue, units_number)
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {

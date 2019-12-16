@@ -12,7 +12,6 @@
 #include <iomanip>
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/phoenix/bind.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>

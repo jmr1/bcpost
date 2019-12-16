@@ -3,22 +3,11 @@
 #include <boost/spirit/include/qi.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionLoadTool.h"
 
 #include "PosIteratorType.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::LoadTool,
-    (uint32_t, tool_number)
-    (boost::optional<uint32_t>, adjust)
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {

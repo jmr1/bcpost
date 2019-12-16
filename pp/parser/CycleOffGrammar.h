@@ -3,20 +3,11 @@
 #include <boost/spirit/include/qi.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionCycleOff.h"
 
 #include "PosIteratorType.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::CycleOff
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {

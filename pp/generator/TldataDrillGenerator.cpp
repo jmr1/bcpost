@@ -13,8 +13,6 @@
 #include <string>
 
 #include <boost/config/warning_disable.hpp>
-#include <boost/fusion/adapted.hpp>
-#include <boost/fusion/include/adapt_struct.hpp>
 #include <boost/phoenix/bind.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/karma.hpp>
@@ -26,28 +24,13 @@
 
 #include "FloatValueGenerator.h"
 #include "interface/CLData.h"
+#include "interface/FusionTldataDrill.h"
 
 namespace karma   = boost::spirit::karma;
 namespace ascii   = boost::spirit::ascii;
 namespace classic = boost::spirit::classic;
 namespace phx     = boost::phoenix;
 namespace fusion  = boost::fusion;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::TldataDrill,
-    (std::string, module_type)
-    (pp::interface::FloatValue, diameter)
-    (pp::interface::FloatValue, corner_radius)
-    (pp::interface::FloatValue, length)
-    (pp::interface::FloatValue, point_angle)
-    (pp::interface::FloatValue, flute_length)
-)
-
-// clang-format on
 
 namespace pp {
 namespace fanuc {

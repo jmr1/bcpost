@@ -3,32 +3,13 @@
 #include <boost/spirit/include/qi.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionTldataMill.h"
 
 #include "PosIteratorType.h"
 
 #include "FloatValueGrammar.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::TldataMill,
-    (pp::interface::FloatValue, diameter)
-    (pp::interface::FloatValue, lower_radius)
-    (pp::interface::FloatValue, length)
-    (pp::interface::FloatValue, taper_angle)
-    (pp::interface::FloatValue, tip_angle)
-    (boost::optional<pp::interface::FloatValue>, x_center_r1)
-    (boost::optional<pp::interface::FloatValue>, y_center_r1)
-    (boost::optional<pp::interface::FloatValue>, upper_radius)
-    (boost::optional<pp::interface::FloatValue>, x_center_r2)
-    (boost::optional<pp::interface::FloatValue>, y_center_r2)
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {

@@ -4,22 +4,11 @@
 #include <boost/spirit/include/qi_symbols.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionCutcom.h"
 
 #include "PosIteratorType.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::Cutcom,
-    (pp::interface::CutterCompensation, cutter_compensation)
-    (boost::optional<uint32_t>, register_number)
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {

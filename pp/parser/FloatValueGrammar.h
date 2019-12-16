@@ -5,24 +5,11 @@
 #include <boost/spirit/include/qi.hpp>
 
 #include "interface/CLData.h"
+#include "interface/FusionFloatValue.h"
 
 #include "PosIteratorType.h"
 
 namespace qi = boost::spirit::qi;
-
-// clang-format off
-
-// must be in global namespace
-
-BOOST_FUSION_ADAPT_STRUCT(
-    pp::interface::FloatValue,
-    (boost::optional<char>, sign)
-    (boost::optional<std::string>, value)
-    (boost::optional<char>, dot)
-    (boost::optional<std::string>, value2)
-)
-
-// clang-format on
 
 namespace pp {
 namespace cldata {
