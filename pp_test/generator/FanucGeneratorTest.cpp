@@ -155,7 +155,19 @@ void FanucGeneratorTest::circleTest()
                    FloatValue{boost::none, std::string("0"), '.', std::string("0000")}}},
            {"N1 G2 X206.457 Y-30. I0. J0."}, true);
 
-} // namespace fanuc_test
+    verify({Circle{FloatValue{boost::none, std::string("206"), '.', std::string("4575")},
+                   FloatValue{'-', std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                   FloatValue{'-', std::string("1"), '.', std::string("0000000")},
+                   FloatValue{boost::none, std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0600")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("5000")},
+                   FloatValue{boost::none, std::string("30"), '.', std::string("0000")},
+                   FloatValue{boost::none, std::string("0"), '.', std::string("0000")}}},
+           {"N1 G3 X206.457 Y-30. I0. J0."}, true);
+}
 
 void FanucGeneratorTest::endOfPathTest()
 {

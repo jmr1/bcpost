@@ -47,8 +47,12 @@ public:
         // or
         // N85 G3 X440. Y300. I-10.909 J38.484
         attribute = "N" << karma::lit(phx::ref(line) += step) << " "
-                        << "G2 X" << attr_value_float << " Y" << attr_value_float << karma::omit[attr_value_float]
-                        << " I" << attr_value_float << " J" << attr_value_float;
+                        << (karma::eps(phx::bind(&interface::FloatValue::sign,
+                                                 phx::bind(&interface::Circle::k, karma::_val)) != boost::none)
+                                << "G3" |
+                            "G2")
+                        << " X" << attr_value_float << " Y" << attr_value_float << karma::omit[attr_value_float] << " I"
+                        << attr_value_float << " J" << attr_value_float;
     }
 
 private:
