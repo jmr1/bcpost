@@ -29,6 +29,7 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs);
 
 std::string to_string(const FloatValue& value);
 double      to_double(const FloatValue& value);
+FloatValue  to_FloatValue(const std::string& data, uint32_t precision);
 
 class float_rounder
 {

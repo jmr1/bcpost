@@ -51,13 +51,9 @@ double to_double(const FloatValue& value)
     return atof(to_string(value).c_str());
 }
 
-FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
+FloatValue to_FloatValue(const std::string& data, uint32_t precision)
 {
-    double dlhs = std::atof(to_string(lhs).c_str());
-    double drhs = std::atof(to_string(rhs).c_str());
-
-    std::string        data(std::to_string(dlhs + drhs));
-    std::istringstream input(data);
+    std::istringstream                                                                  input(data);
     typedef boost::spirit::classic::position_iterator2<boost::spirit::istream_iterator> pos_iterator_type;
     pos_iterator_type position_begin(boost::spirit::istream_iterator{input >> std::noskipws}, {}), position_end;
 
@@ -68,10 +64,15 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
     {
         if (qi::phrase_parse(position_begin, position_end, fv, qi::blank, fv_ret))
         {
-            const auto precision =
-                std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
             if (fv_ret.value2)
+            {
                 interface::float_rounder(precision).exec(*fv_ret.value2);
+                if (fv_ret.value2->empty())
+                    fv_ret.value2 = boost::none;
+            }
+            // Remove minus sign in case we have "-0."
+            if (not fv_ret.value2 && fv_ret.value && *fv_ret.value == "0" && fv_ret.sign)
+                fv_ret.sign = boost::none;
             return fv_ret;
         }
     }
@@ -85,6 +86,16 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
     }
 
     return fv_ret;
+}
+
+FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
+{
+    double dlhs = std::atof(to_string(lhs).c_str());
+    double drhs = std::atof(to_string(rhs).c_str());
+
+    const auto precision = std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
+
+    return to_FloatValue(std::to_string(dlhs + drhs), precision);
 }
 
 } // namespace interface
