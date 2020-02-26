@@ -2,6 +2,7 @@
 
 #include <string>
 
+#include "FanucParams.h"
 #include "GeneratorData.h"
 #include "interface/CLData.h"
 
@@ -11,16 +12,14 @@ namespace fanuc {
 class CLDataVisitor : public boost::static_visitor<bool>
 {
 public:
-    CLDataVisitor(GeneratorData& data, uint32_t& line, const uint32_t step, uint32_t precision, bool& was_G0,
-                  bool& in_cycle, bool& first_goto_in_cycle, std::vector<std::string>& generated)
+    CLDataVisitor(GeneratorData& data, uint32_t& line, const uint32_t step, uint32_t precision,
+                  std::vector<std::string>& generated, FanucParams& fanuc_params)
         : data(data)
         , generated(generated)
         , line(line)
         , step(step)
         , precision(precision)
-        , was_G0(was_G0)
-        , in_cycle(in_cycle)
-        , first_goto_in_cycle(first_goto_in_cycle)
+        , fanuc_params(fanuc_params)
     {
     }
 
@@ -48,9 +47,7 @@ private:
     uint32_t&                 line;
     const uint32_t            step;
     const uint32_t            precision;
-    bool&                     was_G0;
-    bool&                     in_cycle;
-    bool&                     first_goto_in_cycle;
+    FanucParams&              fanuc_params;
 };
 
 } // namespace fanuc

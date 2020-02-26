@@ -28,8 +28,9 @@ bool CLDataVisitor::operator()(const interface::Nil& value) const
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    generated.emplace_back(generate_goto(data, line, step, value, precision, in_cycle, first_goto_in_cycle));
-    first_goto_in_cycle = false;
+    generated.emplace_back(
+        generate_goto(data, line, step, value, precision, fanuc_params.in_cycle, fanuc_params.first_goto_in_cycle));
+    fanuc_params.first_goto_in_cycle = false;
     return true;
 }
 
@@ -59,13 +60,13 @@ bool CLDataVisitor::operator()(const interface::ToolPath& value) const
 bool CLDataVisitor::operator()(const interface::TldataDrill& value) const
 {
     generated.emplace_back(generate_tldataDrill(line, step, value, precision));
-    was_G0 = true;
+    fanuc_params.was_G0 = true;
     return true;
 }
 bool CLDataVisitor::operator()(const interface::TldataMill& value) const
 {
     generated.emplace_back(generate_tldataMill(line, step, value, precision));
-    was_G0 = true;
+    fanuc_params.was_G0 = true;
     return true;
 }
 
@@ -88,18 +89,18 @@ bool CLDataVisitor::operator()(const interface::Msys& value) const
 
 bool CLDataVisitor::operator()(const interface::CycleOff& value) const
 {
-    in_cycle            = false;
-    first_goto_in_cycle = false;
+    fanuc_params.in_cycle            = false;
+    fanuc_params.first_goto_in_cycle = false;
     generated.emplace_back(generate_cycleOff(line, step));
     return true;
 }
 
 bool CLDataVisitor::operator()(const interface::CycleDrill& value) const
 {
-    in_cycle            = true;
-    first_goto_in_cycle = true;
-    data.rapto          = value.rapto;
-    data.fedrate        = value.fedrate;
+    fanuc_params.in_cycle            = true;
+    fanuc_params.first_goto_in_cycle = true;
+    data.rapto                       = value.rapto;
+    data.fedrate                     = value.fedrate;
     return true;
 }
 
@@ -117,10 +118,10 @@ bool CLDataVisitor::operator()(const interface::SpindlRpm& value) const
 
 bool CLDataVisitor::operator()(const interface::Rapid& value) const
 {
-    if (!was_G0)
+    if (!fanuc_params.was_G0)
     {
         generated.emplace_back(generate_rapid(line, step));
-        was_G0 = true;
+        fanuc_params.was_G0 = true;
     }
     return true;
 }

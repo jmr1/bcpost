@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "FanucParams.h"
 #include "GeneratorBase.h"
 #include "GeneratorData.h"
 #include "interface/CLData.h"
@@ -12,13 +13,6 @@
 
 namespace pp {
 namespace fanuc {
-
-struct FanucParams
-{
-    bool was_G0{};
-    bool in_cycle{};
-    bool first_goto_in_cycle{};
-};
 
 class PARSER_API FanucGenerator : public GeneratorBase
 {
