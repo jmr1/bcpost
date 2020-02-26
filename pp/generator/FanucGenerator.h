@@ -13,6 +13,13 @@
 namespace pp {
 namespace fanuc {
 
+struct FanucParams
+{
+    bool was_G0{};
+    bool in_cycle{};
+    bool first_goto_in_cycle{};
+};
+
 class PARSER_API FanucGenerator : public GeneratorBase
 {
 public:
@@ -41,11 +48,9 @@ private:
 #pragma warning(disable : 4251)
 #endif
     GeneratorData data{};
+    FanucParams   fanuc_params{};
     uint32_t      step;
     uint32_t      precision;
-    bool          was_G0{};
-    bool          in_cycle{};
-    bool          first_goto_in_cycle{};
 #ifdef _MSC_VER
 #pragma warning(pop)
 #endif
