@@ -116,14 +116,8 @@ public:
         attr_value_float %=
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
 
-        std::string block_start;
-        if (first)
-            block_start = " G98 G81 X";
-        else
-            block_start = " G81 X";
-
         goto_attribute %=
-            "N" << karma::lit(phx::ref(line) += step) << block_start
+            "N" << karma::lit(phx::ref(line) += step) << (karma::eps(!first) | " G98") << " G81" << " X"
                 << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
                 << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
                 << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F" << karma::lit(f) << " R"
