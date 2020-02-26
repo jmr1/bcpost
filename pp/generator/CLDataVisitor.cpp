@@ -28,9 +28,10 @@ bool CLDataVisitor::operator()(const interface::Nil& value) const
 
 bool CLDataVisitor::operator()(const interface::Goto& value) const
 {
-    generated.emplace_back(
-        generate_goto(data, line, step, value, precision, fanuc_params.in_cycle, fanuc_params.first_goto_in_cycle));
+    generated.emplace_back(generate_goto(data, line, step, value, precision, fanuc_params.in_cycle,
+                                         fanuc_params.first_goto_in_cycle, fanuc_params.was_goto));
     fanuc_params.first_goto_in_cycle = false;
+    fanuc_params.was_goto            = true;
     return true;
 }
 

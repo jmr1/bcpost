@@ -64,14 +64,14 @@ template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
 public:
-    goto_grammar(GeneratorData& data, uint32_t& line, uint32_t step, uint32_t precision)
+    goto_grammar(GeneratorData& data, uint32_t& line, uint32_t step, uint32_t precision, bool was_goto)
         : goto_grammar::base_type(goto_attribute)
         , attr_value_float_check(precision)
     {
         // G94 G90 X-24.585 Y-115. Z100.
         attr_value_float %=
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
-        goto_attribute %= "N" << karma::lit(phx::ref(line) += step) << " G94 G90 X"
+        goto_attribute %= "N" << karma::lit(phx::ref(line) += step) << (karma::eps(was_goto) | " G94 G90") << " X"
                               << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
                               << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
                               << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1];
@@ -93,7 +93,7 @@ class goto_in_cycle_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
 public:
     goto_in_cycle_grammar(const std::map<std::string, std::string>& m, GeneratorData& data, uint32_t& line,
-                          uint32_t step, uint32_t precision, bool first)
+                          uint32_t step, uint32_t precision, bool first_in_cycle)
         : goto_in_cycle_grammar::base_type(goto_attribute)
         , attr_value_float_check(precision)
     {
@@ -117,8 +117,8 @@ public:
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
 
         goto_attribute %=
-            "N" << karma::lit(phx::ref(line) += step) << (karma::eps(!first) | " G98") << " G81" << " X"
-                << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
+            "N" << karma::lit(phx::ref(line) += step) << (karma::eps(!first_in_cycle) | " G98") << " G81"
+                << " X" << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
                 << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
                 << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1] << " F" << karma::lit(f) << " R"
                 << karma::lit(phx::bind(&sum, phx::ref(*data.rapto), phx::bind(&interface::Goto::z, karma::_val)))
@@ -135,7 +135,7 @@ private:
 
 template <typename Iterator>
 bool generate_goto(Iterator& sink, GeneratorData& data, uint32_t& line, uint32_t step, const interface::Goto& v,
-                   uint32_t precision, bool in_cycle, bool first_goto_in_cycle)
+                   uint32_t precision, bool in_cycle, bool was_goto, bool first_goto_in_cycle)
 {
     if (in_cycle)
     {
@@ -154,7 +154,7 @@ bool generate_goto(Iterator& sink, GeneratorData& data, uint32_t& line, uint32_t
     }
     else
     {
-        goto_grammar<Iterator> goto_g(data, line, step, precision);
+        goto_grammar<Iterator> goto_g(data, line, step, precision, was_goto);
         return karma::generate(sink, goto_g, v);
     }
 
@@ -162,12 +162,12 @@ bool generate_goto(Iterator& sink, GeneratorData& data, uint32_t& line, uint32_t
 }
 
 std::string generate_goto(GeneratorData& data, uint32_t& line, uint32_t step, const interface::Goto& value,
-                          uint32_t precision, bool in_cycle, bool first_goto_in_cycle)
+                          uint32_t precision, bool in_cycle, bool first_goto_in_cycle, bool was_goto)
 {
     std::string                            generated;
     std::back_insert_iterator<std::string> sink(generated);
 
-    generate_goto(sink, data, line, step, value, precision, in_cycle, first_goto_in_cycle);
+    generate_goto(sink, data, line, step, value, precision, in_cycle, was_goto, first_goto_in_cycle);
 
     return generated;
 }
