@@ -10,8 +10,10 @@
 #include "FloatValueGrammar.h"
 
 #include <iomanip>
+#include <string>
 
 #include <boost/config/warning_disable.hpp>
+#include <boost/optional/optional_io.hpp>
 #include <boost/phoenix/bind.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <boost/spirit/include/phoenix_core.hpp>
@@ -96,6 +98,31 @@ FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs)
     const auto precision = std::max(lhs.value2 ? (*lhs.value2).size() : 0, rhs.value2 ? (*rhs.value2).size() : 0);
 
     return to_FloatValue(std::to_string(dlhs + drhs), precision);
+}
+
+bool operator==(const FloatValue& lhs, const FloatValue& rhs)
+{
+    if (lhs.sign != rhs.sign or (lhs.sign && rhs.sign && *lhs.sign != *rhs.sign))
+        return false;
+
+    if (lhs.value != rhs.value or (lhs.value && rhs.value && *lhs.value != *rhs.value))
+        return false;
+
+    if (lhs.dot != rhs.dot or (lhs.dot && rhs.dot && *lhs.dot != *rhs.dot))
+        return false;
+
+    if (lhs.value2 != rhs.value2 or (lhs.value2 && rhs.value2 && *lhs.value2 != *rhs.value2))
+        return false;
+
+    return true;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const FloatValue& value)
+{
+    ostr << "FloatValue[sign=[" << value.sign << "] value=[" << value.value << "] dot=[" << value.dot
+         << "] value.value2=[" << value.value2 << "]]";
+
+    return ostr;
 }
 
 } // namespace interface

@@ -60,6 +60,23 @@ private:
 
 #else
 
+bool is_same(boost::optional<interface::FloatValue>& prev, const boost::optional<interface::FloatValue>& current)
+{
+    if (not prev)
+    {
+        prev = *current;
+        return false;
+    }
+
+    if (*prev == *current)
+    {
+        return true;
+    }
+
+    prev = *current;
+    return false;
+}
+
 template <typename Iterator>
 class goto_grammar : public karma::grammar<Iterator, interface::Goto()>
 {
@@ -71,10 +88,17 @@ public:
         // G94 G90 X-24.585 Y-115. Z100.
         attr_value_float %=
             (attr_value_float_check[karma::_pass = phx::bind(&verify, karma::_1)] | karma::lit("<error>"));
-        goto_attribute %= "N" << karma::lit(phx::ref(line) += step) << (karma::eps(was_goto) | " G94 G90") << " X"
-                              << attr_value_float[phx::bind(&GeneratorData::x, &data) = karma::_1] << " Y"
-                              << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] << " Z"
-                              << attr_value_float[phx::bind(&GeneratorData::z, &data) = karma::_1];
+        goto_attribute %=
+            "N" << karma::lit(phx::ref(line) += step) << (karma::eps(was_goto) | " G94 G90")
+                << (karma::eps(phx::bind(&is_same, phx::ref(data.x), phx::bind(&interface::Goto::x, karma::_val))) |
+                    " X" << attr_value_float)
+                << (karma::eps(phx::bind(&is_same, phx::ref(data.y), phx::bind(&interface::Goto::y, karma::_val))) |
+                    " Y" << attr_value_float)
+                << (karma::eps(phx::bind(&is_same, phx::ref(data.z), phx::bind(&interface::Goto::z, karma::_val))) |
+                    " Z" << attr_value_float);
+
+        // an example how to store data in another variable for later and output it at the same time
+        // << " Y" << attr_value_float[phx::bind(&GeneratorData::y, &data) = karma::_1] <<
     }
 
 private:

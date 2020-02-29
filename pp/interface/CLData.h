@@ -25,7 +25,9 @@ struct FloatValue
     boost::optional<std::string> value2;
 };
 
-FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs);
+FloatValue    operator+(const FloatValue& lhs, const FloatValue& rhs);
+bool          operator==(const FloatValue& lhs, const FloatValue& rhs);
+std::ostream& operator<<(std::ostream& ostr, const FloatValue& value);
 
 std::string to_string(const FloatValue& value);
 double      to_double(const FloatValue& value);
@@ -140,7 +142,7 @@ enum class RetractionType
     MANUAL = 99
 };
 
-std::ostream& operator<<(std::ostream& ostr, const interface::RetractionType& value);
+std::ostream& operator<<(std::ostream& ostr, const RetractionType& value);
 
 enum class FedrateType
 {
@@ -150,7 +152,7 @@ enum class FedrateType
     MMPR  // G95
 };
 
-std::ostream& operator<<(std::ostream& ostr, const interface::FedrateType& value);
+std::ostream& operator<<(std::ostream& ostr, const FedrateType& value);
 
 struct CycleDrill
 {
@@ -174,7 +176,7 @@ enum class RotationDirection
     CCLW
 };
 
-std::ostream& operator<<(std::ostream& ostr, const interface::RotationDirection& value);
+std::ostream& operator<<(std::ostream& ostr, const RotationDirection& value);
 
 struct SpindlRpm
 {
@@ -194,7 +196,7 @@ enum class CutterCompensation
     RIGHT = 42
 };
 
-std::ostream& operator<<(std::ostream& ostr, const interface::CutterCompensation& value);
+std::ostream& operator<<(std::ostream& ostr, const CutterCompensation& value);
 
 struct Cutcom
 {

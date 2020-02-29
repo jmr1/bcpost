@@ -69,8 +69,20 @@ void FanucGeneratorTest::gotoTest()
                  FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
+            Goto{FloatValue{'-', std::string("25"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("116"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
+            Goto{FloatValue{'-', std::string("25"), '.', std::string("5855")},
+                 FloatValue{'-', std::string("116"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("200"), '.', std::string("0000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
+                 FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}}},
-           {"N1 G94 G90 X-24.585 Y-115. Z100.", "N2 X-25.585 Y-115. Z100."}, true);
+           {"N1 G94 G90 X-24.585 Y-115. Z100.", "N2 X-25.585", "N3 Y-116.", "N4 Z200."}, true);
 
     verify({Goto{FloatValue{'-', std::string("25"), '.', std::string("5855")},
                  FloatValue{'-', std::string("115"), '.', std::string("0000")},
@@ -129,7 +141,7 @@ void FanucGeneratorTest::gotoInCircleTest()
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
                  FloatValue{boost::none, std::string("1"), '.', std::string("0000000")}},
             CycleOff{},
-            Goto{FloatValue{'-', std::string("24"), '.', std::string("5855")},
+            Goto{FloatValue{'-', std::string("25"), '.', std::string("5855")},
                  FloatValue{'-', std::string("115"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("100"), '.', std::string("0000")},
                  FloatValue{boost::none, std::string("0"), '.', std::string("0000000")},
@@ -140,7 +152,7 @@ void FanucGeneratorTest::gotoInCircleTest()
             "N3 G00 Z100.",
             "N4 G81 X-24.585 Y-115. Z100. F250. R103.\n"
             "N5 G00 Z100.",
-            "N6 G80", "N7 X-24.585 Y-115. Z100."},
+            "N6 G80", "N7 X-25.585"},
            true);
 }
 
