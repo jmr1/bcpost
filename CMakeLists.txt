@@ -37,10 +37,6 @@ SET (APPLICATION_VENDOR_NAME "BeeCAM Solutions")
 SET (APPLICATION_VENDOR_URL "beecamsolutions.com")
 SET (APPLICATION_ID "${APPLICATION_VENDOR_ID}.${PROJECT_NAME}")
 
-IF(POLICY CMP0046)
-  cmake_policy(SET CMP0046 OLD)
-ENDIF(POLICY CMP0046)
-
 INCLUDE (${CMAKE_CURRENT_SOURCE_DIR}/tools/cmake/DetectDistro.cmake)
 IF (CMAKE_CROSSCOMPILING)
   SET (AUTORUN_TESTS FALSE)
@@ -132,7 +128,6 @@ ENDIF ()
 #
 # Set compiler flags and build type
 #
-SET(RT rt)
 IF(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   SET (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror -fmessage-length=0 -rdynamic -Wno-multichar -Wfatal-errors -Wno-write-strings")
 ELSE()
