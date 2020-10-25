@@ -4,6 +4,7 @@
 
 #include "CLDataAttributesVisitor.h"
 
+#include <boost/optional/optional_io.hpp>
 #include <boost/variant.hpp>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -21,39 +22,16 @@ struct CheckTypeVisitor : public boost::static_visitor<>
 
 void FloatValueComparer::operator()(const interface::FloatValue& value_expected, const interface::FloatValue& value)
 {
-    if (value_expected.sign == boost::none)
-        EXPECT_TRUE(value.sign == boost::none);
-    else
-        EXPECT_EQ(*value_expected.sign, *value.sign);
-
-    if (value_expected.value == boost::none)
-        EXPECT_TRUE(value.value == boost::none);
-    else
-        EXPECT_EQ(*value_expected.value, *value.value);
-
-    if (value_expected.dot == boost::none)
-        EXPECT_TRUE(value.dot == boost::none);
-    else
-        EXPECT_EQ(*value_expected.dot, *value.dot);
-
-    if (value_expected.value2 == boost::none)
-        EXPECT_TRUE(value.value2 == boost::none);
-    else
-        EXPECT_EQ(*value_expected.value2, *value.value2);
+    EXPECT_THAT(value_expected.sign, value.sign);
+    EXPECT_THAT(value_expected.value, value.value);
+    EXPECT_THAT(value_expected.dot, value.dot);
+    EXPECT_THAT(value_expected.value2, value.value2);
 }
 
 void FloatValueComparer::operator()(const boost::optional<interface::FloatValue>& value_expected,
                                     const boost::optional<interface::FloatValue>& value)
 {
-    if (value_expected == boost::none)
-    {
-        EXPECT_TRUE(value == boost::none);
-    }
-    else
-    {
-        EXPECT_TRUE(value != boost::none);
-        operator()(*value_expected, *value);
-    }
+    EXPECT_THAT(value_expected, value);
 }
 
 bool CLDataAttributesVisitor::operator()(const interface::Nil& value) const
@@ -98,10 +76,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Circle& value) const
     FloatValueComparer()(value_expected->d, value.d);
     FloatValueComparer()(value_expected->e, value.e);
 
-    if (value_expected->n == boost::none)
-        EXPECT_TRUE(value.n == boost::none);
-    else
-        EXPECT_EQ(*value_expected->n, *value.n);
+    EXPECT_THAT(value_expected->n, value.n);
 
     return true;
 }
@@ -185,11 +160,7 @@ bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
     EXPECT_TRUE(value_expected);
 
     EXPECT_EQ(value_expected->tool_number, value.tool_number);
-
-    if (value_expected->adjust == boost::none)
-        EXPECT_TRUE(value.adjust == boost::none);
-    else
-        EXPECT_EQ(*value_expected->adjust, *value.adjust);
+    EXPECT_THAT(value_expected->adjust, value.adjust);
 
     return true;
 }
@@ -297,11 +268,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Cutcom& value) const
     EXPECT_TRUE(value_expected);
 
     EXPECT_EQ(value_expected->cutter_compensation, value.cutter_compensation);
-
-    if (value_expected->register_number == boost::none)
-        EXPECT_TRUE(value.register_number == boost::none);
-    else
-        EXPECT_EQ(*value_expected->register_number, *value.register_number);
+    EXPECT_THAT(value_expected->register_number, value.register_number);
 
     return true;
 }
