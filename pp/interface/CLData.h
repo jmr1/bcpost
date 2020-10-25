@@ -25,9 +25,8 @@ struct FloatValue
     boost::optional<std::string> value2;
 };
 
-FloatValue    operator+(const FloatValue& lhs, const FloatValue& rhs);
-bool          operator==(const FloatValue& lhs, const FloatValue& rhs);
-std::ostream& operator<<(std::ostream& ostr, const FloatValue& value);
+FloatValue operator+(const FloatValue& lhs, const FloatValue& rhs);
+bool       operator==(const FloatValue& lhs, const FloatValue& rhs);
 
 std::string to_string(const FloatValue& value);
 double      to_double(const FloatValue& value);

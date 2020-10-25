@@ -9,6 +9,131 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pp {
+namespace interface {
+
+std::ostream& operator<<(std::ostream& ostr, const FloatValue& v)
+{
+    ostr << "FloatValue["
+         << "sign" << v.sign << " value:" << v.value << " dot:" << v.dot << " value2:" << v.value2 << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Nil& v)
+{
+    ostr << "Nil[]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Goto& v)
+{
+    ostr << "Goto[x:" << v.x << " y:" << v.y << " z:" << v.z << " i:" << v.i << " j:" << v.j << " k:" << v.k << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Circle& v)
+{
+    ostr << "Circle[x:" << v.x << " y:" << v.y << " z:" << v.z << " i:" << v.i << " j:" << v.j << " k:" << v.k
+         << " r:" << v.r << " t:" << v.t << " f:" << v.f << " d:" << v.d << " e:" << v.e << " n:" << v.n << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const EndOfPath& v)
+{
+    ostr << "EndOfPath[]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Ignored& v)
+{
+    ostr << "Ignored[]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const ToolPath& v)
+{
+    ostr << "ToolPath[operation_name:" << v.operation_name << " tool_name:" << v.tool_name << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const TldataDrill& v)
+{
+    ostr << "TldataDrill[module_type:" << v.module_type << " diameter:" << v.diameter
+         << " corner_radius:" << v.corner_radius << " length:" << v.length << " point_angle:" << v.point_angle
+         << " flute_length:" << v.flute_length << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const TldataMill& v)
+{
+    ostr << "TldataMill[diameter:" << v.diameter << " lower_radius:" << v.lower_radius << " length:" << v.length
+         << " taper_angle:" << v.taper_angle << " tip_angle:" << v.tip_angle << " x_center_r1:" << v.x_center_r1
+         << " y_center_r1:" << v.y_center_r1 << " upper_radius:" << v.upper_radius << " x_center_r2:" << v.x_center_r2
+         << " y_center_r2:" << v.y_center_r2 << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const LoadTool& v)
+{
+    ostr << "LoadTool[tool_number:" << v.tool_number << " adjust:" << v.adjust << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const SelectTool& v)
+{
+    ostr << "SelectTool[tool_number:" << v.tool_number << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Msys& v)
+{
+    ostr << "Msys[shift_x:" << v.shift_x << " shift_y:" << v.shift_y << " shift_z:" << v.shift_z
+         << " col1_x:" << v.col1_x << " col1_y:" << v.col1_y << " col1_z:" << v.col1_z << " col2_x:" << v.col2_x
+         << " col2_y:" << v.col2_y << " col2_z:" << v.col2_z << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const CycleDrill& v)
+{
+    ostr << "CycleDrill[rapto:" << v.rapto << " fedto:" << v.fedto << " rtrcto:" << v.rtrcto
+         << " retraction_type:" << v.retraction_type << " fedrate_type:" << v.fedrate_type << " fedrate:" << v.fedrate
+         << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const CycleOff& v)
+{
+    ostr << "CycleOff[]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const SpindlRpm& v)
+{
+    ostr << "SpindlRpm[rpm:" << v.rpm << " rotation_direction:" << v.rotation_direction << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Rapid& v)
+{
+    ostr << "Rapid[]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Cutcom& v)
+{
+    ostr << "Cutcom[cutter_compensation:" << v.cutter_compensation << " register_number:" << v.register_number << "]";
+    return ostr;
+}
+
+std::ostream& operator<<(std::ostream& ostr, const Fedrat& v)
+{
+    ostr << "Fedrat[fedrate_type:" << v.fedrate_type << " units_number:" << v.units_number << "]";
+    return ostr;
+}
+
+} // namespace interface
+} // namespace pp
+
 namespace cldata_test {
 
 struct CheckTypeVisitor : public boost::static_visitor<>
@@ -19,6 +144,17 @@ struct CheckTypeVisitor : public boost::static_visitor<>
         std::cout << "Type: " << boost::typeindex::type_id<T>().pretty_name() << std::endl;
     }
 };
+
+MATCHER_P2(IsValueExpected, value_expected, v_expected, "Unsupported type")
+{
+    if (!value_expected)
+    {
+        boost::apply_visitor(CheckTypeVisitor(), v_expected);
+        return false;
+    }
+
+    return true;
+}
 
 void FloatValueComparer::operator()(const interface::FloatValue& value_expected, const interface::FloatValue& value)
 {
@@ -43,9 +179,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Nil& value) const
 bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
 {
     auto value_expected = boost::get<interface::Goto>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->x, value.x);
     FloatValueComparer()(value_expected->y, value.y);
@@ -60,9 +194,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Goto& value) const
 bool CLDataAttributesVisitor::operator()(const interface::Circle& value) const
 {
     auto value_expected = boost::get<interface::Circle>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->x, value.x);
     FloatValueComparer()(value_expected->y, value.y);
@@ -84,9 +216,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Circle& value) const
 bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) const
 {
     auto value_expected = boost::get<interface::EndOfPath>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     return true;
 }
@@ -94,9 +224,7 @@ bool CLDataAttributesVisitor::operator()(const interface::EndOfPath& value) cons
 bool CLDataAttributesVisitor::operator()(const interface::Ignored& value) const
 {
     auto value_expected = boost::get<interface::Ignored>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     return true;
 }
@@ -104,9 +232,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Ignored& value) const
 bool CLDataAttributesVisitor::operator()(const interface::ToolPath& value) const
 {
     auto value_expected = boost::get<interface::ToolPath>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->operation_name, value.operation_name);
     EXPECT_EQ(value_expected->tool_name, value.tool_name);
@@ -117,9 +243,7 @@ bool CLDataAttributesVisitor::operator()(const interface::ToolPath& value) const
 bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) const
 {
     auto value_expected = boost::get<interface::TldataDrill>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->module_type, value.module_type);
     FloatValueComparer()(value_expected->corner_radius, value.corner_radius);
@@ -134,9 +258,7 @@ bool CLDataAttributesVisitor::operator()(const interface::TldataDrill& value) co
 bool CLDataAttributesVisitor::operator()(const interface::TldataMill& value) const
 {
     auto value_expected = boost::get<interface::TldataMill>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->diameter, value.diameter);
     FloatValueComparer()(value_expected->lower_radius, value.lower_radius);
@@ -155,9 +277,7 @@ bool CLDataAttributesVisitor::operator()(const interface::TldataMill& value) con
 bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
 {
     auto value_expected = boost::get<interface::LoadTool>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->tool_number, value.tool_number);
     EXPECT_THAT(value_expected->adjust, value.adjust);
@@ -168,9 +288,7 @@ bool CLDataAttributesVisitor::operator()(const interface::LoadTool& value) const
 bool CLDataAttributesVisitor::operator()(const interface::SelectTool& value) const
 {
     auto value_expected = boost::get<interface::SelectTool>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->tool_number, value.tool_number);
 
@@ -180,9 +298,7 @@ bool CLDataAttributesVisitor::operator()(const interface::SelectTool& value) con
 bool CLDataAttributesVisitor::operator()(const interface::Msys& value) const
 {
     auto value_expected = boost::get<interface::Msys>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->shift_x, value.shift_x);
     FloatValueComparer()(value_expected->shift_y, value.shift_y);
@@ -200,9 +316,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Msys& value) const
 bool CLDataAttributesVisitor::operator()(const interface::CycleOff& value) const
 {
     auto value_expected = boost::get<interface::CycleOff>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     return true;
 }
@@ -210,9 +324,7 @@ bool CLDataAttributesVisitor::operator()(const interface::CycleOff& value) const
 bool CLDataAttributesVisitor::operator()(const interface::CycleDrill& value) const
 {
     auto value_expected = boost::get<interface::CycleDrill>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->rapto, value.rapto);
     FloatValueComparer()(value_expected->fedto, value.fedto);
@@ -227,9 +339,7 @@ bool CLDataAttributesVisitor::operator()(const interface::CycleDrill& value) con
 bool CLDataAttributesVisitor::operator()(const interface::Fedrat& value) const
 {
     auto value_expected = boost::get<interface::Fedrat>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->fedrate_type, value.fedrate_type);
     FloatValueComparer()(value_expected->units_number, value.units_number);
@@ -240,9 +350,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Fedrat& value) const
 bool CLDataAttributesVisitor::operator()(const interface::SpindlRpm& value) const
 {
     auto value_expected = boost::get<interface::SpindlRpm>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     FloatValueComparer()(value_expected->rpm, value.rpm);
     EXPECT_EQ(value_expected->rotation_direction, value.rotation_direction);
@@ -253,9 +361,7 @@ bool CLDataAttributesVisitor::operator()(const interface::SpindlRpm& value) cons
 bool CLDataAttributesVisitor::operator()(const interface::Rapid& value) const
 {
     auto value_expected = boost::get<interface::Rapid>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     return true;
 }
@@ -263,9 +369,7 @@ bool CLDataAttributesVisitor::operator()(const interface::Rapid& value) const
 bool CLDataAttributesVisitor::operator()(const interface::Cutcom& value) const
 {
     auto value_expected = boost::get<interface::Cutcom>(&v_expected);
-    if (!value_expected)
-        boost::apply_visitor(CheckTypeVisitor(), v_expected);
-    EXPECT_TRUE(value_expected);
+    EXPECT_THAT(true, IsValueExpected(value_expected, v_expected));
 
     EXPECT_EQ(value_expected->cutter_compensation, value.cutter_compensation);
     EXPECT_THAT(value_expected->register_number, value.register_number);
