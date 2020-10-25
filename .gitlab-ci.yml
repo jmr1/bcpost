@@ -1,0 +1,55 @@
+# based on: https://gitlab.com/gitlab-org/gitlab-foss/-/blob/master/lib/gitlab/ci/templates/C++.gitlab-ci.yml
+# image from: https://hub.docker.com/_/gcc/
+image: gcc:9.3.0
+#image: ubuntu:20.04
+
+parser:
+  stage: build
+  before_script:
+    - cat /proc/cpuinfo
+    - pwd
+    - ls
+
+    # Configure apt caching
+    - echo $CI_PROJECT_DIR
+    - export APT_DIR=$CI_PROJECT_DIR/apt && export APT_STATE_LISTS=$APT_DIR/lists && export APT_CACHE_ARCHIVES=$APT_DIR/archives
+    - printf "dir::state::lists    ${APT_STATE_LISTS};\ndir::cache::archives    ${APT_CACHE_ARCHIVES};\n" > /etc/apt/apt.conf
+    - mkdir -p "${APT_STATE_LISTS}/partial" && mkdir -p "${APT_CACHE_ARCHIVES}/partial"
+    # Install build dependencies
+    - apt-get update && apt-get -y install make cmake ccache libboost-dev libboost-program-options-dev libcppunit-dev valgrind libcgicc-dev lcov gcovr
+    # install later when needed: libboost-python-dev
+
+    # CCache Config
+    - ls
+    - mkdir -p ccache
+    - export CCACHE_BASEDIR=${PWD}
+    - export CCACHE_DIR=${PWD}/ccache
+    - ls
+
+    # Install google test
+    - if [ ! -d googletest ]; then git clone https://github.com/google/googletest.git; fi
+    - cd googletest
+    - mkdir -p build && cd build
+    - cmake .. -DBUILD_SHARED_LIBS=ON -DINSTALL_GTEST=ON -DCMAKE_INSTALL_PREFIX:PATH=/usr
+    - make -j
+    - make install
+    - ldconfig
+    - cd ../..
+    - pwd
+
+  cache:
+    paths:
+      - ccache/
+      - googletest/
+      - apt/
+
+  script:
+    - pwd
+    - mkdir build && cd build
+    - cmake ..
+    - make
+    - make test
+    - cd ..
+    - ls
+    - ls ccache
+
