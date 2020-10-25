@@ -8,8 +8,6 @@ namespace cldata_test {
 class CLDataParserTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    CLDataParserTest(){};
-
     CPPUNIT_TEST_SUITE(CLDataParserTest);
     CPPUNIT_TEST(gotoTest);
     CPPUNIT_TEST(circleTest);
@@ -30,8 +28,8 @@ public:
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 protected:
     void gotoTest();

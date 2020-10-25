@@ -1,15 +1,20 @@
 #SET(BUILD_CGI_APP 1)
+#SET(BUILD_COVERAGE 1)
 
-IF (BUILD_CGI_APP)
-  SET(CMAKE_BUILD_TYPE MinSizeRel)
+IF (BUILD_COVERAGE)
+  SET(CMAKE_BUILD_TYPE Debug)
 ELSE ()
-  SET(CMAKE_BUILD_TYPE Release)
+  IF (BUILD_CGI_APP)
+    SET(CMAKE_BUILD_TYPE MinSizeRel)
+  ELSE ()
+    SET(CMAKE_BUILD_TYPE Release)
+  ENDIF ()
 ENDIF ()
 
 IF (CMAKE_BUILD_TYPE)
   SET (BUILD_TYPE ${CMAKE_BUILD_TYPE})
 ELSE ()
-  SET (BUILD_TYPE RelWithDebInfo) # options are: Release, Debug, RelWithDebInfo, MinSizeRel, Coverage
+  SET (BUILD_TYPE RelWithDebInfo) # options are: Release, Debug, RelWithDebInfo, MinSizeRel
 ENDIF ()
 
 IF (BUILD_CGI_APP)
@@ -143,16 +148,46 @@ IF (NOT BUILD_CGI_APP)
   SET (CMAKE_CXX_OPTIMIZATION_FLAGS "-mavx2")
 ENDIF ()
 #SET (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g3")
-SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
-SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
-SET (CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
+IF (NOT BUILD_COVERAGE)
+  SET (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
+  SET (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
+  SET (CMAKE_CXX_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL} ${CMAKE_CXX_OPTIMIZATION_FLAGS}")
+ENDIF ()
 
-SET (CMAKE_BUILD_TYPE "${BUILD_TYPE}") # options are: Release, Debug, RelWithDebInfo, MinSizeRel, Coverage
+SET (CMAKE_BUILD_TYPE "${BUILD_TYPE}") # options are: Release, Debug, RelWithDebInfo, MinSizeRel
 # To run i.e. Debug build from command-line: "cd build;cmake -D CMAKE_BUILD_TYPE=Debug ..;cd ..;make;"
 
 #
 # Add Build Targets
 #
+
+IF (CMAKE_COMPILER_IS_GNUCXX)
+  IF (BUILD_COVERAGE)
+    include(CodeCoverage)
+    APPEND_COVERAGE_COMPILER_FLAGS()
+    SETUP_TARGET_FOR_COVERAGE_LCOV(NAME ${LIBPARSER_NAME_UNITTEST}-coverage-lcov
+                                  EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UNITTEST}
+                                  DEPENDENCIES ${MAINFOLDER}/bin/${LIBPARSER_NAME_UNITTEST}
+                                  EXCLUDE "/usr/include/*" "${PROJECT_SOURCE_DIR}/pp_test/*" "${PROJECT_SOURCE_DIR}/pp_ut/*")
+
+    SETUP_TARGET_FOR_COVERAGE_LCOV(NAME ${LIBPARSER_NAME_UT}-coverage-lcov
+                                  EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UT}
+                                  DEPENDENCIES ${MAINFOLDER}/bin/${LIBPARSER_NAME_UT}
+                                  EXCLUDE "/usr/include/*" "${PROJECT_SOURCE_DIR}/pp_test/*" "${PROJECT_SOURCE_DIR}/pp_ut/*")
+
+    setup_target_for_coverage_gcovr_html(NAME ${LIBPARSER_NAME_UNITTEST}-coverage-gcovr
+                                  EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UNITTEST}
+                                  DEPENDENCIES ${MAINFOLDER}/bin/${LIBPARSER_NAME_UNITTEST}
+                                  EXCLUDE "/usr/include/*" "${PROJECT_SOURCE_DIR}/pp_test/*" "${PROJECT_SOURCE_DIR}/pp_ut/*")
+
+    setup_target_for_coverage_gcovr_html(NAME ${LIBPARSER_NAME_UT}-coverage-gcovr
+                                  EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UT}
+                                  DEPENDENCIES ${MAINFOLDER}/bin/${LIBPARSER_NAME_UT}
+                                  EXCLUDE "/usr/include/*" "${PROJECT_SOURCE_DIR}/pp_test/*" "${PROJECT_SOURCE_DIR}/pp_ut/*")
+
+  ENDIF (BUILD_COVERAGE)
+ENDIF (CMAKE_COMPILER_IS_GNUCXX)
+
 
 # Libraries
 ADD_SUBDIRECTORY(pp)
@@ -164,14 +199,6 @@ enable_testing ()
 # Library unit tests
 ADD_SUBDIRECTORY(pp_test)
 ADD_SUBDIRECTORY(pp_ut)
-
-if (CMAKE_BUILD_TYPE STREQUAL "Coverage")
-  include(CodeCoverage)
-  setup_target_for_coverage(NAME coverage EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UNITTEST})
-  setup_target_for_coverage(NAME coverage EXECUTABLE ${MAINFOLDER}/bin/${LIBPARSER_NAME_UT})
-
-  APPEND_COVERAGE_COMPILER_FLAGS()
-endif() #CMAKE_BUILD_TYPE STREQUAL "Coverage"
 
 # When "clean" target is run, remove the following directories/files
 SET_PROPERTY(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES "${MAINFOLDER}/bin/.debug")

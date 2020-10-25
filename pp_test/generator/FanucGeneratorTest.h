@@ -8,8 +8,6 @@ namespace fanuc_test {
 class FanucGeneratorTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    FanucGeneratorTest(){};
-
     CPPUNIT_TEST_SUITE(FanucGeneratorTest);
     CPPUNIT_TEST(gotoTest);
     CPPUNIT_TEST(gotoInCircleTest);
@@ -29,8 +27,8 @@ public:
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 protected:
     void gotoTest();

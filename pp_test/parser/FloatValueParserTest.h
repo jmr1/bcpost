@@ -8,15 +8,13 @@ namespace cldata_test {
 class FloatValueParserTest : public CPPUNIT_NS::TestFixture
 {
 public:
-    FloatValueParserTest(){};
-
     CPPUNIT_TEST_SUITE(FloatValueParserTest);
     CPPUNIT_TEST(operatorPlusTest);
     CPPUNIT_TEST_SUITE_END();
 
 public:
-    void setUp();
-    void tearDown();
+    void setUp() override;
+    void tearDown() override;
 
 protected:
     void operatorPlusTest();
