@@ -1,3 +1,5 @@
+FIND_PACKAGE (Boost 1.56 COMPONENTS "program_options" REQUIRED)
+
 FILE (GLOB_RECURSE bcpost_SRCS *.cpp *.cxx *.cc *.C *.c *.h *.hpp)
 LIST(REMOVE_ITEM bcpost_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/stdafx.cpp ${CMAKE_CURRENT_SOURCE_DIR}/targetver.h ${CMAKE_CURRENT_SOURCE_DIR}/stdafx.h)
 SET (bcpost_LIBS ${LIBPARSER_NAME} ${Boost_LIBRARIES})
