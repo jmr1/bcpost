@@ -169,8 +169,8 @@ int main(int argc, char* argv[])
 
     if (!output.empty())
     {
-        std::ofstream file(output.c_str());
-        if (file.fail())
+        std::ofstream f(output.c_str());
+        if (f.fail())
         {
             std::cerr << "ERROR: Path to output file [" << output << "] is wrong!" << std::endl;
             return 1;
@@ -178,10 +178,10 @@ int main(int argc, char* argv[])
 
         for (const auto& text : gen_data)
         {
-            file << text;
-            file << std::endl;
+            f << text;
+            f << std::endl;
         }
-        file.close();
+        f.close();
     }
     else
     {

@@ -36,7 +36,7 @@ template <typename Iterator>
 class float_value_grammar : public karma::grammar<Iterator, interface::FloatValue()>
 {
 public:
-    float_value_grammar(uint32_t precision)
+    explicit float_value_grammar(uint32_t precision)
         : float_value_grammar::base_type(float_value_attribute)
         , fr(precision)
     {
@@ -54,7 +54,7 @@ private:
 
 struct float_value_exception : std::runtime_error
 {
-    float_value_exception(const std::string& message)
+    explicit float_value_exception(const std::string& message)
         : std::runtime_error(message.c_str())
     {
     }

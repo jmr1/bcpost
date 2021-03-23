@@ -20,7 +20,7 @@ struct FloatValueComparer
 class CLDataAttributesVisitor : public boost::static_visitor<bool>
 {
 public:
-    CLDataAttributesVisitor(const interface::AttributeVariant& expected)
+    explicit CLDataAttributesVisitor(const interface::AttributeVariant& expected)
         : v_expected(expected)
     {
     }

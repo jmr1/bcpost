@@ -32,7 +32,7 @@ class all_attributes_grammar
     : public qi::grammar<pos_iterator_type, std::vector<interface::AttributeVariant>(), qi::blank_type>
 {
 public:
-    all_attributes_grammar(std::string& message);
+    explicit all_attributes_grammar(std::string& message);
 
 private:
     goto_grammar                                                                            goto_rule;
